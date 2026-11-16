@@ -457,7 +457,7 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
 
       <section>
         <h3>أدوات القياس</h3>
-        <button class="btn2" id="protBtn">📐 إظهار المنقلة</button>
+        <button class="btn2" id="protBtn"><svg width="20" height="12" viewBox="0 0 40 22" style="vertical-align:-1px;margin-left:4px"><path d="M2 20 A18 18 0 0 1 38 20 Z" fill="#eaf1fc" stroke="currentColor" stroke-width="2.4"/><path d="M20 20 L20 15 M8 9.5 L10.8 12.2 M32 9.5 L29.2 12.2 M20 2.6 L20 6" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="2" fill="currentColor"/></svg>إظهار المنقلة</button>
         <div class="row"><label>تدوير المنقلة</label><input type="range" id="protRot" min="-180" max="180" value="0" step="5"></div>
         <div class="note">حرّكي المنقلة بأداة «تحديد».</div>
       </section>
@@ -727,6 +727,7 @@ const AD='٠١٢٣٤٥٦٧٨٩';
 function dg(s){s=String(s);return S.arNum?s.replace(/[0-9]/g,d=>AD[d]).replace(/([٠-٩])\.(?=[٠-٩])/g,'$1٫'):s}
 function fmt(n){let r=Math.round(n*100)/100;if(Object.is(r,-0)||Math.abs(r)<1e-9)r=0;if(S.arNum&&r<0)return '\u2066'+dg(String(-r))+'−\u2069';return dg(String(r).replace('-','−'))}
 const SC=()=>page().sc||1;
+const PROT_IC='<svg width="20" height="12" viewBox="0 0 40 22" style="vertical-align:-1px;margin-left:4px"><path d="M2 20 A18 18 0 0 1 38 20 Z" fill="#eaf1fc" stroke="currentColor" stroke-width="2.4"/><path d="M20 20 L20 15 M8 9.5 L10.8 12.2 M32 9.5 L29.2 12.2 M20 2.6 L20 6" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="2" fill="currentColor"/></svg>';
 function unitsW(n){n=Math.abs(n);if(Math.abs(n-1)<1e-9)return 'وحدة واحدة';if(Math.abs(n-2)<1e-9)return 'وحدتين';if(Number.isInteger(n)&&n>=3&&n<=10)return dg(n)+' وحدات';return fmt(n)+' وحدة'}
 function trName(dx,dy){const p=[];if(Math.abs(dx)>1e-9)p.push(unitsW(dx)+' إلى '+(dx>0?'اليمين':'اليسار'));if(Math.abs(dy)>1e-9)p.push(unitsW(dy)+' إلى '+(dy>0?'الأعلى':'الأسفل'));return 'انسحاب '+(p.length?p.join(' و'):'بمقدار صفر')}
 const pair=(a,b)=>S.arSym?`(${a}، ${b})`:`(${a}, ${b})`;
@@ -1665,7 +1666,7 @@ function updateUI(){
  $('#pageLbl').textContent=`الصفحة ${dg(S.cur+1)} من ${dg(S.pages.length)}`;
  $('#prevPg').disabled=S.cur===0;$('#nextPg').disabled=S.cur===S.pages.length-1;
  $('#finishPoly').style.display=S.polyDraft&&S.polyDraft.pts.length>=3?'block':'none';
- const hasProt=page().items.some(i=>i.t==='prot');$('#protBtn').textContent=hasProt?'📐 إخفاء المنقلة':'📐 إظهار المنقلة';
+ const hasProt=page().items.some(i=>i.t==='prot');$('#protBtn').innerHTML=PROT_IC+(hasProt?'إخفاء المنقلة':'إظهار المنقلة');
  const ti=targetIndex(),info=$('#selInfo');
  if(ti<0){info.className='note';info.textContent='ارسمي شكلاً (مضلع، مستطيل، نقطة…) ثم اختاري التحويل واضغطي «تطبيق».'}
  else{const it=page().items[ti];const nm={poly:'المضلع',pt:'النقطة',line:'القطعة',circle:'الدائرة',stroke:'الرسم الحر',text:'النص'}[it.t]||'الشكل';
@@ -2000,9 +2001,9 @@ T.kind='train';
 function liveSessionDoc(){const entries={};for(const pl of T.players.values()){if(pl.demo)continue;const r=T.sent.indexOf(pl.key);let d=[];try{d=JSON.parse(pl.dstr||'[]')}catch(e){}
   entries[pl.key]={n:pl.n,a:pl.a,d,ov:pl.ov?1:0,rank:r>=0?r+1:0,sec:pl.sentAt&&T.started?Math.round((pl.sentAt-T.started)/1000):0,ok:pl.ok===true?1:pl.ok===false?0:null,ans:pl.ans||''}}
  return {qa:T.qa?1:0,keyName:T.qa?(T.ansKey?'إجابة مكتوبة: '+cleanS(T.ansKey,60):'إجابة مكتوبة'):(T.keyName||''),date:T.started||Date.now(),task:cleanS(T.task,200),kind:T.kind,mode:'live',bg:T.bg,sc:T.sc||1,b:T.baseEnc,entries,updated:Date.now()}}
-function recordLive(delay){if(!DB||!T.g||T.s==='lobby'||!T.started)return;saveSession(T.g,liveSessionDoc(),delay)}
+function recordLive(delay){if(!DB||!T.g||T.s==='lobby'||!T.started)return;if(![...T.players.values()].some(p=>!p.demo))return;saveSession(T.g,liveSessionDoc(),delay)}
 function renderKind(){$$('#kindSeg button').forEach(b=>b.classList.toggle('on',b.dataset.k===T.kind));
- $('#recNote').textContent=DB?`📁 تُحفظ الجولة تلقائياً في سجل الأدلة كجولة ${KIND[T.kind]}.`:'⚠️ سجل الأدلة غير متاح هنا — افتحي السبورة من claude.ai وأنتِ مسجّلة الدخول ليُحفظ.'}
+ $('#recNote').textContent=DB?`📁 تُحفظ الجولة تلقائياً في سجل الأدلة كجولة ${KIND[T.kind]}. (الطالبات التجريبيات للتدريب فقط ولا يُحفظن)`:'⚠️ سجل الأدلة غير متاح هنا — افتحي السبورة من claude.ai وأنتِ مسجّلة الدخول ليُحفظ.'}
 $$('#kindSeg button').forEach(b=>b.onclick=()=>{T.kind=b.dataset.k;renderKind();if(T.s!=='lobby')recordLive(300)});
 
 /* --- device turns (one device, students take turns) --- */
