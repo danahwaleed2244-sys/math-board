@@ -109,6 +109,10 @@ h3{margin:0 0 10px;font-size:15px}
 .qr img,.qr canvas{display:block;max-width:100%;height:auto}
 .pin{font-size:46px;font-weight:800;letter-spacing:8px;line-height:1.1;color:#1d4ea8}
 .muted{color:#6b7588}.small{font-size:12.5px}
+select.ksel{width:100%;padding:8px;border:2px solid #dbe5f2;border-radius:10px;font:inherit;font-size:14px;background:#fff}
+#keyCard .row input{width:64px}
+.scard.right{border-color:#2fb57f;background:#f2fbf6}.scard.wrong{border-color:#e2493a;background:#fdf3f2}
+.scard .verdict{font-size:13px;font-weight:800;margin-top:2px}
 textarea{width:100%;border:2px solid #dbe5f2;border-radius:10px;padding:9px;font:inherit;font-size:14.5px;resize:vertical;-webkit-user-select:text;user-select:text}
 .primary.red{background:#e2493a}.primary.green{background:#1f9d55}
 .dstat{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
@@ -343,6 +347,9 @@ body.student.notf #tfSec{display:none}
         <label class="chk"><input type="checkbox" id="tAnim" checked> عرض الحركة ببطء (للشرح)</label>
         <label class="chk"><input type="checkbox" id="tLines" checked> إظهار خطوط الربط والمحور</label>
         <button class="primary" id="tApply">تطبيق التحويل ▶</button>
+        <button class="btn2" id="tCheck" style="width:100%;margin-top:8px;padding:10px;font-size:14px">🎯 تحقّقي من رسمتي</button>
+        <div class="note" id="tCheckMsg" style="display:none;margin-top:8px"></div>
+        <div class="muted small" style="margin-top:6px;font-size:12px;color:var(--muted)">للتدريب: ارسمي الشكل الأصلي، ثم ارسمي صورته بنفسك بأداة «مضلع»، ثم اختاري التحويل أعلاه واضغطي «تحقّقي».</div>
       </section>
 
       <section>
@@ -422,6 +429,26 @@ body.student.notf #tfSec{display:none}
         <div class="muted">رمز الدخول</div>
         <div class="pin" id="pinShow"></div>
         <button class="btn2" id="pinNew">رمز جديد</button>
+      </div>
+      <div class="dcard" id="keyCard">
+        <div class="dh">✅ التصحيح التلقائي</div>
+        <select id="keySel" class="ksel">
+          <option value="">بدون تصحيح تلقائي</option>
+          <option value="rot90">دوران ٩٠° عكس عقارب الساعة حول الأصل</option>
+          <option value="rotm90">دوران ٩٠° مع عقارب الساعة حول الأصل</option>
+          <option value="rot180">دوران ١٨٠° حول الأصل</option>
+          <option value="refx">انعكاس حول محور السينات</option>
+          <option value="refy">انعكاس حول محور الصادات</option>
+          <option value="refyx">انعكاس حول المستقيم ص = س</option>
+          <option value="refynx">انعكاس حول المستقيم ص = −س</option>
+          <option value="tr">انسحاب</option>
+          <option value="dil">تمدد حول الأصل</option>
+          <option value="side">حسب إعدادات «التحويلات» في القائمة الجانبية</option>
+        </select>
+        <div class="row hidden" id="keyTr"><label>أفقياً</label><input type="number" id="keyA" value="3" step="1"><label>رأسياً</label><input type="number" id="keyB" value="-2" step="1"></div>
+        <div class="row hidden" id="keyDil"><label>معامل التمدد</label><input type="number" id="keyK" value="2" step="0.5"></div>
+        <div id="keyInfo" class="muted small"></div>
+        <button class="btn2 hidden" id="keyShow">👁 عرض الحل الصحيح على سبورتي</button>
       </div>
       <div class="dcard">
         <label class="dh" for="taskIn">📝 المهمة</label>
@@ -1148,13 +1175,13 @@ function renderTo(cvs,items,bg,cw,ch,sc){const dpr=window.devicePixelRatio||1;cv
 /* ================= TEACHER ================= */
 const T={g:null,pin:null,s:'idle',task:'',base:[],baseEnc:[],bg:'coord',tf:false,players:new Map(),sent:[],demo:false,demoTimer:0,qrFor:null,open:false,started:0};
 function hostPayload(){return {tn:cleanS(S.tName,40),sn:cleanS(S.sName,40),r:'h',g:T.g,pin:T.pin,s:T.s,ti:cleanS(T.task,200),b:T.baseEnc,bg:T.bg,sc:T.sc||1,tf:T.tf?1:0,o:T.sent.slice(0,40)}}
-function pushHost(){if(T.g)setPresence(hostPayload());store.set('mb_host',{sc:T.sc,g:T.g,pin:T.pin,s:T.s,task:T.task,baseEnc:T.baseEnc,bg:T.bg,tf:T.tf,sent:T.sent,started:T.started})}
+function pushHost(){if(T.g)setPresence(hostPayload());store.set('mb_host',{keySpec:T.keySpec,sc:T.sc,g:T.g,pin:T.pin,s:T.s,task:T.task,baseEnc:T.baseEnc,bg:T.bg,tf:T.tf,sent:T.sent,started:T.started})}
 function captureBase(){const items=$('#sendBase').checked?page().items.filter(i=>i.t!=='prot'):[];
  const r=pack(items,2600,arr=>({r:'h',g:'xxxxxx',pin:'0000',s:'lobby',ti:cleanS(T.task,200),b:arr,bg:'coord',tf:1,o:[]}));
  T.baseEnc=r.arr;T.base=decode(r.arr);T.bg=$('#sendBase').checked?page().bg:'coord';T.sc=$('#sendBase').checked?SC():1;return r.ov}
 function updBaseInfo(){const n=page().items.filter(i=>i.t!=='prot').length;$('#baseSize').textContent=$('#sendBase').checked?(n?`سيصل للطالبات ${dg(n)} شكل من صفحتك الحالية (الصفحة ${dg(S.cur+1)}).`:'صفحتك الحالية فارغة — ستصل الخلفية فقط.'):'ستبدأ الطالبات بصفحة فارغة.'}
 function openDash(){commitText();T.open=true;$('#dash').classList.remove('hidden');if(!T.pin){T.pin=randPin()}if(!T.g){T.g=newG();T.s='lobby';T.started=0;pushHost()}
- $('#taskIn').value=T.task;$('#allowTf').checked=T.tf;updBaseInfo();renderKind();renderDash()}
+ $('#taskIn').value=T.task;$('#allowTf').checked=T.tf;updBaseInfo();renderKind();if(typeof computeKey==='function')computeKey();renderDash()}
 function closeDash(){T.open=false;$('#dash').classList.add('hidden')}
 function setConn(state){const c=$('#connChip');c.classList.toggle('live',state==='on');c.lastElementChild.textContent=state==='on'?'متصل مباشر':state==='off'?'غير متصل':'جارٍ الاتصال…'}
 function drawQR(){const box=$('#qr'),size=T.s==='lobby'?220:150,key=SHARE_URL+'|'+size;if(T.qrFor===key)return;T.qrFor=key;box.textContent='';
@@ -1172,7 +1199,8 @@ function teacherPeers(){if(!T.g)return;const seen=new Set(),now=Date.now();let s
   let pl=T.players.get(key);if(!pl){pl={key,n,a,joined:now,dstr:'',items:[],changed:0,dirty:true};T.players.set(key,pl)}
   pl.online=true;pl.st=pr.st==='sent'?'sent':'draw';pl.ov=!!pr.ov;
   const ds=JSON.stringify(pr.d||[]);if(ds!==pl.dstr){if(pl.dstr&&T.s==='run')pl.changed=now;pl.dstr=ds;pl.items=decode(pr.d);pl.dirty=true}
-  if(pl.st==='sent'&&T.s==='run'&&!T.sent.includes(key)){T.sent.push(key);pl.sentAt=now;sentChanged=true}}
+  if(pl.st==='sent'&&T.s==='run'&&!T.sent.includes(key)){T.sent.push(key);pl.sentAt=now;sentChanged=true}
+  if(typeof autoGrade==='function'&&autoGrade(pl))sentChanged=sentChanged||false}
  for(const [k,pl] of [...T.players]){if(pl.demo||seen.has(k))continue;if(T.s==='lobby')T.players.delete(k);else pl.online=false}
  if(sentChanged)pushHost();renderCards();if(T.s==='run'||T.s==='end')recordLive(3000)}
 
@@ -1185,20 +1213,22 @@ function renderCards(){if(!T.open)return;const box=$('#cards'),now=Date.now();co
  const sorted=all.slice().sort((x,y)=>{const ix=T.sent.indexOf(x.key),iy=T.sent.indexOf(y.key);if(ix>=0||iy>=0)return (ix<0?1e9:ix)-(iy<0?1e9:iy);return x.joined-y.joined});
  sorted.forEach((pl,i)=>{let el=cardEls.get(pl.key);
   if(!el){el=document.createElement('div');el.className='scard';el.innerHTML='<span class="rk"></span><span class="pen">✏️</span><canvas></canvas><div class="nm"><span class="av"></span><b></b><button class="okb" data-v="1" title="إجابة صحيحة">✓</button><button class="okb" data-v="0" title="إجابة خاطئة">✗</button></div><div class="stt"></div>';el.onclick=()=>openZoom(pl.key);
-   el.querySelectorAll('.okb').forEach(bn=>bn.onclick=ev=>{ev.stopPropagation();const P2=T.players.get(pl.key);if(!P2)return;const v=bn.dataset.v==='1';P2.ok=P2.ok===v?null:v;recordLive(600);renderCards()});box.appendChild(el);cardEls.set(pl.key,el);pl.dirty=true}
+   el.querySelectorAll('.okb').forEach(bn=>bn.onclick=ev=>{ev.stopPropagation();const P2=T.players.get(pl.key);if(!P2)return;const v=bn.dataset.v==='1';P2.ok=P2.ok===v?null:v;P2.manual=P2.ok!=null;recordLive(600);renderCards()});box.appendChild(el);cardEls.set(pl.key,el);pl.dirty=true}
   el.style.order=i;const rank=T.sent.indexOf(pl.key);const drawing=T.s==='run'&&pl.changed&&now-pl.changed<5000&&pl.online;
   if(rank>=0)cnt.sent++;if(drawing)cnt.draw++;
-  el.className='scard'+(rank>=0?' sent':drawing?' drawing':'')+(pl.online?'':' off');
+  el.className='scard'+(pl.ok===true?' right':pl.ok===false?' wrong':rank>=0?' sent':drawing?' drawing':'')+(pl.online?'':' off');
   el.querySelector('.rk').textContent=rank>=0&&rank<3?MEDAL[rank]:'';el.querySelector('.pen').style.display=drawing?'':'none';
   const ob=el.querySelectorAll('.okb');ob[0].className='okb'+(pl.ok===true?' on1':'');ob[1].className='okb'+(pl.ok===false?' on0':'');
   el.querySelector('.av').textContent=pl.a;el.querySelector('b').textContent=pl.n+(pl.demo?' (تجريبية)':'');
   el.querySelector('.stt').textContent=!pl.online?'غير متصلة':rank>=0?`✅ أرسلت — ${ordinal(rank+1)}`+(pl.sentAt&&T.started?` · ${fmtDur(pl.sentAt-T.started)}`:''):T.s==='lobby'?'⏳ في الانتظار':drawing?'✏️ ترسم الآن…':pl.items.length?'⏸ توقفت عن الرسم':'💤 لم تبدأ الرسم';
+  el.querySelector('.stt').textContent+=pl.ok===true?' · ✔️ صحيحة':pl.ok===false?' · ✖️ خاطئة':'';
   if(pl.dirty){pl.dirty=false;const c=el.querySelector('canvas');const w=c.clientWidth||230;renderTo(c,T.base.concat(pl.items),T.bg,w,160)}});
  for(const [k,el] of [...cardEls])if(!T.players.has(k)){el.remove();cardEls.delete(k)}
- $('#dstat').innerHTML=`<span>👩‍🎓 ${dg(cnt.all)} طالبة</span><span>✏️ ${dg(cnt.draw)} ترسم الآن</span><span>✅ ${dg(cnt.sent)} أرسلت</span>`;
+ const nOk=all.filter(x=>x.ok===true).length,nNo=all.filter(x=>x.ok===false).length;
+ $('#dstat').innerHTML=`<span>👩‍🎓 ${dg(cnt.all)} طالبة</span><span>✏️ ${dg(cnt.draw)} ترسم الآن</span><span>📨 ${dg(cnt.sent)} أرسلت</span>`+(T.key&&T.key.length?`<span style="color:#17804f">✔️ ${dg(nOk)} صحيحة</span><span style="color:#c0392b">✖️ ${dg(nNo)} خاطئة</span>`:'');
  const ord=$('#order');ord.innerHTML='';if(!T.sent.length)ord.innerHTML='<div class="muted small">ستظهر هنا الطالبات حسب أسبقية الإرسال.</div>';
  T.sent.forEach((k,i)=>{const pl=T.players.get(k);if(!pl)return;const r=document.createElement('div');r.className='orow';r.innerHTML='<span class="n"></span><span class="a"></span><b></b><span class="t"></span>';
-  r.querySelector('.n').textContent=i<3?MEDAL[i]:dg(i+1);r.querySelector('.a').textContent=pl.a;r.querySelector('b').textContent=pl.n;r.querySelector('.t').textContent=pl.sentAt&&T.started?fmtDur(pl.sentAt-T.started):'';r.style.cursor='pointer';r.onclick=()=>openZoom(k);ord.appendChild(r)})}
+  r.querySelector('.n').textContent=i<3?MEDAL[i]:dg(i+1);r.querySelector('.a').textContent=pl.a;r.querySelector('b').textContent=pl.n;r.querySelector('.t').textContent=(pl.ok===true?'✔️ ':pl.ok===false?'✖️ ':'')+(pl.sentAt&&T.started?fmtDur(pl.sentAt-T.started):'');r.style.cursor='pointer';r.onclick=()=>openZoom(k);ord.appendChild(r)})}
 setInterval(()=>{if(T.open&&T.s==='run')renderCards()},1500);
 
 let zKey=null;
@@ -1214,8 +1244,8 @@ $('#classBtn').onclick=openDash;$('#dashClose').onclick=closeDash;
 $('#pinNew').onclick=()=>{T.pin=randPin();pushHost();renderDash()};
 $('#taskIn').oninput=e=>{T.task=e.target.value;pushHost();if(T.s!=='lobby')recordLive(2000)};
 $('#allowTf').onchange=e=>{T.tf=e.target.checked;pushHost()};
-$('#sendBase').onchange=updBaseInfo;
-$('#startCh').onclick=()=>{T.task=$('#taskIn').value;const ov=captureBase();T.s='run';T.started=Date.now();T.sent=[];for(const pl of T.players.values()){pl.changed=0;pl.ok=null}pushHost();renderDash();recordLive(200);if(ov)toast('الأشكال كثيرة، فأُرسلت مختصرة')};
+$('#sendBase').onchange=()=>{updBaseInfo();if(typeof computeKey==='function')computeKey()};
+$('#startCh').onclick=()=>{T.task=$('#taskIn').value;const ov=captureBase();T.s='run';T.started=Date.now();T.sent=[];for(const pl of T.players.values()){pl.changed=0;pl.ok=null;pl.manual=false}computeKey();pushHost();renderDash();recordLive(200);if(ov)toast('الأشكال كثيرة، فأُرسلت مختصرة')};
 $('#endCh').onclick=()=>{T.s='end';pushHost();renderDash();recordLive(100)};
 $('#againCh').onclick=()=>{T.g=newG();T.s='lobby';T.sent=[];T.started=0;for(const [k,pl] of [...T.players]){if(pl.demo){pl.items=[];pl.dstr='';pl.st='draw';pl.dirty=true;pl.sentAt=0;pl.step=0}else T.players.delete(k)}pushHost();renderDash();teacherPeers()};
 $('#demoBtn').onclick=()=>{T.demo=!T.demo;if(T.demo)addDemo();else{clearInterval(T.demoTimer);for(const [k,pl] of [...T.players])if(pl.demo)T.players.delete(k)}renderDash()};
@@ -1226,7 +1256,7 @@ function addDemo(){const names=['سارة','نورة','ريم','لمى','جود'
   for(const pl of T.players.values()){if(!pl.demo||T.sent.includes(pl.key)||Math.random()>pl.speed)continue;pl.step++;
    const k=Math.min(pl.step,tgt.length);const pts=tgt.slice(0,k).map(q=>[q[0]+(Math.random()<.15?1:0),q[1]]);
    pl.items=k>=3?[{t:'poly',p:pts,c:pl.col,w:4,fill:true,labels:pts.map((_,j)=>LET_AR[j]+'′')}]:pts.map((q,j)=>({t:'pt',p:[q],c:pl.col,w:4,label:LET_AR[j]+'′'}));
-   pl.changed=Date.now();pl.dirty=true;ch=true;if(pl.step>=tgt.length+1+Math.floor(Math.random()*3)){T.sent.push(pl.key);pl.sentAt=Date.now();pl.st='sent'}}
+   pl.changed=Date.now();pl.dirty=true;ch=true;if(pl.step>=tgt.length+1+Math.floor(Math.random()*3)){T.sent.push(pl.key);pl.sentAt=Date.now();pl.st='sent';if(typeof autoGrade==='function')autoGrade(pl)}}
   if(ch)renderCards()},900)}
 
 /* ================= STUDENT ================= */
@@ -1316,7 +1346,7 @@ function saveSession(sid,data,delay){if(!DB||!UID||!sid)return;clearTimeout(sess
 T.kind='train';
 function liveSessionDoc(){const entries={};for(const pl of T.players.values()){if(pl.demo)continue;const r=T.sent.indexOf(pl.key);let d=[];try{d=JSON.parse(pl.dstr||'[]')}catch(e){}
   entries[pl.key]={n:pl.n,a:pl.a,d,ov:pl.ov?1:0,rank:r>=0?r+1:0,sec:pl.sentAt&&T.started?Math.round((pl.sentAt-T.started)/1000):0,ok:pl.ok===true?1:pl.ok===false?0:null}}
- return {date:T.started||Date.now(),task:cleanS(T.task,200),kind:T.kind,mode:'live',bg:T.bg,sc:T.sc||1,b:T.baseEnc,entries,updated:Date.now()}}
+ return {keyName:T.keyName||'',date:T.started||Date.now(),task:cleanS(T.task,200),kind:T.kind,mode:'live',bg:T.bg,sc:T.sc||1,b:T.baseEnc,entries,updated:Date.now()}}
 function recordLive(delay){if(!DB||!T.g||T.s==='lobby'||!T.started)return;saveSession(T.g,liveSessionDoc(),delay)}
 function renderKind(){$$('#kindSeg button').forEach(b=>b.classList.toggle('on',b.dataset.k===T.kind));
  $('#recNote').textContent=DB?`📁 تُحفظ الجولة تلقائياً في سجل الأدلة كجولة ${KIND[T.kind]}.`:'⚠️ سجل الأدلة غير متاح هنا — افتحي السبورة من claude.ai وأنتِ مسجّلة الدخول ليُحفظ.'}
@@ -1326,7 +1356,7 @@ $$('#kindSeg button').forEach(b=>b.onclick=()=>{T.kind=b.dataset.k;renderKind();
 let DV=null;
 function roster(){const m=new Map();const L=RS.myLab||{};[...(L.pre&&L.pre.rows||[]),...(L.post&&L.post.rows||[])].forEach(r=>m.set(nn(r[0]),r[0]));
  if(RS.view===UID)RS.sessions.forEach(se=>Object.values(se.entries||{}).forEach(e=>{if(e&&e.n&&!m.has(nn(e.n)))m.set(nn(e.n),e.n)}));return [...m.values()].sort((a,b)=>a.localeCompare(b,'ar'))}
-$('#deviceCh').onclick=()=>{T.task=$('#taskIn').value;captureBase();
+$('#deviceCh').onclick=()=>{T.task=$('#taskIn').value;captureBase();T.started=T.started||0;{const s0=T.s;T.s='run';T.started=T.started||1;computeKey();T.s=s0;if(T.started===1)T.started=0}
  DV={sid:'d'+newG(),kind:T.kind,task:cleanS(T.task,200),entries:{},baseEnc:T.baseEnc,bg:T.bg,sc:T.sc||1,date:Date.now(),t0:Date.now(),n:0};
  const np=newPage(DV.bg,DV.sc);np.items=decode(DV.baseEnc).map(i=>Object.assign(i,{b:true}));S.pages.splice(S.cur+1,0,np);S.cur++;S.sel=-1;
  closeDash();$('#turnBar').classList.remove('hidden');const dl=$('#rosterList');dl.innerHTML='';roster().forEach(n=>{const o=document.createElement('option');o.value=n;dl.appendChild(o)});
@@ -1336,10 +1366,10 @@ $('#deviceCh').onclick=()=>{T.task=$('#taskIn').value;captureBase();
 $('#turnName').addEventListener('keydown',e=>e.stopPropagation());
 $('#turnSave').onclick=()=>{if(!DV)return;commitText();if(S.polyDraft)finishPoly();const n=cleanS($('#turnName').value,24);if(!n){toast('اكتبي اسم الطالبة أولاً');$('#turnName').focus();return}
  const items=page().items.filter(i=>!i.b);if(!items.length){toast('لم ترسم الطالبة شيئاً بعد');return}
- const r=pack(items,3300,arr=>({d:arr}));DV.n++;DV.entries[n+'|']={n,a:'',d:r.arr,ov:r.ov,rank:DV.n,sec:Math.round((Date.now()-DV.t0)/1000),ok:null};
+ const r=pack(items,3300,arr=>({d:arr}));DV.n++;const okA=T.key&&T.key.length?(gradeItems(items,T.key)?1:0):null;DV.entries[n+'|']={n,a:'',d:r.arr,ov:r.ov,rank:DV.n,sec:Math.round((Date.now()-DV.t0)/1000),ok:okA};
  saveSession(DV.sid,{date:DV.date,task:DV.task,kind:DV.kind,mode:'device',bg:DV.bg,sc:DV.sc,b:DV.baseEnc,entries:DV.entries,updated:Date.now()},300);
  pushHist();page().items=page().items.filter(i=>i.b);S.sel=-1;S.polyDraft=null;changed();DV.t0=Date.now();$('#turnName').value='';
- $('#turnCount').textContent=`حُفظت ${dg(DV.n)}`;toast(`حُفظت رسمة ${n} ✓ — دور الطالبة التالية`)};
+ $('#turnCount').textContent=`حُفظت ${dg(DV.n)}`;toast(`حُفظت رسمة ${n}`+(okA===1?' — ✔️ إجابة صحيحة':okA===0?' — ✖️ إجابة خاطئة':' ✓')+' — دور الطالبة التالية')};
 $('#turnEnd').onclick=()=>{if(!DV)return;page().items.forEach(i=>delete i.b);const n=DV.n;DV=null;$('#turnBar').classList.add('hidden');$('#taskBar').classList.add('hidden');changed();
  toast(n?`انتهت الجلسة — حُفظت ${dg(n)} رسمة في سجل الأدلة`:'انتهت الجلسة')};
 
@@ -1452,6 +1482,46 @@ function openRS(){commitText();RS.open=true;$('#research').classList.remove('hid
 $('#rsBtn').onclick=openRS;$('#rsClose').onclick=()=>{RS.open=false;$('#research').classList.add('hidden');if(location.hash==='#report')try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}};
 $('#rsLink').onclick=async()=>{const url=SHARE_URL.replace('#student','#report');const msg=FBMODE?'نُسخ رابط لوحة البحث ✓ أرسليه للمديرة والوكيلة، وتأكدي أن بريدهما مضاف في «تعديل بيانات البحث»':'نُسخ رابط لوحة البحث ✓ أرسليه للمديرة والوكيلة بعد مشاركة السبورة معهن';try{await navigator.clipboard.writeText(url);toast(msg)}catch(e){toast(url)}};
 
+/* ================= AUTO GRADING ================= */
+function dedupeP(P){const o=[];P.forEach(q=>{const l=o[o.length-1];if(!l||Math.hypot(l[0]-q[0],l[1]-q[1])>1e-6)o.push(q)});if(o.length>2&&Math.hypot(o[0][0]-o[o.length-1][0],o[0][1]-o[o.length-1][1])<1e-6)o.pop();return o}
+function polyMatch(a,b,tol){tol=tol||0.26;a=dedupeP(a);b=dedupeP(b);if(a.length!==b.length)return false;const used=b.map(()=>false);
+ for(const p of a){let f=-1;for(let i=0;i<b.length;i++){if(!used[i]&&Math.hypot(p[0]-b[i][0],p[1]-b[i][1])<=tol){f=i;break}}if(f<0)return false;used[f]=true}return true}
+function gradeItems(items,key){const polys=items.filter(i=>i.t==='poly'&&!i.b).map(i=>i.p);if(!polys.length||!key.length)return false;return key.every(k=>polys.some(p=>polyMatch(k.p,p)))}
+const KEYS={rot90:{n:'دوران ٩٠° عكس عقارب الساعة حول الأصل',f:q=>[-q[1],q[0]]},rotm90:{n:'دوران ٩٠° مع عقارب الساعة حول الأصل',f:q=>[q[1],-q[0]]},
+ rot180:{n:'دوران ١٨٠° حول الأصل',f:q=>[-q[0],-q[1]]},refx:{n:'انعكاس حول محور السينات',f:q=>[q[0],-q[1]]},refy:{n:'انعكاس حول محور الصادات',f:q=>[-q[0],q[1]]},
+ refyx:{n:'انعكاس حول ص = س',f:q=>[q[1],q[0]]},refynx:{n:'انعكاس حول ص = −س',f:q=>[-q[1],-q[0]]}};
+T.keySpec=T.keySpec||'';T.key=[];
+function keyFn(){const k=T.keySpec;if(!k)return null;const sc=T.sc||SC()||1;
+ if(KEYS[k])return {n:KEYS[k].n,f:KEYS[k].f};
+ if(k==='tr'){const a=num('keyA'),b=num('keyB');return {n:`انسحاب ${fmt(a)} أفقياً و ${fmt(b)} رأسياً`,f:q=>[q[0]+a/sc,q[1]+b/sc]}}
+ if(k==='dil'){const kk=num('keyK')||1;return {n:`تمدد بمعامل ${fmt(kk)} حول الأصل`,f:q=>[q[0]*kk,q[1]*kk]}}
+ if(k==='side'){const t=getT();return {n:t.rule||'حسب القائمة الجانبية',f:q=>t.map(q,1)}}return null}
+function keySource(){if(T.s==='lobby'||!T.started){return $('#sendBase').checked?page().items.filter(i=>i.t!=='prot'):[]}return T.base}
+function computeKey(){const kf=keyFn();T.key=[];T.keyName=kf?kf.n:'';if(!kf)return renderKey();
+ keySource().filter(i=>i.t==='poly'&&!i.h).forEach(it=>{T.key.push({p:it.p.map(q=>{const r=kf.f(q);return [clean(r[0]),clean(r[1])]}),labels:(it.labels||[]).map(l=>prime(l))})});
+ regradeAll();renderKey()}
+function renderKey(){$('#keySel').value=T.keySpec||'';$('#keyTr').classList.toggle('hidden',T.keySpec!=='tr');$('#keyDil').classList.toggle('hidden',T.keySpec!=='dil');
+ const info=$('#keyInfo'),sh=$('#keyShow');sh.classList.toggle('hidden',!T.key.length);
+ if(!T.keySpec){info.textContent='اختاري التحويل المطلوب، وستُصحَّح رسمة كل طالبة تلقائياً عند الإرسال.';return}
+ if(!T.key.length){info.textContent='⚠️ ارسمي الشكل الأصلي (مضلعاً) في صفحتك أولاً، وفعّلي «أرسلي للطالبات ما في صفحتي».';return}
+ info.textContent='الإجابة الصحيحة: '+T.key.map(k=>k.p.map((q,i)=>(k.labels[i]||'')+pair(fmt(q[0]*(T.sc||SC()||1)),fmt(q[1]*(T.sc||SC()||1)))).join('  ')).join(' | ')}
+function regradeAll(){let ch=false;for(const pl of T.players.values()){if(pl.manual||pl.st!=='sent')continue;const ok=T.key.length?gradeItems(pl.items,T.key):null;if(pl.ok!==ok){pl.ok=ok;ch=true}}if(ch){renderCards();recordLive(800)}}
+function autoGrade(pl){if(pl.manual||pl.st!=='sent'||!T.key.length)return false;const ok=gradeItems(pl.items,T.key);if(pl.ok!==ok){pl.ok=ok;return true}return false}
+$('#keySel').onchange=e=>{T.keySpec=e.target.value;pushHost();computeKey()};
+['keyA','keyB','keyK'].forEach(id=>$('#'+id).addEventListener('input',()=>computeKey()));
+$('#keyShow').onclick=()=>{if(!T.key.length)return;pushHist();T.key.forEach(k=>page().items.push({t:'poly',p:k.p.map(q=>q.slice()),c:'#1f9d55',w:4,dash:true,fill:false,labels:k.labels,h:true}));closeDash();changed();toast('الحل الصحيح ظاهر بالأخضر المتقطع — يمكنك التراجع لإخفائه')};
+/* --- self check (practice) --- */
+$('#tCheck').onclick=()=>{const msg=$('#tCheckMsg');const polys=page().items.filter(i=>i.t==='poly'&&!i.h);
+ if(polys.length<2){msg.style.display='block';msg.className='note';msg.textContent='ارسمي الشكل الأصلي أولاً، ثم ارسمي صورته بنفسك بأداة «مضلع»، ثم اضغطي «تحقّقي».';return}
+ const orig=polys[0],att=polys[polys.length-1],t2=getT();const exp=orig.p.map(q=>{const r=t2.map(q,1);return [clean(r[0]),clean(r[1])]});
+ const ok=polyMatch(exp,att.p);const sc=SC();const labs=(orig.labels||[]).map(prime);
+ const coords=exp.map((q,i)=>(labs[i]||'')+pair(fmt(q[0]*sc),fmt(q[1]*sc))).join('  ');
+ msg.style.display='block';
+ if(ok){msg.className='note ok';msg.textContent='✅ أحسنتِ! رسمتك صحيحة. '+coords;toast('✅ إجابة صحيحة!')}
+ else{msg.className='note';msg.style.background='#fdf0ef';msg.style.color='#a5281b';msg.textContent='❌ ليست صحيحة. الإحداثيات الصحيحة: '+coords+' — ظهر الحل بالأخضر المتقطع.';
+  pushHist();page().items.push({t:'poly',p:exp,c:'#1f9d55',w:3,dash:true,fill:false,labels:labs,h:true});changed();toast('❌ حاولي مرة أخرى — الحل ظاهر بالأخضر')}
+ setTimeout(()=>{msg.style.background='';msg.style.color=''},8000)};
+
 /* ================= FIREBASE MODE (GitHub link) ================= */
 const FBCFG={apiKey:"AIzaSyB1n24itZDfecT1iM4_YpQ8xfJxReoZg3k",authDomain:"math-board-55cd2.firebaseapp.com",projectId:"math-board-55cd2",storageBucket:"math-board-55cd2.firebasestorage.app",messagingSenderId:"80293329573",appId:"1:80293329573:web:ce4253f4563514e1096b4c"};
 const FBV='https://www.gstatic.com/firebasejs/10.12.2/';
@@ -1493,7 +1563,7 @@ async function fbBoot(wantStudent){FBMODE=true;SHARE_URL=location.origin+locatio
   ROOM=makeStudentRoom();attachRoom();roomReady=true;if(SP.pin)ROOM.watch(SP.pin);studentRender();return}
  roomReady=true;F.onAuthStateChanged(FA,u=>{if(u&&!u.isAnonymous)onTeacherSignedIn(u)});
  if(location.hash==='#report'){openRS();if(!teacherReady())requireTeacher(null,'للاطلاع على لوحة البحث الإجرائي سجّلي الدخول بحساب Google الذي أضافته المعلمة.')}}
-function restoreHost(){if(T.g)return;const h=store.get('mb_host',null);if(h&&h.g&&h.s&&h.s!=='idle'){Object.assign(T,{sc:h.sc||1,g:h.g,pin:h.pin,s:h.s,task:h.task||'',baseEnc:h.baseEnc||[],bg:h.bg||'coord',tf:!!h.tf,sent:h.sent||[],started:h.started||0});T.base=decode(T.baseEnc);pushHost()}}
+function restoreHost(){if(T.g)return;const h=store.get('mb_host',null);if(h&&h.g&&h.s&&h.s!=='idle'){Object.assign(T,{keySpec:h.keySpec||'',sc:h.sc||1,g:h.g,pin:h.pin,s:h.s,task:h.task||'',baseEnc:h.baseEnc||[],bg:h.bg||'coord',tf:!!h.tf,sent:h.sent||[],started:h.started||0});T.base=decode(T.baseEnc);pushHost()}}
 
 /* --- backup downloads --- */
 function dlFile(name,text,mime){try{const blob=new Blob([text],{type:mime});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);toast('جارٍ التنزيل ✓')}catch(e){toast('التنزيل غير متاح هنا — استخدمي رابط GitHub')}}
@@ -1515,7 +1585,7 @@ $('#classBtn').onclick=()=>requireTeacher(openDash);$('#rsBtn').onclick=()=>requ
  if(ROOM){ROOM.onPeers(()=>{if(S.student)studentRender();else teacherPeers()},()=>setConn('off'));if(ROOM.onConnection)ROOM.onConnection(on=>setConn(on?'on':'wait'));}else setConn('off');
  let owner=false;try{owner=user?!!(await Promise.resolve(user.isOwner())):false}catch(e){}
  if(S.student){studentRender();return}
- const h=store.get('mb_host',null);if(h&&h.g&&h.s&&h.s!=='idle'){Object.assign(T,{sc:h.sc||1,g:h.g,pin:h.pin,s:h.s,task:h.task||'',baseEnc:h.baseEnc||[],bg:h.bg||'coord',tf:!!h.tf,sent:h.sent||[],started:h.started||0});T.base=decode(T.baseEnc);pushHost()}
+ const h=store.get('mb_host',null);if(h&&h.g&&h.s&&h.s!=='idle'){Object.assign(T,{keySpec:h.keySpec||'',sc:h.sc||1,g:h.g,pin:h.pin,s:h.s,task:h.task||'',baseEnc:h.baseEnc||[],bg:h.bg||'coord',tf:!!h.tf,sent:h.sent||[],started:h.started||0});T.base=decode(T.baseEnc);pushHost()}
  renderDash()})();
 
 })();
