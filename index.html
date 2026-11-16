@@ -1140,6 +1140,7 @@ function draw(){
  if(S.hover&&['line','arrow','shapes','circle','poly','point'].includes(S.tool)&&S.snap&&!S.anim){ctx.save();ctx.strokeStyle=th.sel;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(sx(S.hover.x),sy(S.hover.y),6,0,7);ctx.stroke();ctx.restore()}
 }
 
+let drawQ=0;function reqDraw(){if(drawQ)return;drawQ=requestAnimationFrame(()=>{drawQ=0;draw()})}
 /* ---------- hit test ---------- */
 function dSeg(p,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],l=dx*dx+dy*dy;let t=l?((p[0]-a[0])*dx+(p[1]-a[1])*dy)/l:0;t=Math.max(0,Math.min(1,t));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)}
 function inPoly(p,P){let c=false;for(let i=0,j=P.length-1;i<P.length;j=i++){if(((P[i][1]>p[1])!==(P[j][1]>p[1]))&&(p[0]<(P[j][0]-P[i][0])*(p[1]-P[i][1])/(P[j][1]-P[i][1])+P[i][0]))c=!c}return c}
@@ -1159,15 +1160,21 @@ let drag=null,spaceDown=false;
 function evp(e){const r=cv.getBoundingClientRect();const x=e.clientX-r.left,y=e.clientY-r.top;return {x,y,ux:ux(x),uy:uy(y)}}
 const base=()=>({c:S.color,w:S.width});
 
+let penSeen=false;const ACT=new Set();
 cv.addEventListener('pointerdown',e=>{
- if(S.anim)return;if(drag&&drag.id!==e.pointerId)return;
+ if(e.pointerType==='pen')penSeen=true;
+ /* palm rejection: once the Apple Pencil is used, finger/palm touches do not draw */
+ if(e.pointerType==='touch'&&penSeen&&S.tool!=='hand'&&S.tool!=='select')return;
+ if(S.anim)return;
+ if(drag&&drag.id!==e.pointerId){if(e.pointerType==='pen'||!ACT.has(drag.id)){if(drag.type==='draw'&&drag.ptype==='touch'&&e.pointerType==='pen'){S.draft=null;drag=null}else endDrag({pointerId:drag.id})}else return}
+ ACT.add(e.pointerId);
  commitText();
  const p=evp(e);try{cv.setPointerCapture(e.pointerId)}catch(_){}
  if(e.button===1||S.tool==='hand'||spaceDown){drag={id:e.pointerId,type:'pan',x:e.clientX,y:e.clientY,px:S.panX,py:S.panY};return}
  if(e.button===2)return;
  const sp=[snapv(p.ux),snapv(p.uy)];
  switch(S.tool){
- case 'pen':case 'hl':S.draft={t:'stroke',p:[[p.ux,p.uy]],...base(),hl:S.tool==='hl'};drag={id:e.pointerId,type:'draw'};break;
+ case 'pen':case 'hl':S.draft={t:'stroke',p:[[p.ux,p.uy]],...base(),hl:S.tool==='hl'};drag={id:e.pointerId,type:'draw',ptype:e.pointerType};reqDraw();break;
  case 'line':case 'arrow':S.draft={t:'line',p:[sp,sp.slice()],...base(),arrow:S.tool==='arrow'};drag={id:e.pointerId,type:'shape'};break;
  case 'shapes':S.draft=null;drag={id:e.pointerId,type:'gshape',a:sp};break;
  case 'circle':S.draft={t:'circle',p:[sp],r:0,...base(),fill:S.fill};drag={id:e.pointerId,type:'circle'};break;
@@ -1184,13 +1191,14 @@ cv.addEventListener('pointerdown',e=>{
  }
 });
 cv.addEventListener('pointermove',e=>{
+ if(e.pointerType==='touch'&&penSeen&&(!drag||drag.id!==e.pointerId))return;
  const p=evp(e);S.hover={x:snapv(p.ux),y:snapv(p.uy)};
  $('#coordLbl').textContent=pair(fmt(Math.round(p.ux*SC()*10)/10),fmt(Math.round(p.uy*SC()*10)/10));
- if(!drag||drag.id!==e.pointerId){if(S.polyDraft||S.snap)draw();return}
+ if(!drag||drag.id!==e.pointerId){if(S.polyDraft||(S.snap&&['line','arrow','shapes','circle','poly','point'].includes(S.tool)))reqDraw();return}
  const sp=[snapv(p.ux),snapv(p.uy)];
  switch(drag.type){
  case 'pan':S.panX=drag.px+e.clientX-drag.x;S.panY=drag.py+e.clientY-drag.y;break;
- case 'draw':{const pts=S.draft.p,l=pts[pts.length-1];if(Math.hypot(l[0]-p.ux,l[1]-p.uy)*S.G>1.5)pts.push([p.ux,p.uy]);break}
+ case 'draw':{const pts=S.draft.p;const evs=e.getCoalescedEvents?e.getCoalescedEvents():[];(evs.length?evs:[e]).forEach(ce=>{const q=evp(ce),l=pts[pts.length-1];if(Math.hypot(l[0]-q.ux,l[1]-q.uy)*S.G>1)pts.push([q.ux,q.uy])});break}
  case 'shape':S.draft.p[1]=sp;break;
  case 'gshape':{const g2=genShape(S.shapeKind,drag.a,['pent','hex','oct'].includes(S.shapeKind)?[p.ux,p.uy]:sp);S.draft=g2?Object.assign(g2,base(),g2.t==='poly'?{fill:S.fill}:{}):null;break}
  case 'vertex':{const it=page().items[drag.i];if(!it)break;if(it.t==='img'){const wu=Math.max(.5,p.ux-it.p[0][0]);it.wu=wu;it.hu=wu*it.ar}else it.p[drag.j]=sp;drag.moved=true;break}
@@ -1199,10 +1207,12 @@ cv.addEventListener('pointermove',e=>{
  case 'lab':labDrag(drag,p);break;
  case 'move':{let dx=p.ux-drag.start[0],dy=p.uy-drag.start[1];if(S.snap){dx=Math.round(dx);dy=Math.round(dy)}
   const it=page().items[S.sel];it.p=JSON.parse(drag.orig).map(q=>[q[0]+dx,q[1]+dy]);if(dx||dy)drag.moved=true;break}}
- draw();
+ reqDraw();
 });
 function endDrag(e){
+ ACT.delete(e.pointerId);
  if(!drag||drag.id!==e.pointerId)return;const d=drag;drag=null;
+ if(d.type==='draw'&&S.draft&&e.clientX!=null){const q=evp(e),pts=S.draft.p,l=pts[pts.length-1];if(Math.hypot(l[0]-q.ux,l[1]-q.uy)*S.G>1)pts.push([q.ux,q.uy])}
  if(d.type==='gshape'){const it=S.draft;S.draft=null;if(!it){draw();return}let ok=true;
   if(it.t==='line')ok=it.p[0][0]!==it.p[1][0]||it.p[0][1]!==it.p[1][1];else{const b=bbox(it);ok=b[2]-b[0]>1e-6&&b[3]-b[1]>1e-6}
   if(ok){if(S.autoLabel)it.labels=nextLabels(it.p.length);pushHist();page().items.push(it);S.sel=-1;changed()}else draw();return}
@@ -1216,7 +1226,7 @@ function endDrag(e){
  else if(d.type==='move'){if(d.moved){const p=page();p.undo.push(d.before);p.redo=[];changed()}}
  else draw();
 }
-cv.addEventListener('pointerup',endDrag);cv.addEventListener('pointercancel',endDrag);
+cv.addEventListener('pointerup',endDrag);cv.addEventListener('pointercancel',endDrag);cv.addEventListener('lostpointercapture',e=>{if(drag&&drag.id===e.pointerId)endDrag(e)});window.addEventListener('pointerup',e=>{if(drag&&drag.id===e.pointerId)endDrag(e)});
 cv.addEventListener('pointerleave',()=>{if(!drag){S.hover=null;draw()}});
 cv.addEventListener('dblclick',()=>{if(S.tool==='poly'&&S.polyDraft)finishPoly()});
 cv.addEventListener('contextmenu',e=>e.preventDefault());
