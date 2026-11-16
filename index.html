@@ -1085,13 +1085,14 @@ function syBox(it){const O=it.p[0];return [O[0]-7,O[1]-5.3-(LABH.get(it)||4.2),O
 /* ---------- grade 8 labs (part 2) ---------- */
 var K_SUP=s=>({s:dg(s),sup:1});
 function TK(s,c,b){return {s:String(s),c,b}}
+function sgn(v){return v>0?'\u2066'+dg(String(Math.round(v*100)/100))+'+\u2069':fmt(v)}
 function nfmt(v){return fmt(Math.round(v*100)/100)}
 function isqrt(n){const r=Math.round(Math.sqrt(n));return r*r===n?r:null}
 /* tokens: {s}, {s,sup}, {frac:[top,bottom]}, {sqrt:'٢٥'}, {s,o:overline} */
 function tokW(g,t,px,k){if(t.frac){g.font=labFont(px*.8,1);return Math.max(g.measureText(t.frac[0]).width,g.measureText(t.frac[1]).width)+6*k}
  if(t.sqrt){g.font=labFont(px);return g.measureText(t.sqrt).width+px*k*.62}
  g.font=labFont(t.sup?px*.62:px,t.b);return g.measureText(t.s).width}
-function tokGap(t,nx,px,k){return nx?(nx.sup?k:px*k*.3):0}
+function tokGap(t,nx,px,k){return nx?(nx.sup||nx.s==='٪'?k:t.frac&&nx.s&&/^[٠-٩]+$/.test(nx.s)?2*k:px*k*.3):0}
 function tokTotal(g,tok,px){const k=K();let w=0;tok.forEach((t,i)=>{w+=tokW(g,t,px,k)+tokGap(t,tok[i+1],px,k)});return w}
 function drawTok(g,tok,xr,y,px,col,b){const k=K();g.textBaseline='middle';g.direction='rtl';let x=xr;
  tok.forEach((t,i)=>{const c=t.c||col,w=tokW(g,t,px,k);g.fillStyle=c;g.strokeStyle=c;
@@ -1184,7 +1185,7 @@ function rateVals(it){const m=it.m||2,b=it.b||0;const NL=[0,1,3,6,10];return [0,
 function drawRate(g,it,ghost){const V=rateVals(it),sc=SC(),k=K(),lin=it.lin!==false,W=V.map(q=>[q[0]/sc,q[1]/sc]);
  if(lin){const a=W[0],b=W[4],dx=b[0]-a[0],dy=b[1]-a[1];seg(g,[a[0]-dx*.15,a[1]-dy*.15],[b[0]+dx*.25,b[1]+dy*.25],'#2f6fde',Math.max(1.5,2.5*k),true,1)}
  for(let i=0;i<4;i++){const p=W[i],q=W[i+1],c=[q[0],p[1]];seg(g,p,c,'#e8590c',2*Math.max(.7,k));seg(g,c,q,'#1f9d55',2*Math.max(.7,k));
-  const dyv=V[i+1][1]-V[i][1];wl(g,'+'+dg(1),[(p[0]+c[0])/2,p[1]],0,dyv>=0?14:-14,13,'#e8590c');wl(g,(dyv>=0?'+':'')+fmt(dyv),[c[0],(c[1]+q[1])/2],20,0,13,'#1f9d55')}
+  const dyv=V[i+1][1]-V[i][1];wl(g,sgn(1),[(p[0]+c[0])/2,p[1]],0,dyv>=0?14:-14,13,'#e8590c');wl(g,sgn(dyv),[c[0],(c[1]+q[1])/2],20,0,13,'#1f9d55')}
  W.forEach(q=>dot(g,q,'#1d2433',5));
  const O=it.p[0],rates=V.slice(1).map((q,i)=>q[1]-V[i][1]);
  const lines=[{s:'المعدل الثابت للتغيّر',b:1,al:'c',px:18},{tbl:[['س',...V.map(q=>fmt(q[0]))],['ص',...V.map(q=>fmt(q[1]))]],px:15}];
@@ -1239,7 +1240,7 @@ function dilBox(it){const D=dilImg(it),a0=boxOf(D.V.concat(D.I,[D.C]));return un
 /* ===== percent mentally ===== */
 var PCT=[[10,1,10],[12.5,1,8],[20,1,5],[25,1,4],[30,3,10],[100/3,1,3],[37.5,3,8],[40,2,5],[50,1,2],[60,3,5],[62.5,5,8],[200/3,2,3],[70,7,10],[75,3,4],[80,4,5],[87.5,7,8],[90,9,10]];
 function pctTok(p){const t=Math.abs(p-Math.round(p))<1e-9;if(t)return [{s:dg(Math.round(p))+'٪'}];const w=Math.floor(p),fr=p-w;
- if(Math.abs(fr-.5)<1e-9)return [{s:dg(String(p).replace('.','٫'))+'٪'}];return [{s:dg(w)},{frac:[Math.abs(fr-1/3)<1e-6?'١':'٢','٣']},{s:'٪'}]}
+ if(Math.abs(fr-.5)<1e-9)return [{s:dg(String(p).replace('.','٫'))+'٪'}];return [{frac:[Math.abs(fr-1/3)<1e-6?'١':'٢','٣']},{s:dg(w)},{s:'٪'}]}
 function drawPct(g,it,ghost){const O=it.p[0],e=PCT[(it.pi==null?3:it.pi)%PCT.length],[p,nu,de]=e,n=it.n||32,k=K(),Wd=12,x0=O[0]-Wd/2,y0=O[1],h=1.3,lc=lineCol(it);
  for(let i=0;i<de;i++){const a=x0+i*Wd/de,b=x0+(i+1)*Wd/de;poly(g,[[a,y0],[b,y0],[b,y0+h],[a,y0+h]],i<nu?'#f08c00aa':'#ffffffcc','#1d2433',1.5)}
  for(let i=0;i<=de;i++){const x=x0+i*Wd/de;const pt=i*100/de;g.save();tokC(g,pctTok(pt),sx(x),sy(y0+h)-18*Math.max(.8,k),13,i===nu?'#b3470b':'#4f5d75',i===nu);g.restore();
@@ -2207,7 +2208,7 @@ function bindLabs2(){const on=(id,f)=>{const e=$('#'+id);if(e)e.onclick=f};
  const kAnim=(k,to)=>{const it=labGet(k);const fr=it.kf||2;pushHist();labAnim(it,900,(t,st)=>{st.kf=fr+(to-fr)*easeL(t)},()=>{LABA.delete(it);it.kf=to;changed()})};
  $$('#labSiK button').forEach(b=>b.onclick=()=>kAnim('sim',+b.dataset.k));$$('#labDlK button').forEach(b=>b.onclick=()=>kAnim('dil',+b.dataset.k));
  on('labSiNs',()=>labSet('sim',it=>{it.ns=!it.ns}));on('labSiT',()=>labSet('sim',it=>{it.T=((it.T||0)+1)%SIM_T.length}));
- const sel=$('#labPcSel');if(sel){PCT.forEach((e,i)=>{const o=document.createElement('option');o.value=i;const p=e[0];o.textContent=(Math.abs(p-Math.round(p))<1e-9?dg(p):Math.abs(p-100/3)<1e-6?'٣٣⅓':Math.abs(p-200/3)<1e-6?'٦٦⅔':dg(String(p).replace('.','٫')))+'٪';if(i===3)o.selected=true;sel.appendChild(o)});
+ const sel=$('#labPcSel');if(sel){PCT.forEach((e,i)=>{const o=document.createElement('option');o.value=i;const p=e[0];o.textContent=(Math.abs(p-Math.round(p))<1e-9?dg(p):Math.abs(p-100/3)<1e-6?'⅓٣٣':Math.abs(p-200/3)<1e-6?'⅔٦٦':dg(String(p).replace('.','٫')))+'٪';if(i===3)o.selected=true;sel.appendChild(o)});
   sel.onchange=()=>labSet('pct',it=>{it.pi=+sel.value;const de=PCT[it.pi][2];if((it.n*PCT[it.pi][1])%de)it.n=de*(2+Math.floor(Math.random()*10))})}
  on('labPcN',()=>labSet('pct',it=>{const de=PCT[it.pi==null?3:it.pi][2];let n;do{n=de*(2+Math.floor(Math.random()*15))}while(n===it.n);it.n=n}));
  on('labTrGo',()=>{const it=labGet('tri');labAnim(it,1800,(t,st)=>{st.t=easeL(t)},st=>{setTimeout(()=>{if(LABA.get(it)===st){LABA.delete(it);draw()}},3500)})});
