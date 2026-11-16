@@ -243,6 +243,7 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
 #ansBox .asym{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;width:100%}
 #ansBox .asym button{min-width:38px;height:36px;border:1px solid var(--line);background:#fafbfd;border-radius:8px;font-size:18px;cursor:pointer}
 #ansBox .primary{width:auto;padding:10px 18px}
+.row.mv{gap:6px}.row.mv select{flex:1}
 .scard .ans{unicode-bidi:plaintext;font-size:19px;font-weight:800;text-align:center;padding:4px 2px;color:#1d2433;background:#f4f7fc;border-radius:8px;margin-top:6px;word-break:break-word}
 .ent .ea{unicode-bidi:plaintext;font-size:15px;font-weight:800;text-align:center;background:#f4f7fc;border-radius:6px;padding:3px;margin-top:4px}
 </style>
@@ -320,8 +321,9 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
         </div>
 
         <div class="tpane" data-p="tr">
-          <div class="row"><label>أفقياً — يمين + / يسار −</label><input type="number" id="trDx" value="4" step="1"></div>
-          <div class="row"><label>رأسياً — أعلى + / أسفل −</label><input type="number" id="trDy" value="-2" step="1"></div>
+          <div class="row mv"><input type="number" id="trMH" value="4" min="0" step="1" style="width:70px"><select id="trMHD"><option value="1" selected>وحدات إلى اليمين</option><option value="-1">وحدات إلى اليسار</option></select></div>
+          <div class="row mv"><input type="number" id="trMV" value="2" min="0" step="1" style="width:70px"><select id="trMVD"><option value="1">وحدات إلى الأعلى</option><option value="-1" selected>وحدات إلى الأسفل</option></select></div>
+          <input type="hidden" id="trDx" value="4"><input type="hidden" id="trDy" value="-2">
         </div>
 
         <div class="tpane" data-p="rot">
@@ -346,8 +348,8 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
               <option value="y">محور الصادات</option>
               <option value="yx">المستقيم ص = س</option>
               <option value="ynx">المستقيم ص = −س</option>
-              <option value="xk">مستقيم رأسي س = ك</option>
-              <option value="yk">مستقيم أفقي ص = ك</option>
+              <option value="xk">المستقيم س = ك</option>
+              <option value="yk">المستقيم ص = ك</option>
             </select></div>
           <div class="row" id="refKRow"><label>قيمة ك</label><input type="number" id="refK" value="2" step="1"></div>
         </div>
@@ -539,11 +541,12 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
           <option value="refynx">انعكاس حول المستقيم ص = −س</option>
           <option value="tr">انسحاب</option>
           <option value="dil">تمدد حول الأصل</option>
-          <option value="refxk">انعكاس حول المستقيم الرأسي س = ك</option>
-          <option value="refyk">انعكاس حول المستقيم الأفقي ص = ك</option>
+          <option value="refxk">انعكاس حول المستقيم س = ك</option>
+          <option value="refyk">انعكاس حول المستقيم ص = ك</option>
           <option value="side">حسب إعدادات «التحويلات» في القائمة الجانبية</option>
         </select>
-        <div class="row hidden" id="keyTr"><label>أفقياً</label><input type="number" id="keyA" value="3" step="1"><label>رأسياً</label><input type="number" id="keyB" value="-2" step="1"></div>
+        <div class="hidden" id="keyTr"><div class="row mv"><input type="number" id="keyMH" value="3" min="0" step="1" style="width:70px"><select id="keyMHD"><option value="1" selected>وحدات إلى اليمين</option><option value="-1">وحدات إلى اليسار</option></select></div>
+          <div class="row mv"><input type="number" id="keyMV" value="2" min="0" step="1" style="width:70px"><select id="keyMVD"><option value="1">وحدات إلى الأعلى</option><option value="-1" selected>وحدات إلى الأسفل</option></select></div><input type="hidden" id="keyA" value="3"><input type="hidden" id="keyB" value="-2"></div>
         <div class="row hidden" id="keyRk"><label>قيمة ك</label><input type="number" id="keyKk" value="2" step="1"></div>
         <div class="hidden" id="qaKeyRow"><input id="keyText" class="txin" style="width:100%;font-size:17px;padding:9px" placeholder="الإجابة الصحيحة (مثال: ١٠٨)" dir="rtl"><div class="muted small" style="margin-top:4px">لقبول أكثر من إجابة افصلي بينها بـ | — اتركيها فارغة للتصحيح اليدوي بـ ✓ و ✗.</div></div>
         <div class="row hidden" id="keyDil"><label>معامل التمدد</label><input type="number" id="keyK" value="2" step="0.5"></div>
@@ -724,6 +727,8 @@ const AD='٠١٢٣٤٥٦٧٨٩';
 function dg(s){s=String(s);return S.arNum?s.replace(/[0-9]/g,d=>AD[d]).replace(/([٠-٩])\.(?=[٠-٩])/g,'$1٫'):s}
 function fmt(n){let r=Math.round(n*100)/100;if(Object.is(r,-0)||Math.abs(r)<1e-9)r=0;if(S.arNum&&r<0)return '\u2066'+dg(String(-r))+'−\u2069';return dg(String(r).replace('-','−'))}
 const SC=()=>page().sc||1;
+function unitsW(n){n=Math.abs(n);if(Math.abs(n-1)<1e-9)return 'وحدة واحدة';if(Math.abs(n-2)<1e-9)return 'وحدتين';if(Number.isInteger(n)&&n>=3&&n<=10)return dg(n)+' وحدات';return fmt(n)+' وحدة'}
+function trName(dx,dy){const p=[];if(Math.abs(dx)>1e-9)p.push(unitsW(dx)+' إلى '+(dx>0?'اليمين':'اليسار'));if(Math.abs(dy)>1e-9)p.push(unitsW(dy)+' إلى '+(dy>0?'الأعلى':'الأسفل'));return 'انسحاب '+(p.length?p.join(' و'):'بمقدار صفر')}
 const pair=(a,b)=>S.arSym?`(${a}، ${b})`:`(${a}, ${b})`;
 const XS=()=>S.arSym?'س':'x', YS=()=>S.arSym?'ص':'y';
 const clean=v=>Math.abs(v-Math.round(v))<1e-9?Math.round(v):Math.round(v*1e6)/1e6;
@@ -1550,7 +1555,7 @@ function getT(){
  const tab=S.tTab;
  const sc=SC();
  if(tab==='tr'){const dx=num('trDx'),dy=num('trDy');return {tab,map:(q,t)=>[q[0]+dx/sc*t,q[1]+dy/sc*t],scale:()=>1,
-  rule:RL(pair(XS()+' '+(dx<0?'−':'+')+' '+fmt(Math.abs(dx)),YS()+' '+(dy<0?'−':'+')+' '+fmt(Math.abs(dy)))),name:`انسحاب ${fmt(dx)} أفقياً و ${fmt(dy)} رأسياً`}}
+  rule:RL(pair(XS()+' '+(dx<0?'−':'+')+' '+fmt(Math.abs(dx)),YS()+' '+(dy<0?'−':'+')+' '+fmt(Math.abs(dy)))),name:trName(dx,dy)}}
  if(tab==='rot'){const A=num('rotA'),deg=A*(S.rotDir==='ccw'?1:-1);const o=$('#rotC').value==='o';const cr=o?[0,0]:[num('rotCx'),num('rotCy')],c=[cr[0]/sc,cr[1]/sc];
   let rule='';const m=((deg%360)+360)%360;
   const x=XS(),y=YS();
@@ -1684,6 +1689,7 @@ $('#optArSym').onchange=e=>{S.arSym=e.target.checked;buildSyms();save();updateUI
 $$('#tTabs button').forEach(b=>b.onclick=()=>{S.tTab=b.dataset.t;updateUI()});
 $$('#rotDir button').forEach(b=>b.onclick=()=>{S.rotDir=b.dataset.d;updateUI()});
 $$('#rotQuick button').forEach(b=>b.onclick=()=>{$('#rotA').value=b.dataset.a;updateUI()});
+[['trM','trDx','trDy'],['keyM','keyA','keyB']].forEach(([p,hx,hy])=>{const sync=()=>{const h=Math.abs(+$('#'+p+'H').value||0)*(+$('#'+p+'HD').value),v=Math.abs(+$('#'+p+'V').value||0)*(+$('#'+p+'VD').value);$('#'+hx).value=h;$('#'+hy).value=v;['input','change'].forEach(t=>{$('#'+hx).dispatchEvent(new Event(t));$('#'+hy).dispatchEvent(new Event(t))})};['H','HD','V','VD'].forEach(x=>{const e=$('#'+p+x);e.addEventListener('input',sync);e.addEventListener('change',sync);if(e.tagName==='INPUT')e.addEventListener('keydown',ev=>ev.stopPropagation())})});
 ['trDx','trDy','rotA','rotC','rotCx','rotCy','refAx','refK','dilK','dilC','dilCx','dilCy'].forEach(id=>{$('#'+id).addEventListener('input',updateUI);$('#'+id).addEventListener('change',updateUI)});
 $('#tApply').onclick=applyT;
 $('#finishPoly').onclick=finishPoly;
@@ -1722,7 +1728,7 @@ $('#dupBtn').onclick=()=>{if(S.sel<0){toast('حدّدي شكلاً أولاً ب
 $('#frontBtn').onclick=()=>{S.sel=-1;updateUI();draw()};
 
 document.addEventListener('keydown',e=>{
- if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+ if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='TEXTAREA'||e.target.isContentEditable)return;
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();return}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();redo();return}
  if(e.key==='Enter'&&S.polyDraft){finishPoly();return}
@@ -1730,7 +1736,7 @@ document.addEventListener('keydown',e=>{
  if((e.key==='Delete'||e.key==='Backspace')&&S.sel>=0){$('#delBtn').click();return}
  if(e.code==='Space'&&!spaceDown){spaceDown=true;cv.style.cursor='grab';e.preventDefault()}
 });
-document.addEventListener('keyup',e=>{if(e.code==='Space'){spaceDown=false;setTool(S.tool)}});
+document.addEventListener('keyup',e=>{if(e.code==='Space'&&spaceDown){spaceDown=false;setTool(S.tool)}});
 
 /* ---------- images & PDF ---------- */
 const PDFJS='https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/';
@@ -1891,14 +1897,14 @@ $('#allowTf').onchange=e=>{T.tf=e.target.checked;pushHost()};
 $('#sendBase').onchange=()=>{updBaseInfo();if(typeof computeKey==='function')computeKey()};
 $('#startCh').onclick=()=>{T.task=$('#taskIn').value;const ov=captureBase();T.s='run';T.started=Date.now();T.sent=[];for(const pl of T.players.values()){pl.changed=0;pl.ok=null;pl.manual=false}computeKey();pushHost();renderDash();recordLive(200);if(ov)toast('الأشكال كثيرة، فأُرسلت مختصرة')};
 $('#endCh').onclick=()=>{T.s='end';pushHost();renderDash();recordLive(100)};
-$('#againCh').onclick=()=>{T.g=newG();T.s='lobby';T.sent=[];T.started=0;for(const [k,pl] of [...T.players]){if(pl.demo){pl.items=[];pl.dstr='';pl.st='draw';pl.dirty=true;pl.sentAt=0;pl.step=0}else T.players.delete(k)}pushHost();renderDash();teacherPeers()};
+$('#againCh').onclick=()=>{T.g=newG();T.s='lobby';T.sent=[];T.started=0;for(const [k,pl] of [...T.players]){if(pl.demo){pl.items=[];pl.dstr='';pl.st='draw';pl.dirty=true;pl.sentAt=0;pl.step=0;pl.wrong=null}else T.players.delete(k)}pushHost();renderDash();teacherPeers()};
 $('#demoBtn').onclick=()=>{T.demo=!T.demo;if(T.demo)addDemo();else{clearInterval(T.demoTimer);for(const [k,pl] of [...T.players])if(pl.demo)T.players.delete(k)}renderDash()};
 function addDemo(){const names=['سارة','نورة','ريم','لمى','جود','شهد'];names.forEach((n,i)=>{const a=AVATARS[(i*3)%AVATARS.length][0],key=n+'|'+a;
  T.players.set(key,{key,n,a,demo:true,online:true,joined:Date.now()+i,items:[],dstr:'',st:'draw',changed:0,dirty:true,step:0,speed:.3+Math.random()*.5,col:['#d93a3a','#2f6fde','#1f9d55','#8e44ad','#f08c00','#c2185b'][i]})});
  clearInterval(T.demoTimer);T.demoTimer=setInterval(()=>{if(T.s!=='run')return;let ch=false;
-  const src=T.base.find(i=>i.t==='poly');const tgt=src?src.p.map(q=>[-q[1],q[0]]):[[-3,1],[-1,4],[-5,4]];
+  const src=T.base.find(i=>i.t==='poly');const keyP=T.key&&T.key.length?T.key[0].p:null;const tgt=keyP||(src?src.p.map(q=>[-q[1],q[0]]):[[-3,1],[-1,4],[-5,4]]);
   for(const pl of T.players.values()){if(!pl.demo||T.sent.includes(pl.key)||Math.random()>pl.speed)continue;pl.step++;
-   const k=Math.min(pl.step,tgt.length);const pts=tgt.slice(0,k).map(q=>[q[0]+(Math.random()<.15?1:0),q[1]]);
+   const k=Math.min(pl.step,tgt.length);if(pl.wrong==null)pl.wrong=Math.random()<.35;const pts=tgt.slice(0,k).map((q,j)=>[q[0]+(pl.wrong&&j===1?1:0),q[1]]);
    pl.items=k>=3?[{t:'poly',p:pts,c:pl.col,w:4,fill:true,labels:pts.map((_,j)=>LET_AR[j]+'′')}]:pts.map((q,j)=>({t:'pt',p:[q],c:pl.col,w:4,label:LET_AR[j]+'′'}));
    pl.changed=Date.now();pl.dirty=true;ch=true;if(pl.step>=tgt.length+1+Math.floor(Math.random()*3)){T.sent.push(pl.key);pl.sentAt=Date.now();pl.st='sent';if(typeof autoGrade==='function')autoGrade(pl)}}
   if(ch)renderCards()},900)}
@@ -2140,7 +2146,7 @@ const KEYS={rot90:{n:'دوران ٩٠° عكس عقارب الساعة حول ا
 T.keySpec=T.keySpec||'';T.key=[];
 function keyFn(){const k=T.keySpec;if(!k)return null;const sc=T.sc||SC()||1;
  if(KEYS[k])return {n:KEYS[k].n,f:KEYS[k].f};
- if(k==='tr'){const a=num('keyA'),b=num('keyB');return {n:`انسحاب ${fmt(a)} أفقياً و ${fmt(b)} رأسياً`,f:q=>[q[0]+a/sc,q[1]+b/sc]}}
+ if(k==='tr'){const a=num('keyA'),b=num('keyB');return {n:trName(a,b),f:q=>[q[0]+a/sc,q[1]+b/sc]}}
  if(k==='dil'){const kk=num('keyK')||1;return {n:`تمدد بمعامل ${fmt(kk)} حول الأصل`,f:q=>[q[0]*kk,q[1]*kk]}}
  if(k==='refxk'||k==='refyk'){const kr=num('keyKk'),kk=kr/sc;return k==='refxk'?{n:`انعكاس حول المستقيم س = ${fmt(kr)}`,f:q=>[2*kk-q[0],q[1]]}:{n:`انعكاس حول المستقيم ص = ${fmt(kr)}`,f:q=>[q[0],2*kk-q[1]]}}
  if(k==='side'){const t=getT();return {n:t.rule||'حسب القائمة الجانبية',f:q=>t.map(q,1)}}return null}
