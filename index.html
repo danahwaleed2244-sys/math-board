@@ -228,7 +228,7 @@ body.student.notf #tfSec{display:none}
 @media (max-width:1100px){.dash-grid{grid-template-columns:1fr}.dcol{position:static}}
 @media (max-width:700px){.copy{display:none}#header .who{display:none}#header .ttl{font-size:16px}}
 @media (max-width:820px){#side{position:absolute;right:0;top:0;bottom:0;z-index:8;box-shadow:-6px 0 20px rgba(0,0,0,.12)}}
-.stepBar2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 8px}.stepBar2 button{padding:9px 4px;font-size:13.5px}#labWr.on{background:#fff0f0;border-color:#e03131;color:#c92a2a;font-weight:800}
+.stepBar2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 8px}.stepBar2 button{padding:9px 4px;font-size:13.5px}#labQA{grid-column:1/3}#labWr.on{background:#fff0f0;border-color:#e03131;color:#c92a2a;font-weight:800}
 .stepBar{display:grid;grid-template-columns:2fr 1fr 1fr;gap:6px;margin:8px 0}.stepBar button{padding:10px 4px;font-size:14.5px}
 #labSec details.lab{display:none}#labSec details.lab.cur{display:block;border-color:#b9cdf0}#labSec details.lab>summary{display:none}#labSec details.lab .lb{padding-top:10px}
 .labPick{display:grid;grid-template-columns:auto 1fr;gap:6px 8px;align-items:center;margin:8px 0 4px}.labPick label{font-weight:700;font-size:13.5px;color:#1f4e9c}.labPick select{width:100%;padding:8px;border:1px solid var(--line);border-radius:9px;font:inherit;font-size:14px;background:#fff}
@@ -452,7 +452,7 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
       <section id="labSec">
         <h3>📚 الدروس التفاعلية</h3>
         <div class="note">أدرجي المعمل ثم استعملي الأزرار. للسحب والتحريك استعملي أداة «تحديد».</div>
-        <div class="labPick"><label>الصف</label><select id="labGr" autocomplete="off"></select><label>الدرس</label><select id="labLs" autocomplete="off"></select></div><div class="muted small" id="labHint">اختاري الدرس من القائمة لتظهر أدواته.</div><div class="stepBar"><button class="primary" id="labNx">الخطوة التالية ←</button><button class="btn2" id="labPv">→ السابقة</button><button class="btn2" id="labAll">الحل كاملاً</button></div><div class="stepBar2"><button class="btn2" id="labWr">⚠️ حل فيه خطأ شائع</button><button class="btn2" id="labTF">✓✗ أرسليه تحدّي صح أو خطأ</button></div>
+        <div class="labPick"><label>الصف</label><select id="labGr" autocomplete="off"></select><label>الدرس</label><select id="labLs" autocomplete="off"></select></div><div class="muted small" id="labHint">اختاري الدرس من القائمة لتظهر أدواته.</div><div class="stepBar"><button class="primary" id="labNx">الخطوة التالية ←</button><button class="btn2" id="labPv">→ السابقة</button><button class="btn2" id="labAll">الحل كاملاً</button></div><div class="stepBar2"><button class="btn2" id="labWr">⚠️ حل فيه خطأ شائع</button><button class="btn2" id="labTF">✓✗ أرسليه تحدّي صح أو خطأ</button><button class="btn2" id="labQA">✍️ أرسليه سؤالاً: تكتب الطالبة الحل</button></div>
         <details class="lab" data-g="1"><summary>الأعداد الصحيحة والقيمة المطلقة، والمقارنة والترتيب</summary><div class="lb">
           <button class="primary ins" id="g7InIns">＋ خط الأعداد</button>
           <div class="seg" id="g7InMd"><button data-m="set">تمثيل مجموعة</button><button data-m="abs">القيمة المطلقة</button><button data-m="cmp">المقارنة</button><button data-m="ord">الترتيب</button></div>
@@ -620,7 +620,7 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
         <details class="lab" data-g="3"><summary>حل نظام من معادلتين خطيتين</summary><div class="lb">
           <button class="primary ins" id="l3SyIns">＋ نظام من معادلتين</button>
           <div class="seg" id="l3SyMt"><button data-m="g">بيانياً</button><button data-m="s">بالتعويض</button><button data-m="e">بالحذف</button></div>
-          <div class="seg"><button id="l3SyNw">نظام آخر</button></div>
+          <div class="seg"><button id="l3SyNw">نظام آخر</button><button id="l3SyRn">نظام عشوائي 🎲</button></div>
         </div></details>
         <label class="chk"><input type="checkbox" id="labQ"> وضع السؤال: إخفاء الإجابات في البطاقة</label>
       </section>
@@ -1100,8 +1100,8 @@ function sector(g,c,r,a1,a2,fill,stroke,lw){g.beginPath();g.moveTo(c[0],c[1]);g.
 var LAB_G={g7int:2,g7cp:2,g7add:2,g7sub:2,g7meq:2,g7fg:2,g7ord:3,g7pa:2,par:1,pg:1,cg:0,sy:1,pyth:2,irr:1,dist:1,rate:2,sim:0,dil:1,pct:1,tri:1,cgx:1,bal:2,abs:2,rel:2,lg:2,zero:3,slope:2,seq:2,si:2,ps:3,pp:3,inq:2,cmp:2,sys:4};
 function isHintL(L){return L&&typeof L.s==='string'&&/^(اضغطي|اسحبي)/.test(L.s)}
 function labReveal(it,lines){lines=lines.filter(Boolean);if(it.rv==null){it._tot=0;it._done=true;return lines}const G=LAB_G[it.k]==null?1:LAB_G[it.k];let tot=0;lines.forEach((L,i)=>{if(i>=G&&!isHintL(L))tot++});
- if(it.rv>tot)it.rv=tot;it._tot=tot;it._done=it.rv>=tot;let n=0;const out=lines.filter((L,i)=>{if(i<G)return true;if(isHintL(L))return it._done||!lines.some((M,j)=>j>=G&&!isHintL(M));n++;return n<=it.rv});
- if(!it._done&&!out.some(isHintL))out.push({s:'اضغطي «الخطوة التالية» ←',c:'#8a96a8',px:13});return out}
+ if(it.rv>tot)it.rv=tot;it._tot=tot;it._done=it.rv>=tot;let n=0;const out=lines.filter((L,i)=>{if(i<G)return true;if(isHintL(L))return !S.student&&(it._done||!lines.some((M,j)=>j>=G&&!isHintL(M)));n++;return n<=it.rv});
+ if(!it._done&&!S.student&&!out.some(isHintL))out.push({s:'اضغطي «الخطوة التالية» ←',c:'#8a96a8',px:13});return out}
 function labDone(it){return it.rv==null||!!it._done}
 function labCard(g,it,lines,cx,top,wU){lines=labReveal(it,lines);const k=K(),w=wU*S.G,pad=12*k,x0=sx(cx)-w/2,y0=sy(top);g.save();const rows=[];
  lines.forEach(L=>{if(!L)return;const px=L.px||17,h=px*(L.hh||1.6);if(L.tok){rows.push(Object.assign({},L,{h}));return}if(L.tbl){rows.push(Object.assign({},L,{h:px*1.75*L.tbl.length+6}));return}g.font=labFont(px,L.b);g.direction='rtl';
@@ -1817,7 +1817,9 @@ var SYS_P=[
  {E:[[1,1,2,'ص = −س + ٢'],[2,2,4,'٢س + ٢ص = ٤']],sol:null,ty:2,
   s:['عوّضي −س + ٢ بدلاً من ص في المعادلة الثانية:','٢س + ٢(−س + ٢) = ٤','٤ = ٤  عبارة صحيحة دائماً ✓'],
   e:['اضربي المعادلة الأولى (س + ص = ٢) في ٢:','٢س + ٢ص = ٤','وهي نفس المعادلة الثانية ← المستقيمان متطابقان']}];
-function drawSys(g,it,ghost){const P0=SYS_P[(it.pi||0)%SYS_P.length],P=it.wr?Object.assign({},P0,{sol:P0.sol?[P0.sol[1],P0.sol[0]]:null,ty:P0.sol?P0.ty:(P0.ty===0?2:0)}):P0,sc=SC(),k=K(),mt=it.mt||'g',n=it.n||0;
+function sysCustom(c){const {m1,b1,m2,b2}=c,x=(b2-b1)/(m1-m2),y=m1*x+b1,L1=lineStr(m1,b1),L2=lineStr(m2,b2);const r1=termsStr([[m1,'س'],[b1,'']]),r2=termsStr([[m2,'س'],[b2,'']]);
+ return {E:[[-m1,1,b1,L1],[-m2,1,b2,L2]],sol:[x,y],s:['المعادلتان محلولتان بالنسبة لـ ص؛ ساوي بين الطرفين:',r1+' = '+r2,termsStr([[m1-m2,'س']])+' = '+fmt(b2-b1),'س = '+fmt(x)+'  ،  ص = '+fmt(y)],e:['اطرحي المعادلتين لحذف ص:','٠ = '+termsStr([[m1-m2,'س'],[b1-b2,'']]),termsStr([[m1-m2,'س']])+' = '+fmt(b2-b1)+'  ←  س = '+fmt(x),'عوّضي في المعادلة الأولى: ص = '+fmt(y)]}}
+function drawSys(g,it,ghost){const P0=it.cs?sysCustom(it.cs):SYS_P[(it.pi||0)%SYS_P.length],P=it.wr?Object.assign({},P0,{sol:P0.sol?[P0.sol[1],P0.sol[0]]:null,ty:P0.sol?P0.ty:(P0.ty===0?2:0)}):P0,sc=SC(),k=K(),mt=it.mt||'g',n=it.n||0;
  const ln=(E,col,side,dash)=>{if(Math.abs(E[1])<1e-9){fullLine(g,null,E[2]/E[0],col,Math.max(2,3*k),dash);return}const m=-E[0]/E[1],b=E[2]/E[1];fullLine(g,m,b,col,Math.max(2,3*k),dash);lineLabel(g,m,b,E[3],col,side)};
  ln(P.E[0],C3.b,1);ln(P.E[1],C3.o,-1,P.ty===2);
  const show=mt==='g'?n>=1:n>=(mt==='s'?P.s:P.e).length;
@@ -1835,7 +1837,7 @@ function sysBox(it){const A=cAof(it);return cardBox(it,A[0],A[1],c3W())}
 var LAB3_DRAW={bal:drawBal,abs:drawAbs,rel:drawRel,lg:drawLg,zero:drawZero,slope:drawSlope,seq:drawSeq,si:drawSi,ps:drawPs,pp:drawPp,inq:drawInq,cmp:drawCmp,sys:drawSys};
 var LAB3_BOX={bal:balBox,abs:absBox,rel:relBox,lg:lgBox,zero:zeroBox,slope:slopeBox,seq:seqBox,si:siBox,ps:psBox,pp:ppBox,inq:inqBox,cmp:cmpBox,sys:sysBox};
 var LAB3_COORD={rel:1,lg:1,zero:1,slope:1,seq:1,si:1,ps:1,pp:1,sys:1};
-var LAB3_KEYS={bal:['e','s','pv'],abs:['a','b','op','q'],rel:['pi','vt','cA','q'],lg:['pi','mode','n','cA','q'],zero:['pi','sh','cA','q'],slope:['cA','q'],seq:['a1','d','nq','cA','q'],si:['m','b','tp','cA','q'],ps:['m','cA','q'],pp:['m','b','mode','cA','q'],inq:['pi','s','q'],cmp:['pi','c','q'],sys:['pi','mt','n','cA','q']};
+var LAB3_KEYS={bal:['e','s','pv'],abs:['a','b','op','q'],rel:['pi','vt','cA','q'],lg:['pi','mode','n','cA','q'],zero:['pi','sh','cA','q'],slope:['cA','q'],seq:['a1','d','nq','cA','q'],si:['m','b','tp','cA','q'],ps:['m','cA','q'],pp:['m','b','mode','cA','q'],inq:['pi','s','q'],cmp:['pi','c','q'],sys:['pi','mt','n','cs','cA','q']};
 function lab3New(k,it,c){const sc=SC();const cA=topLeft(5.6,.6);it.cA=[cA[0],cA[1]];
  if(k==='bal')Object.assign(it,{e:BAL_P[0].slice(),s:0,p:[[c[0]+1,c[1]+1]]});
  if(k==='abs')Object.assign(it,{a:2,b:3,op:'=',p:[[c[0],c[1]+3]]});
@@ -1862,7 +1864,7 @@ function lab3Unpack(x,it,cl,pt){const f=v=>typeof v==='number'&&isFinite(v);cons
  if(k==='si')it.tp=!!x.tp;
  if(k==='pp')it.mode=x.mode==='per'?'per':'par';
  if(k==='cmp')it.c=x.c==='أو'?'أو':'و';
- if(k==='sys')it.mt=['g','s','e'].includes(x.mt)?x.mt:'g';return it}
+ if(k==='sys'){it.mt=['g','s','e'].includes(x.mt)?x.mt:'g';const c=x.cs;it.cs=c&&['m1','b1','m2','b2'].every(q=>typeof c[q]==='number'&&isFinite(c[q])&&Math.abs(c[q])<40)&&c.m1!==c.m2?{m1:c.m1,b1:c.b1,m2:c.m2,b2:c.b2}:null}return it}
 function bindLabs3(){const on=(id,f)=>{const e=$('#'+id);if(e)e.onclick=f};const ins=(id,k,fn)=>on(id,()=>{const it=labInsert(k);if(fn&&it){fn(it);changed()}});
  const step=(k,f)=>{const it=labGet(k);LABA.delete(it);pushHist();f(it);it.rv=0;changed();return it};
  const fade=it=>labAnim(it,850,(t,st)=>{st.t=easeL(t)},()=>{LABA.delete(it);it.pv=null;draw()});
@@ -1911,7 +1913,8 @@ function bindLabs3(){const on=(id,f)=>{const e=$('#'+id);if(e)e.onclick=f};const
  /* compound */
  ins('l3CmIns','cmp');on('l3CmNx',()=>step('cmp',it=>{it.pi=((it.pi||0)+1)%CMP_P.length;it.c=CMP_P[it.pi].c}));on('l3CmC',()=>step('cmp',it=>{it.c=(it.c||CMP_P[(it.pi||0)%CMP_P.length].c)==='و'?'أو':'و'}));
  /* systems */
- ins('l3SyIns','sys');on('l3SyNw',()=>step('sys',it=>{it.pi=((it.pi||0)+1)%SYS_P.length;it.n=0}));
+ ins('l3SyIns','sys');on('l3SyNw',()=>step('sys',it=>{it.cs=null;it.pi=((it.pi||0)+1)%SYS_P.length;it.n=0}));
+ on('l3SyRn',()=>step('sys',it=>{const r=(a,b)=>a+Math.floor(Math.random()*(b-a+1));let m1,m2,x,y;do{m1=r(-3,3);m2=r(-3,3);x=r(-5,5);y=r(-5,6)}while(m1===m2||(x===0&&y===0)||Math.abs(y-m1*x)>8||Math.abs(y-m2*x)>8||(m1===0&&y===0)||(m2===0&&y===0));it.cs={m1,b1:y-m1*x,m2,b2:y-m2*x};it.n=0}));
  $$('#l3SyMt button').forEach(b=>b.onclick=()=>step('sys',it=>{it.mt=b.dataset.m;it.n=0}));
  on('l3SySt',()=>step('sys',it=>{const P=SYS_P[(it.pi||0)%SYS_P.length],mx=it.mt==='g'||!it.mt?1:(it.mt==='s'?P.s:P.e).length;if((it.n||0)>=mx){toast('اكتمل الحل ✓');return}it.n=(it.n||0)+1}));
 }
@@ -2166,7 +2169,7 @@ function labAnim(it,dur,step,done){const st={};LABA.set(it,st);const t0=performa
 
 /* ---------- serialise for the classroom challenge ---------- */
 var LAB_KEYS={...LAB3_KEYS,pyth:['a','b','q'],irr:['n','q'],dist:['q'],rate:['m','b','lin','q'],sim:['T','kf','ns','q'],dil:['kf','q'],pct:['pi','n','q'],tri:['ax','bx','cx','q'],cgx:['mode','built','r','s','z','q'],par:['ang','gap','par','hi','hiI','m','q'],pg:['n','r','reg','v','d','m','q'],cg:['A','o','r','s','q'],sy:['sh','ax','q']};
-function labPack(it){const o={k:it.k};if(it.wr)o.wr=1;(LAB_KEYS[it.k]||[]).forEach(k=>{if(it[k]!==undefined&&it[k]!==null)o[k]=it[k]});return JSON.stringify(o)}
+function labPack(it){const o={k:it.k};if(it.wr)o.wr=1;if(it.rv!=null&&it.rv<999)o.rv=it.rv;(LAB_KEYS[it.k]||[]).forEach(k=>{if(it[k]!==undefined&&it[k]!==null)o[k]=it[k]});return JSON.stringify(o)}
 function labUnpack(o){let x;try{x=JSON.parse(String(o.x||'{}'))}catch(e){return null}if(!x||!LAB_KEYS[x.k]||!Array.isArray(o.p)||o.p.length<2)return null;
  const fin=v=>typeof v==='number'&&isFinite(v),pt=q=>Array.isArray(q)&&q.length===2&&fin(q[0])&&fin(q[1])&&Math.abs(q[0])<1e4&&Math.abs(q[1])<1e4;
  const P=[];for(let i=0;i+1<o.p.length&&i<26;i+=2)P.push([+o.p[i]/10,+o.p[i+1]/10]);const it={t:'lab',k:x.k,p:P,c:'#1d2433',w:3};if(!P.length||!P.every(pt))return null;
@@ -2187,7 +2190,7 @@ function labUnpack(o){let x;try{x=JSON.parse(String(o.x||'{}'))}catch(e){return 
  if(x.k==='sy'){it.sh=SY_SH[x.sh]?x.sh:'sq';it.ax=!!x.ax}
  if(LAB3_DRAW[x.k])lab3Unpack(x,it,cl,pt);
  if(/^g7/.test(x.k))lab7Unpack(x,it);
- it.wr=!!x.wr;
+ it.wr=!!x.wr;if(typeof x.rv==='number'&&isFinite(x.rv))it.rv=Math.max(0,Math.min(999,Math.round(x.rv)));
  it.q=!!x.q;return it}
 
 /* ---------- side-panel controls ---------- */
@@ -3067,7 +3070,10 @@ function normAns(s){s=String(s||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'
  .replace(/درجات|درجة|درجه/g,'').replace(/[°º˚]/g,'').replace(/ق\s*∠/g,'∠').replace(/[∠△]/g,'').replace(/مثلث/g,'').replace(/،/g,',').replace(/[−–]/g,'-').replace(/×/g,'*').toLowerCase();
  return s.split(/\s+/).filter(Boolean).map(w=>{if(w.length>=4){w=w.replace(/^و?ال(?=...)/,'');w=w.replace(/(تان|تين|ان|ين|ات|ه)$/,'')}return w}).join('')}
 const NUMRE=/^-?\d+(\.\d+)?$/;
+function ansNums(n){return (n.match(/-?\d+(?:\.\d+)?(?:\/\d+)?-?/g)||[]).map(t=>{const neg=t[0]==='-'||t[t.length-1]==='-';const c=t.replace(/-/g,'');const v=c.includes('/')?(+c.split('/')[0])/(+c.split('/')[1]):+c;return neg?-v:v})}
 function gradeAns(a,key){const na=normAns(a);if(!na)return false;return String(key||'').split('|').some(k=>{const nk=normAns(k);if(!nk)return false;
+ if(/^\(.*,.*\)$/.test(nk)){const K2=ansNums(nk),A2=ansNums(na);return K2.length===2&&A2.length===2&&Math.abs(K2[0]-A2[0])<0.01&&Math.abs(K2[1]-A2[1])<0.01}
+ if(/^-?\d+(\.\d+)?(\/\d+)?-?$/.test(nk)){const kv=ansNums(nk)[0];const A=ansNums(na.includes('=')?na.split('=').pop():na);return A.length===1&&Math.abs(A[0]-kv)<0.01}
  if(NUMRE.test(nk)){let x=na;const m=na.match(/=(-?\d+(?:\.\d+)?)$/);if(!NUMRE.test(x)&&m)x=m[1];return NUMRE.test(x)&&Math.abs(+x-(+nk))<0.01}return na===nk})}
 $$('#qaSeg button').forEach(b=>b.onclick=()=>{T.qa=b.dataset.q!=='0';T.mc=b.dataset.q==='2';if(T.mc)T.ansKey=T.mcOpts[T.mcOk]||'';else if(T.qa&&T.mcOpts.includes(T.ansKey))T.ansKey='';for(const pl of T.players.values()){if(!pl.manual)pl.ok=null}pushHost();computeKey();regradeAll();renderCards()});
 $('#keyText').addEventListener('keydown',e=>e.stopPropagation());
@@ -3103,16 +3109,16 @@ bindLabs2();bindLabs3();bindLabs7();
 (function(){const ADV={bal:it=>{const L=balSteps(...(it.e||BAL_P[0])).length;if((it.s||0)>=L-1)return false;it.pv=it.s||0;it.s=(it.s||0)+1;labAnim(it,850,(t,st)=>{st.t=easeL(t)},()=>{LABA.delete(it);it.pv=null;draw()});return true},
   inq:it=>{const L=inqSteps(...INQ_P[(it.pi||0)%INQ_P.length]).length;if((it.s||0)>=L-1)return false;it.s=(it.s||0)+1;return true},
   lg:it=>{const mx=it.mode==='int'?3:lgPts(LG_P[(it.pi||0)%LG_P.length]).length;if((it.n||0)>=mx)return false;it.n=(it.n||0)+1;return true},
-  sys:it=>{const P=SYS_P[(it.pi||0)%SYS_P.length],mx=!it.mt||it.mt==='g'?1:(it.mt==='s'?P.s:P.e).length;if((it.n||0)>=mx)return false;it.n=(it.n||0)+1;return true},
+  sys:it=>{const P=it.cs?sysCustom(it.cs):SYS_P[(it.pi||0)%SYS_P.length],mx=!it.mt||it.mt==='g'?1:(it.mt==='s'?P.s:P.e).length;if((it.n||0)>=mx)return false;it.n=(it.n||0)+1;return true},
   zero:it=>{if(it.sh)return false;it.sh=true;return true}};
  const BACK={bal:it=>{if(!(it.s>0))return false;it.s--;it.pv=null;return true},inq:it=>{if(!(it.s>0))return false;it.s--;return true},lg:it=>{if(!(it.n>0))return false;it.n--;return true},sys:it=>{if(!(it.n>0))return false;it.n--;return true},zero:it=>{if(!it.sh)return false;it.sh=false;return true}};
  function act(){const its=page().items;const sel=S.sel>=0&&its[S.sel]&&its[S.sel].t==='lab'?its[S.sel]:null;if(sel)return sel;for(let i=its.length-1;i>=0;i--)if(its[i].t==='lab')return its[i];return null}
  const re=()=>{changed();requestAnimationFrame(()=>draw())};
- $('#labNx').onclick=()=>{const it=act();if(!it){toast('أضيفي درساً أولاً');return}draw();pushHist();if(it.rv==null)it.rv=0;
+ $('#labNx').onclick=()=>{const it=act();if(!it){toast('أضيفي درساً أولاً');return}draw();pushHist();if(it.q){it.q=false;$('#labQ').checked=false}if(it.rv==null)it.rv=0;
   if(it.rv<(it._tot||0)){it.rv++;re();return}
   if(ADV[it.k]&&ADV[it.k](it)){re();requestAnimationFrame(()=>{if(it.rv<(it._tot||0)){it.rv++;re()}});return}toast('اكتمل الحل ✓')};
  $('#labPv').onclick=()=>{const it=act();if(!it)return;draw();pushHist();if(it.rv==null)it.rv=it._tot||0;if(it.rv>0){it.rv--;re();return}if(BACK[it.k]&&BACK[it.k](it)){it.rv=999;re()}};
- $('#labAll').onclick=()=>{const it=act();if(!it)return;pushHist();if(ADV[it.k]){let g=0;while(ADV[it.k](it)&&g++<40);LABA.delete(it);it.pv=null}it.rv=999;re()};
+ $('#labAll').onclick=()=>{const it=act();if(!it)return;pushHist();it.q=false;if(ADV[it.k]){let g=0;while(ADV[it.k](it)&&g++<40);LABA.delete(it);it.pv=null}it.rv=999;re()};
  const WR_OK=k=>!!LAB3_DRAW[k];
  function wrBtn(){const it=act(),b=$('#labWr');const on=!!(it&&it.wr);b.classList.toggle('on',on);b.textContent=on?'⚠️ المعروض حل خاطئ — اضغطي للصحيح':'⚠️ حل فيه خطأ شائع'}
  setInterval(()=>{if(!S.student)wrBtn()},700);
@@ -3124,6 +3130,32 @@ bindLabs2();bindLabs3();bindLabs7();
    const sb=$('#sendBase');if(!sb.checked){sb.checked=true;sb.dispatchEvent(new Event('change',{bubbles:true}))}if(typeof updBaseInfo==='function')updBaseInfo();
    toast('جاهز: الإجابة الصحيحة «'+(it.wr?'خطأ ✗':'صح ✓')+'» — اختاري نوع الجولة ثم «ابدئي التحدي»')};
   setTimeout(goTF,120)};
+ /* written-answer question: what to ask and the key, per lesson */
+ const PR=(x,y)=>'('+fmt(x)+'، '+fmt(y)+')',NUM=v=>{const f=q3(v);if(f&&f[1]>1){const t=dg(Math.abs(f[0]))+'/'+dg(f[1]);return v<0?'\u202D'+t+'−\u202C':t}return fmt(Math.round(v*100)/100)};
+ function qaSpec(it){const k=it.k;
+  if(k==='sys'){const P=it.cs?sysCustom(it.cs):SYS_P[(it.pi||0)%SYS_P.length];if(!P.sol)return {err:'هذا النظام ليس له حل وحيد — اضغطي «نظام آخر» أو «نظام عشوائي»'};return {key:PR(P.sol[0],P.sol[1]),task:'حدّدي حل النظام من التمثيل البياني (نقطة تقاطع المستقيمين)، واكتبيه على صورة زوج مرتّب (س، ص)',prep:it=>{it.mt='g';it.n=0}}}
+  if(k==='zero'){const Z=ZR_P[(it.pi||0)%ZR_P.length];if(Z[0]===0)return {key:'لا يوجد حل|لا يوجد|لا حل',task:'استعملي التمثيل البياني لحل المعادلة: ما صفر الدالة؟ (إذا لم يكن لها حل اكتبي: لا يوجد حل)',prep:it=>{it.sh=false}};return {key:NUM(-Z[1]/Z[0]),task:'استعملي التمثيل البياني لحل المعادلة: أين يقطع المستقيم محور السينات؟ اكتبي قيمة س',prep:it=>{it.sh=false}}}
+  if(k==='slope'){const a=it.p[0].map(W2V),b=it.p[1].map(W2V),dx=b[0]-a[0],dy=b[1]-a[1];if(Math.abs(dx)<1e-9)return {key:'غير معرف|غير معرّف',task:'أوجدي ميل المستقيم المار بالنقطتين أ ، ب'};return {key:NUM(dy/dx),task:'أوجدي ميل المستقيم المار بالنقطتين أ ، ب (اكتبي الكسر هكذا: ٢/٣)'}}
+  if(k==='si'){const m=it.m==null?2:it.m;return {key:NUM(m),task:'ما ميل المستقيم المرسوم؟ (اكتبي الكسر هكذا: ١/٢)',prep:it=>{it.tp=false}}}
+  if(k==='seq'){const a1=it.a1==null?3:it.a1,d=it.d==null?2:it.d;return {key:NUM(a1+9*d),task:'أوجدي الحد العاشر لهذه المتتابعة الحسابية',prep:it=>{it.nq=0}}}
+  if(k==='lg'){const P=LG_P[(it.pi||0)%LG_P.length],xi=P.C/P.A;return Number.isInteger(xi)?{key:NUM(xi),task:'أوجدي المقطع السيني للمستقيم (اكتبي قيمة س)',prep:it=>{it.mode='int';it.n=0}}:{key:NUM(P.C/P.B),task:'أوجدي المقطع الصادي للمستقيم (اكتبي قيمة ص)',prep:it=>{it.mode='int';it.n=0}}}
+  if(k==='bal'){const e=it.e||BAL_P[0];return {key:NUM((e[3]-e[1])/(e[0]-e[2])),task:'حلّي المعادلة: ما قيمة س؟',prep:it=>{it.s=0;it.pv=null}}}
+  if(k==='rel'){const I=relInfo(REL_P[(it.pi||0)%REL_P.length]);return {key:I.fn?'نعم|دالة|نعم دالة':'لا|ليست دالة|لا ليست دالة',task:'هل تمثّل العلاقة دالة؟ اكتبي: نعم أو لا',prep:it=>{it.vt=null}}}
+  if(k==='g7cp'){const [n,x,y]=G7CP[(it.pi||0)%G7CP.length];return {key:PR(x,y),task:'اكتبي الزوج المرتّب الذي يعبّر عن النقطة '+n+' على صورة (س، ص)',prep:it=>{it.mode='read'}}}
+  if(k==='g7int'){const md=it.mode||'set';if(md==='abs'){const e=G7INT.abs[(it.pi||0)%G7INT.abs.length];return {key:NUM(Math.abs(e)),task:'أوجدي القيمة المطلقة المعروضة'}}return {err:'اختاري «القيمة المطلقة» في هذا الدرس، أو استعملي «صح أو خطأ»'}}
+  if(k==='g7add'){const a=it.a==null?G7ADD[0][0]:it.a,b=it.b==null?G7ADD[0][1]:it.b;return {key:NUM(a+b),task:'أوجدي ناتج الجمع'}}
+  if(k==='g7sub'){const a=it.a==null?G7SUB[0][0]:it.a,b=it.b==null?G7SUB[0][1]:it.b;return {key:NUM(a-b),task:'أوجدي ناتج الطرح'}}
+  if(k==='g7meq'){const e=G7MEQ[(it.pi||0)%G7MEQ.length];return {key:NUM((e[2]-e[1])/e[0]),task:'حلّي المعادلة: ما قيمة س؟'}}
+  if(k==='g7ord'){const E=G7ORD[(it.pi||0)%G7ORD.length],last=E.st[E.st.length-1][1][0].s;return {key:NUM(ansNums(normAns(last))[0]),task:'احسبي قيمة العبارة باستعمال ترتيب العمليات'}}
+  if(k==='g7pa'){return {key:NUM((it.l||6)*(it.w||4)),task:'أوجدي مساحة المستطيل المعروض (بالوحدات المربعة)'}}
+  if(k==='g7fg'){const [m,b]=G7FG[(it.pi||0)%G7FG.length];return {key:NUM(m*3+b),task:'استعملي الدالة المعروضة: أوجدي قيمة ص عندما س = ٣'}}
+  return null}
+ $('#labQA').onclick=()=>{const it=act();if(!it){toast('أضيفي درساً أولاً');return}const sp=qaSpec(it);
+  if(!sp){toast('هذا الدرس لا يناسبه سؤال بإجابة مكتوبة — جرّبي «صح أو خطأ» أو تحدي الرسم');return}if(sp.err){toast(sp.err);return}
+  pushHist();it.wr=false;it.q=true;it.rv=0;if(sp.prep)sp.prep(it);LABA.delete(it);re();
+  setTimeout(()=>{openDash();const q=$('#qaSeg button[data-q="1"]');if(q)q.click();const kt=$('#keyText');kt.value=sp.key;kt.dispatchEvent(new Event('input',{bubbles:true}));
+   const ti=$('#taskIn');ti.value=sp.task;T.task=sp.task;ti.dispatchEvent(new Event('input',{bubbles:true}));const sb=$('#sendBase');if(!sb.checked){sb.checked=true;sb.dispatchEvent(new Event('change',{bubbles:true}))}if(typeof updBaseInfo==='function')updBaseInfo();
+   toast('جاهز: الإجابة الصحيحة '+sp.key.split('|')[0]+' — اختاري نوع الجولة ثم «ابدئي التحدي»')},150)};
 })();
 /* lessons picker: grade -> lesson (only the chosen lesson is shown) */
 (function(){const GR=[['1','الصف الأول المتوسط'],['2','الصف الثاني المتوسط'],['3','الصف الثالث المتوسط']];
