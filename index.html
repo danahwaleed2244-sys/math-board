@@ -329,7 +329,7 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
 <div id="app">
   <div id="header">
     <span class="ttl">📐 سبورة الرياضيات</span>
-    <span class="who" id="hdrWho">المعلمة: لطفية عبدالغني الطلحي</span>
+    <span class="who" id="hdrWho">المعلمة: لطفيه عبدالغني الطلحي</span>
     <span class="sp"></span>
     <span class="sch" id="hdrSch">متوسطة السيل الصغير</span>
   </div>
@@ -679,7 +679,7 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
       <button class="btn2" id="delPg">حذف الصفحة</button>
     </div>
     <span class="sp"></span>
-    <span class="copy">© فكرة وتصميم: أ. لطفية عبدالغني الطلحي — ٢٠٢٦</span>
+    <span class="copy" dir="ltr">© Idea &amp; Design: Lutfiah Abdulghani Altalhi — 2026</span>
     <span id="coordLbl"></span>
     <button class="btn2" id="zoomOut">−</button>
     <span id="zoomLbl">100%</span>
@@ -802,7 +802,7 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
     <div class="lg">✏️📐</div>
     <h2>تحدي الرسم</h2>
     <div class="muted">سبورة الرياضيات التفاعلية</div>
-    <div class="muted small">© فكرة وتصميم: أ. لطفية عبدالغني الطلحي — ٢٠٢٦</div>
+    <div class="muted small" dir="ltr">© Idea &amp; Design: Lutfiah Abdulghani Altalhi — 2026</div>
     <input class="pinin" id="jPin" inputmode="numeric" maxlength="6" placeholder="رمز الدخول" autocomplete="off">
     <input id="jName" maxlength="24" placeholder="اسمك" autocomplete="off" dir="rtl">
     <div class="jerr hidden" id="jErr"></div>
@@ -902,7 +902,7 @@ const THEMES={
 };
 
 const S={pages:[newPage('coord')],cur:0,tool:'pen',color:'#1d2433',width:4,snap:true,autoLabel:true,showCoords:false,fill:true,arNum:true,arSym:true,
- G:40,panX:0,panY:0,theme:'white',tTab:'rot',rotDir:'ccw',shapeKind:'tri',meas:false,tName:'لطفية عبدالغني الطلحي',sName:'متوسطة السيل الصغير',sel:-1,polyDraft:null,hover:null,stamp:null,anim:null};
+ G:40,panX:0,panY:0,theme:'white',tTab:'rot',rotDir:'ccw',shapeKind:'tri',meas:false,tName:'لطفيه عبدالغني الطلحي',sName:'متوسطة السيل الصغير',sel:-1,polyDraft:null,hover:null,stamp:null,anim:null};
 function newPage(bg,sc){return {bg:bg||'grid',sc:sc||1,items:[],undo:[],redo:[]}}
 const page=()=>S.pages[S.cur];
 
@@ -2501,7 +2501,7 @@ function updateUI(){
  $$('#popWidths .wd span').forEach(s=>s.style.background=S.color==='#ffffff'?'#999':S.color);
  $('#styleDot').style.background=S.color;
  $$('#tools .tool').forEach(b=>{const ic=b.querySelector('.ic');ic.style.color=(['pen','hl'].includes(b.dataset.tool)&&S.color!=='#ffffff')?S.color:''});
- if(!S.student){$('#hdrWho').textContent=S.tName?'المعلمة: '+S.tName:'';$('#hdrSch').textContent=S.sName||'';$('#hdrSch').style.display=S.sName?'':'none'}
+ if(S.tName)S.tName=S.tName.replace('لطفية','لطفيه');if(!S.student){$('#hdrWho').textContent=S.tName?'المعلمة: '+S.tName:'';$('#hdrSch').textContent=S.sName||'';$('#hdrSch').style.display=S.sName?'':'none'}
  if(document.activeElement!==$('#tNameIn'))$('#tNameIn').value=S.tName||'';if(document.activeElement!==$('#sNameIn'))$('#sNameIn').value=S.sName||'';
  $('#optArNum').checked=S.arNum;$('#optMeas').checked=!!S.meas;$$('#scSeg button').forEach(b=>b.classList.toggle('on',+b.dataset.sc===SC()));$('#optArSym').checked=S.arSym;
  $$('#bgSeg button').forEach(b=>b.classList.toggle('on',b.dataset.bg===page().bg));
@@ -2568,7 +2568,7 @@ $('#makeImg').onclick=()=>{const nm=$('#stName').value.trim(),cl=$('#stClass').v
  g.fillStyle='#fff';g.direction='rtl';g.textBaseline='middle';g.textAlign='right';
  g.font=`bold ${Math.round(22*DPR)}px "Segoe UI",Tahoma,sans-serif`;g.fillText('الطالبة: '+nm+(cl?'   —   الفصل: '+dg(cl):''),out.width-18*DPR,hh/2);
  const d=new Date();const ds=dg(`${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}  ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`);
- g.textAlign='left';g.font=`${Math.round(15*DPR)}px "Segoe UI",Tahoma,sans-serif`;g.fillText('سبورة الرياضيات'+(S.tName?' — أ. '+S.tName:'')+' — '+ds,18*DPR,hh/2);g.font=`${Math.round(11*DPR)}px "Segoe UI",Tahoma,sans-serif`;g.fillStyle='rgba(60,70,90,.55)';g.textAlign='left';g.textBaseline='bottom';g.fillText('© فكرة وتصميم: أ. لطفية عبدالغني الطلحي — ٢٠٢٦',10*DPR,out.height-6*DPR);
+ g.textAlign='left';g.font=`${Math.round(15*DPR)}px "Segoe UI",Tahoma,sans-serif`;g.fillText('سبورة الرياضيات'+(S.tName?' — أ. '+S.tName:'')+' — '+ds,18*DPR,hh/2);g.font=`${Math.round(11*DPR)}px "Segoe UI",Tahoma,sans-serif`;g.fillStyle='rgba(60,70,90,.55)';g.textAlign='left';g.textBaseline='bottom';g.direction='ltr';g.fillText('© Idea & Design: Lutfiah Abdulghani Altalhi — 2026',10*DPR,out.height-6*DPR);
  try{$('#modalImg').src=out.toDataURL('image/png');out.toBlob(b=>lastBlob=b,'image/png')}catch(e){toast('تعذّر إنشاء الصورة');return}
  $('#copyImg').textContent='📋 نسخ الصورة';$('#step1').style.display='none';$('#step2').style.display='block'};
 $('#stName').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter')$('#makeImg').click()});
@@ -2987,7 +2987,7 @@ function renderRS(){if(!RS.open)return;const body=$('#rsBody');const ae=document
    <div class="tests"><div><div class="dh">الاختبار القبلي</div><input type="date" id="preDate" value="${esc(L.pre.date||'')}" class="txin" style="margin:6px 0"><textarea id="preTxt" placeholder="نورة محمد	6&#10;سارة علي	4">${esc(rt('pre'))}</textarea><div class="muted small" id="preInfo">${dg((L.pre.rows||[]).length)} طالبة</div></div>
    <div><div class="dh">الاختبار البعدي</div><input type="date" id="postDate" value="${esc(L.post.date||'')}" class="txin" style="margin:6px 0"><textarea id="postTxt" placeholder="نورة محمد	9&#10;سارة علي	8">${esc(rt('post'))}</textarea><div class="muted small" id="postInfo">${dg((L.post.rows||[]).length)} طالبة</div></div></div>
    <button class="primary" id="testsSave" style="width:auto;padding:10px 22px;margin-top:12px">حفظ الدرجات</button></div>`}
- h+=`<div class="muted small" style="text-align:center">سبورة الرياضيات التفاعلية — © فكرة وتصميم: أ. لطفية عبدالغني الطلحي — ٢٠٢٦</div>`;
+ h+=`<div class="muted small" style="text-align:center">سبورة الرياضيات التفاعلية — <span dir="ltr">© Idea &amp; Design: Lutfiah Abdulghani Altalhi — 2026</span></div>`;
  body.innerHTML=h;bindRS();
  requestAnimationFrame(()=>thumbs.forEach(t=>{const c=document.getElementById(t.id);if(c)renderTo(c,t.items,t.bg||'coord',c.clientWidth||180,t.h,t.sc||1)}))}
 function parseScores(txt){const rows=[];toW(txt).split(/\r?\n/).forEach(line=>{line=line.trim();if(!line)return;let name,sc;const parts=line.split('\t').map(x=>x.trim()).filter(Boolean);
