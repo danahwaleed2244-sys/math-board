@@ -228,6 +228,7 @@ body.student.notf #tfSec{display:none}
 @media (max-width:1100px){.dash-grid{grid-template-columns:1fr}.dcol{position:static}}
 @media (max-width:700px){.copy{display:none}#header .who{display:none}#header .ttl{font-size:16px}}
 @media (max-width:820px){#side{position:absolute;right:0;top:0;bottom:0;z-index:8;box-shadow:-6px 0 20px rgba(0,0,0,.12)}}
+.stepBar2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 8px}.stepBar2 button{padding:9px 4px;font-size:13.5px}#labWr.on{background:#fff0f0;border-color:#e03131;color:#c92a2a;font-weight:800}
 .stepBar{display:grid;grid-template-columns:2fr 1fr 1fr;gap:6px;margin:8px 0}.stepBar button{padding:10px 4px;font-size:14.5px}
 #labSec details.lab{display:none}#labSec details.lab.cur{display:block;border-color:#b9cdf0}#labSec details.lab>summary{display:none}#labSec details.lab .lb{padding-top:10px}
 .labPick{display:grid;grid-template-columns:auto 1fr;gap:6px 8px;align-items:center;margin:8px 0 4px}.labPick label{font-weight:700;font-size:13.5px;color:#1f4e9c}.labPick select{width:100%;padding:8px;border:1px solid var(--line);border-radius:9px;font:inherit;font-size:14px;background:#fff}
@@ -451,7 +452,43 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
       <section id="labSec">
         <h3>📚 الدروس التفاعلية</h3>
         <div class="note">أدرجي المعمل ثم استعملي الأزرار. للسحب والتحريك استعملي أداة «تحديد».</div>
-        <div class="labPick"><label>الصف</label><select id="labGr" autocomplete="off"></select><label>الدرس</label><select id="labLs" autocomplete="off"></select></div><div class="muted small" id="labHint">اختاري الدرس من القائمة لتظهر أدواته.</div><div class="stepBar"><button class="primary" id="labNx">الخطوة التالية ←</button><button class="btn2" id="labPv">→ السابقة</button><button class="btn2" id="labAll">الحل كاملاً</button></div>
+        <div class="labPick"><label>الصف</label><select id="labGr" autocomplete="off"></select><label>الدرس</label><select id="labLs" autocomplete="off"></select></div><div class="muted small" id="labHint">اختاري الدرس من القائمة لتظهر أدواته.</div><div class="stepBar"><button class="primary" id="labNx">الخطوة التالية ←</button><button class="btn2" id="labPv">→ السابقة</button><button class="btn2" id="labAll">الحل كاملاً</button></div><div class="stepBar2"><button class="btn2" id="labWr">⚠️ حل فيه خطأ شائع</button><button class="btn2" id="labTF">✓✗ أرسليه تحدّي صح أو خطأ</button></div>
+        <details class="lab" data-g="1"><summary>الأعداد الصحيحة والقيمة المطلقة، والمقارنة والترتيب</summary><div class="lb">
+          <button class="primary ins" id="g7InIns">＋ خط الأعداد</button>
+          <div class="seg" id="g7InMd"><button data-m="set">تمثيل مجموعة</button><button data-m="abs">القيمة المطلقة</button><button data-m="cmp">المقارنة</button><button data-m="ord">الترتيب</button></div>
+          <div class="seg"><button id="g7InNx">مثال آخر</button></div>
+        </div></details>
+        <details class="lab" data-g="1"><summary>المستوى الإحداثي</summary><div class="lb">
+          <button class="primary ins" id="g7CpIns">＋ المستوى الإحداثي ونقطة</button>
+          <div class="seg" id="g7CpMd"><button data-m="plot">تمثيل نقطة</button><button data-m="read">كتابة الزوج المرتّب</button></div>
+          <div class="seg"><button id="g7CpNx">نقطة أخرى</button></div>
+        </div></details>
+        <details class="lab" data-g="1"><summary>جمع الأعداد الصحيحة (قطع العد)</summary><div class="lb">
+          <button class="primary ins" id="g7AdIns">＋ لوحة وقطع العد</button>
+          <div class="seg"><button id="g7AdAm">العدد الأول −</button><button id="g7AdAp">العدد الأول ＋</button><button id="g7AdBm">العدد الثاني −</button><button id="g7AdBp">العدد الثاني ＋</button></div>
+          <div class="seg"><button id="g7AdNx">مثال آخر</button></div>
+        </div></details>
+        <details class="lab" data-g="1"><summary>طرح الأعداد الصحيحة (قطع العد)</summary><div class="lb">
+          <button class="primary ins" id="g7SbIns">＋ لوحة وقطع العد</button>
+          <div class="seg"><button id="g7SbAm">المطروح منه −</button><button id="g7SbAp">المطروح منه ＋</button><button id="g7SbBm">المطروح −</button><button id="g7SbBp">المطروح ＋</button></div>
+          <div class="seg"><button id="g7SbNx">مثال آخر</button></div>
+        </div></details>
+        <details class="lab" data-g="1"><summary>حل المعادلات باستعمال النماذج</summary><div class="lb">
+          <button class="primary ins" id="g7MqIns">＋ لوحتان وبطاقات الجبر</button>
+          <div class="seg" id="g7MqP"></div>
+        </div></details>
+        <details class="lab" data-g="1"><summary>التمثيل البياني للدوال</summary><div class="lb">
+          <button class="primary ins" id="g7FgIns">＋ جدول الدالة والمستوى</button>
+          <div class="seg"><button id="g7FgNx">دالة أخرى</button></div>
+        </div></details>
+        <details class="lab" data-g="1"><summary>ترتيب العمليات</summary><div class="lb">
+          <button class="primary ins" id="g7OrIns">＋ عبارة عددية</button>
+          <div class="seg"><button id="g7OrNx">عبارة أخرى</button></div>
+        </div></details>
+        <details class="lab" data-g="1"><summary>المحيط والمساحة</summary><div class="lb">
+          <button class="primary ins" id="g7PaIns">＋ مستطيل على الشبكة</button>
+          <div class="seg"><button id="g7PaLm">الطول −</button><button id="g7PaLp">الطول ＋</button><button id="g7PaWm">العرض −</button><button id="g7PaWp">العرض ＋</button></div>
+        </div></details>
         <details class="lab"><summary>نظرية فيثاغورس</summary><div class="lb">
           <button class="primary ins" id="labPyIns">＋ مثلث قائم ومربعات على أضلاعه</button>
           <div class="seg" id="labPySet"><button data-ab="3,4">٣ و ٤</button><button data-ab="6,8">٦ و ٨</button><button data-ab="5,12">٥ و ١٢</button><button data-ab="1,2">١ و ٢</button></div>
@@ -1060,7 +1097,7 @@ function nAngle(a){a%=2*Math.PI;return a<0?a+2*Math.PI:a}
 function sector(g,c,r,a1,a2,fill,stroke,lw){g.beginPath();g.moveTo(c[0],c[1]);g.arc(c[0],c[1],r,-a1,-a2,true);g.closePath();
  if(fill){g.fillStyle=fill;g.fill()}if(stroke){g.beginPath();g.arc(c[0],c[1],r,-a1,-a2,true);g.strokeStyle=stroke;g.lineWidth=lw||2;g.stroke()}}
 /* info card under a lab: lines [{s|tok,c,b,px,al}] ; cx,top in world units ; wU width in units */
-var LAB_G={par:1,pg:1,cg:0,sy:1,pyth:2,irr:1,dist:1,rate:2,sim:0,dil:1,pct:1,tri:1,cgx:1,bal:2,abs:2,rel:2,lg:2,zero:3,slope:2,seq:2,si:2,ps:3,pp:3,inq:2,cmp:2,sys:4};
+var LAB_G={g7int:2,g7cp:2,g7add:2,g7sub:2,g7meq:2,g7fg:2,g7ord:3,g7pa:2,par:1,pg:1,cg:0,sy:1,pyth:2,irr:1,dist:1,rate:2,sim:0,dil:1,pct:1,tri:1,cgx:1,bal:2,abs:2,rel:2,lg:2,zero:3,slope:2,seq:2,si:2,ps:3,pp:3,inq:2,cmp:2,sys:4};
 function isHintL(L){return L&&typeof L.s==='string'&&/^(اضغطي|اسحبي)/.test(L.s)}
 function labReveal(it,lines){lines=lines.filter(Boolean);if(it.rv==null){it._tot=0;it._done=true;return lines}const G=LAB_G[it.k]==null?1:LAB_G[it.k];let tot=0;lines.forEach((L,i)=>{if(i>=G&&!isHintL(L))tot++});
  if(it.rv>tot)it.rv=tot;it._tot=tot;it._done=it.rv>=tot;let n=0;const out=lines.filter((L,i)=>{if(i<G)return true;if(isHintL(L))return it._done||!lines.some((M,j)=>j>=G&&!isHintL(M));n++;return n<=it.rv});
@@ -1528,8 +1565,8 @@ const C3={b:'#2f6fde',o:'#e8590c',g:'#1f9d55',r:'#d6336c',p:'#8e44ad',d:'#1d2433
 
 /* ===== 1) balance: solving equations ===== */
 var BAL_P=[[1,3,0,7],[1,-2,0,5],[3,0,0,12],[2,3,0,9],[3,-4,0,8],[5,2,3,8]];
-function balSteps(a,b,c,d){const S0=[{e:[a,b,c,d]}];if(c){a-=c;S0.push({e:[a,b,0,d],t:'اطرحي '+termsStr([[c,'س']])+' من الطرفين'});c=0}
- if(b){S0.push({e:[a,0,0,d-b],t:b>0?'اطرحي '+dg(b)+' من الطرفين':'أضيفي '+dg(-b)+' إلى الطرفين'});d-=b;b=0}
+function balSteps(a,b,c,d,wr){const S0=[{e:[a,b,c,d]}];if(c){a-=c;S0.push({e:[a,b,0,d],t:'اطرحي '+termsStr([[c,'س']])+' من الطرفين'});c=0}
+ if(b){const nd=wr?(Number.isInteger((d+b)/a)?d+b:d-b+a):d-b;S0.push({e:[a,0,0,nd],t:b>0?'اطرحي '+dg(b)+' من الطرفين':'أضيفي '+dg(-b)+' إلى الطرفين'});d=nd;b=0}
  if(a!==1){S0.push({e:[1,0,0,d/a],t:'اقسمي الطرفين على '+dg(a)});d/=a;a=1}return S0}
 function balTiles(x,u){const T=[];for(let i=0;i<x;i++)T.push('x');for(let i=0;i<Math.abs(u);i++)T.push(u<0?'n':'u');return T}
 function balLayout(T,cx,y0){const P=[];let row=[],w=0;const rows=[];T.forEach(t=>{const tw=t==='x'?1.05:.85;if(w+tw>6.3&&row.length){rows.push(row);row=[];w=0}row.push(t);w+=tw});if(row.length)rows.push(row);
@@ -1537,7 +1574,7 @@ function balLayout(T,cx,y0){const P=[];let row=[],w=0;const rows=[];T.forEach(t=
 function balTile(g,t,c,al,hi){const k=K();g.save();g.globalAlpha=al;const w=t==='x'?.9:.7,h=t==='x'?1.5:.7;const X=sx(c[0]-w/2),Y=sy(c[1]+h/2),Wp=w*S.G,Hp=h*S.G;
  g.fillStyle=t==='x'?'#5fd38d':t==='u'?'#ffd43b':'#ff8787';g.strokeStyle=hi?'#d6336c':'#4f5d75';g.lineWidth=hi?3:1.4;g.beginPath();if(g.roundRect)g.roundRect(X,Y,Wp,Hp,5*k);else g.rect(X,Y,Wp,Hp);g.fill();g.stroke();
  g.fillStyle='#1d2433';g.font=labFont(t==='x'?20:15,1);g.textAlign='center';g.textBaseline='middle';g.direction='rtl';g.fillText(t==='x'?'س':t==='u'?dg(1):fmt(-1),X+Wp/2,Y+Hp/2+1);g.restore()}
-function drawBal(g,it,ghost){const O=it.p[0],k=K(),e0=it.e||BAL_P[0],ST=balSteps(...e0),s=Math.min(it.s||0,ST.length-1),st=LABA.get(it),t=st&&st.t!=null?st.t:1,pv=it.pv!=null?Math.min(it.pv,ST.length-1):s;
+function drawBal(g,it,ghost){const O=it.p[0],k=K(),e0=it.e||BAL_P[0],ST=balSteps(...e0,it.wr),s=Math.min(it.s||0,ST.length-1),st=LABA.get(it),t=st&&st.t!=null?st.t:1,pv=it.pv!=null?Math.min(it.pv,ST.length-1):s;
  const cur=ST[s].e,prv=ST[pv].e;
  /* stand + beam */
  poly(g,[[O[0]-.9,O[1]-2],[O[0]+.9,O[1]-2],[O[0],O[1]-.15]],'#c9d6ea','#4f5d75',2);seg(g,[O[0]-2,O[1]-2],[O[0]+2,O[1]-2],'#4f5d75',Math.max(3,5*k));
@@ -1554,7 +1591,7 @@ function drawBal(g,it,ghost){const O=it.p[0],k=K(),e0=it.e||BAL_P[0],ST=balSteps
  const lines=[{s:'ميزان المعادلة',b:1,al:'c',px:18}];
  for(let i=0;i<=s;i++){const E=ST[i].e;if(ST[i].t)lines.push({s:ST[i].t,c:C3.o,b:1,px:15});lines.push({tok:[...termsTok([[E[0],'س'],[E[1],'']]),{s:'='},...termsTok([[E[2],'س'],[E[3],'']])],px:19,c:i===s?C3.d:C3.m,b:i===s?1:0})}
  if(s===ST.length-1){const x=cur[3];lines.push({s:'الحل: س = '+fmt(x),c:C3.g,b:1,px:18});
-  const L=e0[0]*x+e0[1],R=e0[2]*x+e0[3];lines.push({s:'تحقّقي: الطرف الأيمن = '+fmt(L)+' ، الطرف الأيسر = '+fmt(R)+' ✓',c:C3.g,px:14})}
+  if(!it.wr){const L=e0[0]*x+e0[1],R=e0[2]*x+e0[3];lines.push({s:'تحقّقي: الطرف الأيمن = '+fmt(L)+' ، الطرف الأيسر = '+fmt(R)+' ✓',c:C3.g,px:14})}}
  else lines.push({s:'اضغطي «الخطوة التالية»: ما نفعله بطرف نفعله بالطرف الآخر',c:C3.m,px:13});
  labCard(g,it,lines,O[0],O[1]-3.1,12)}
 function balBox(it){const O=it.p[0];return uni([O[0]-7.6,O[1]-3,O[0]+7.6,O[1]+5],cardBox(it,O[0],O[1]-3.1,12))}
@@ -1571,11 +1608,13 @@ function drawAbs(g,it,ghost){const O=it.p[0],a=it.a||0,b=it.b==null?3:it.b,op=it
  let ivs=[];
  if(b<0){lines.push({s:op==='='||op==='<'||op==='≤'?'لا يوجد حل: القيمة المطلقة (المسافة) لا تكون سالبة أبداً':'الحل: جميع الأعداد الحقيقية، لأن القيمة المطلقة دائماً ≥ ٠',c:op==='>'||op==='≥'?C3.g:C3.r,b:1,px:15});if(op==='>'||op==='≥')ivs=[[-Infinity,0,Infinity,0]]}
  else if(op==='='){if(b===0){ivs=[[a,1,a,1]];lines.push({s:'س '+(a>0?'− '+dg(a):a<0?'+ '+dg(-a):'')+' = ٠  ←  س = '+fmt(a)+' (حل واحد)',c:C3.g,b:1})}
+  else if(it.wr){ivs=[[a+b,1,a+b,1]];const L=termsStr([[1,'س'],[-a,'']]);lines.push({s:L+' = '+fmt(b),px:15});lines.push({s:'س = '+fmt(a+b),c:C3.g,b:1,px:17})}
   else{ivs=[[a-b,1,a-b,1],[a+b,1,a+b,1]];const L=termsStr([[1,'س'],[-a,'']]);lines.push({s:L+' = '+fmt(b)+'   أو   '+L+' = '+fmt(-b),px:15});lines.push({s:'س = '+fmt(a+b)+'   أو   س = '+fmt(a-b),c:C3.g,b:1,px:17})}}
  else{const L=termsStr([[1,'س'],[-a,'']]);if(op==='<'||op==='≤'){ivs=[[a-b,op==='≤'?1:0,a+b,op==='≤'?1:0]];if(b===0&&op==='<')ivs=[];
    lines.push({s:fmt(-b)+' '+op+' '+L+' '+op+' '+fmt(b)+'   (متباينة مركبة بـ «و»)',px:15});lines.push({s:ivs.length?ivStr(ivs[0]):'لا يوجد حل',c:C3.g,b:1,px:17})}
   else{ivs=[[-Infinity,0,a-b,op==='≥'?1:0],[a+b,op==='≥'?1:0,Infinity,0]];if(b===0&&op==='≥')ivs=[[-Infinity,0,Infinity,0]];
    lines.push({s:L+' '+FLIP[op]+' '+fmt(-b)+'   أو   '+L+' '+op+' '+fmt(b)+'   (بـ «أو»)',px:15});lines.push({s:'س '+FLIP[op]+' '+fmt(a-b)+'   أو   س '+op+' '+fmt(a+b),c:C3.g,b:1,px:17})}}
+ if(it.wr&&op!=='='&&b>0){ivs=(op==='<'||op==='≤')?[[-Infinity,0,a-b,op==='≤'?1:0],[a+b,op==='≤'?1:0,Infinity,0]]:[[a-b,op==='≥'?1:0,a+b,op==='≥'?1:0]];const sol=lines[lines.length-1];if(sol)sol.s=ivs.map(ivStr).join('  أو  ')}
  if(it.q)lines.splice(3);else if(labDone(it))ivs.forEach(iv=>nlIv(g,X,y,lo,hi,iv,C3.g,0));
  if(!it.q&&labDone(it)&&op==='='&&b>0)[a-b,a+b].forEach(v=>ltxt(g,fmt(v),sx(X(v)),sy(y)-18*Math.max(.8,K()),17,C3.g,true));
  labCard(g,it,lines,O[0],y-1.7,12.5)}
@@ -1585,7 +1624,7 @@ function absBox(it){const O=it.p[0],a=it.a||0,b=it.b==null?3:it.b,w=Math.max(b,2
 var REL_P=[[[1,3],[2,5],[3,7],[4,8]],[[-2,1],[1,3],[1,-2],[3,4]],[[-3,2],[-1,2],[2,-1],[4,3]],[[2,1],[2,4],[-1,-3],[3,0]],[[-2,-4],[0,-1],[1,2],[3,3],[4,-2]]];
 function relInfo(P){const xs=[...new Set(P.map(q=>q[0]))].sort((a,b)=>a-b),ys=[...new Set(P.map(q=>q[1]))].sort((a,b)=>a-b);const bad=xs.find(x=>P.filter(q=>q[0]===x).length>1);return {xs,ys,bad,fn:bad===undefined}}
 function setStr(L){return '{'+L.map(v=>fmt(v)).join('، ')+'}'}
-function drawRel(g,it,ghost){const P=REL_P[(it.pi||0)%REL_P.length],I=relInfo(P),sc=SC(),k=K(),st=LABA.get(it);
+function drawRel(g,it,ghost){const P=REL_P[(it.pi||0)%REL_P.length],I=relInfo(P),sc=SC(),k=K(),st=LABA.get(it);const FN=it.wr?!I.fn:I.fn;
  /* points */
  P.forEach(q=>{const w=[q[0]/sc,q[1]/sc];dot(g,w,C3.b,6);wl(g,pair(fmt(q[0]),fmt(q[1])),w,0,-17,13,C3.b)});
  /* vertical line test */
@@ -1599,8 +1638,8 @@ function drawRel(g,it,ghost){const P=REL_P[(it.pi||0)%REL_P.length],I=relInfo(P)
  P.forEach(q=>{const bad=!I.fn&&q[0]===I.bad&&!it.q;seg(g,[cxD-.55,yOf(I.xs,q[0])],[cxR+.55,yOf(I.ys,q[1])],bad?C3.r:'#4f5d75',Math.max(1.5,2*k),false,1)});
  const lines=[{s:'العلاقات والدوال',b:1,al:'c',px:18},{s:'العلاقة: {'+P.map(q=>pair(fmt(q[0]),fmt(q[1]))).join('، ')+'}',px:14},{s:'المجال = '+setStr(I.xs),c:C3.b,px:15,b:1},{s:'المدى = '+setStr(I.ys),c:C3.o,px:15,b:1}];
  if(it.q)lines.push({s:'هل تمثّل العلاقة دالة؟ برّري إجابتك',b:1});
- else{if(I.fn)lines.push({s:'كل عنصر في المجال يرتبط بعنصر واحد فقط في المدى ← العلاقة دالة ✓',c:C3.g,b:1,px:15});
-  else lines.push({s:'العنصر '+fmt(I.bad)+' في المجال يرتبط بعنصرين في المدى ← العلاقة ليست دالة ✗',c:C3.r,b:1,px:15});
+ else{if(FN)lines.push({s:'كل عنصر في المجال يرتبط بعنصر واحد فقط في المدى ← العلاقة دالة',c:C3.g,b:1,px:15});
+  else lines.push({s:I.fn?'العنصر '+fmt(I.ys.find(y=>P.filter(q=>q[1]===y).length>1)??I.ys[0])+' في المدى يرتبط بأكثر من عنصر ← العلاقة ليست دالة':'العنصر '+fmt(I.bad)+' في المجال يرتبط بعنصرين في المدى ← العلاقة ليست دالة',c:C3.r,b:1,px:15});
   if(it.vt!=null&&!st)lines.push({s:it.vt==='ok'?'اختبار الخط الرأسي: لا يقطع أي خط رأسي التمثيل في أكثر من نقطة ✓':'اختبار الخط الرأسي: الخط س = '+fmt(it.vt)+' يقطع التمثيل في نقطتين ✗',c:it.vt==='ok'?C3.g:C3.r,px:14})}
  labCard(g,it,lines,A[0],cy-hh/2-.5,c3W())}
 function relBox(it){const A=cAof(it);return uni([A[0]-5.3,A[1]-8,A[0]+5.3,A[1]+.5],cardBox(it,A[0],A[1]-8,c3W()))}
@@ -1609,19 +1648,19 @@ function relBox(it){const A=cAof(it);return uni([A[0]-5.3,A[1]-8,A[0]+5.3,A[1]+.
 var LG_P=[{A:-2,B:1,C:1,f:'y'},{A:2,B:3,C:6,f:'s'},{A:1,B:-1,C:2,f:'s'},{A:1,B:1,C:3,f:'y'},{A:3,B:2,C:6,f:'s'},{A:-1,B:2,C:4,f:'y'}];
 function lgEq(P){return P.f==='y'?lineTok(-P.A/P.B,P.C/P.B):[...termsTok([[P.A,'س'],[P.B,'ص']]),{s:'='},...termsTok([[P.C,'']])]}
 function lgEqS(P){return P.f==='y'?lineStr(-P.A/P.B,P.C/P.B):termsStr([[P.A,'س'],[P.B,'ص']])+' = '+fmt(P.C)}
-function lgPts(P){const o=[];for(let x=-2;x<=5&&o.length<5;x++){const y=(P.C-P.A*x)/P.B;if(Math.abs(y-Math.round(y))<1e-9&&Math.abs(y)<=9)o.push([x,Math.round(y)])}return o}
+function lgPts(P,wr){const o=[];for(let x=-2;x<=5&&o.length<5;x++){const y=(P.C-P.A*x)/P.B;if(Math.abs(y-Math.round(y))<1e-9&&Math.abs(y)<=9)o.push([x,Math.round(y)])}if(wr&&o.length>2)o[1]=[o[1][0],-o[1][1]||2];return o}
 function drawLg(g,it,ghost){const P=LG_P[(it.pi||0)%LG_P.length],sc=SC(),k=K(),m=-P.A/P.B,b=P.C/P.B,md=it.mode||'tbl',n=it.n||0;
  const lines=[{s:'تمثيل المعادلة الخطية بيانياً',b:1,al:'c',px:18},{tok:lgEq(P),px:21,b:1}];
- if(md==='tbl'){const T=lgPts(P);const shown=T.slice(0,n);
+ if(md==='tbl'){const T=lgPts(P,it.wr);const shown=T.slice(0,n);
   lines.push({tbl:[['س',...T.map((q,i)=>i<n||!it.q?fmt(q[0]):'')],['ص',...T.map((q,i)=>i<n?fmt(q[1]):'؟')]],px:15});
   shown.forEach((q,i)=>{dot(g,[q[0]/sc,q[1]/sc],C3.b,6);wl(g,pair(fmt(q[0]),fmt(q[1])),[q[0]/sc,q[1]/sc],P.A*P.B>0?-30:30,-14,13,C3.b)});
   if(n>0&&n<=T.length){const q=T[n-1];lines.push({s:'عوّضي س = '+fmt(q[0])+' ← ص = '+fmt(q[1]),c:C3.o,b:1,px:15})}
-  if(n>=T.length){fullLine(g,m,b,C3.b,Math.max(2,3*k));lines.push({s:'صِلي النقاط بمستقيم: كل نقطة عليه حلٌّ للمعادلة',c:C3.g,b:1,px:14})}
+  if(n>=T.length){if(it.wr){const q0=T[0],q2=T[T.length-1];const mm=(q2[1]-q0[1])/(q2[0]-q0[0]);fullLine(g,mm,q0[1]-mm*q0[0],C3.b,Math.max(2,3*k))}else fullLine(g,m,b,C3.b,Math.max(2,3*k));lines.push({s:'صِلي النقاط بمستقيم: كل نقطة عليه حلٌّ للمعادلة',c:C3.g,b:1,px:14})}
   else lines.push({s:'اضغطي «النقطة التالية»',c:C3.m,px:13})}
- else{const xi=P.C/P.A,yi=P.C/P.B;
+ else{const xi=it.wr?P.C/P.B:P.C/P.A,yi=it.wr?P.C/P.A:P.C/P.B;
   if(n>=1){lines.push({s:'المقطع السيني: ضعي ص = ٠',c:C3.o,b:1,px:15});lines.push({tok:[...termsTok([[P.A,'س']]),{s:'='},...numTok(P.C)],px:17});lines.push({tok:[{s:'س ='},...numTok(xi)],px:17,c:C3.o,b:1});dot(g,[xi/sc,0],C3.o,7);wl(g,pair(numStr(xi),dg(0)),[xi/sc,0],0,24,14,C3.o)}
   if(n>=2){lines.push({s:'المقطع الصادي: ضعي س = ٠',c:C3.p,b:1,px:15});lines.push({tok:[...termsTok([[P.B,'ص']]),{s:'='},...numTok(P.C)],px:17});lines.push({tok:[{s:'ص ='},...numTok(yi)],px:17,c:C3.p,b:1});dot(g,[0,yi/sc],C3.p,7);wl(g,pair(dg(0),numStr(yi)),[0,yi/sc],-36,0,14,C3.p)}
-  if(n>=3){fullLine(g,m,b,C3.b,Math.max(2,3*k));lines.push({s:'صِلي المقطعين بمستقيم',c:C3.g,b:1,px:14})}
+  if(n>=3){if(it.wr)fullLine(g,-yi/xi,yi,C3.b,Math.max(2,3*k));else fullLine(g,m,b,C3.b,Math.max(2,3*k));lines.push({s:'صِلي المقطعين بمستقيم',c:C3.g,b:1,px:14})}
   if(n<3)lines.push({s:'اضغطي «الخطوة التالية»',c:C3.m,px:13})}
  const A=cAof(it);labCard(g,it,lines,A[0],A[1],c3W())}
 function lgBox(it){const A=cAof(it);return cardBox(it,A[0],A[1],c3W())}
@@ -1633,9 +1672,9 @@ function drawZero(g,it,ghost){const Z=ZR_P[(it.pi||0)%ZR_P.length],m=Z[0],b=Z[1]
  const lines=[{s:'حل المعادلة الخطية بيانياً',b:1,al:'c',px:18},{s:'المعادلة:',c:C3.m,px:14},{tok:[...termsTok([[m,'س'],[b,'']]),{s:'='},{s:dg(0)}],px:20,b:1},{s:'الدالة المرتبطة بها:',c:C3.m,px:14},{tok:[{s:'د(س)'},{s:'='},...termsTok([[m,'س'],[b,'']])],px:19,c:C3.b,b:1}];
  if(it.q)lines.push({s:'مثّلي الدالة، ثم حدّدي أين يقطع المستقيم محور السينات',b:1});
  else if(it.sh){if(m===0){lines.push({s:'المستقيم أفقي ولا يقطع محور السينات',c:C3.r,b:1,px:15});lines.push({s:'إذن: لا يوجد حل (الدالة ليس لها صفر)',c:C3.r,b:1,px:16})}
-  else{const r=-b/m;const R=[r/sc,0];g.save();g.strokeStyle=C3.g;g.lineWidth=3;g.beginPath();g.arc(sx(R[0]),sy(R[1]),13*Math.max(.8,k),0,7);g.stroke();g.restore();dot(g,R,C3.g,7);wl(g,'صفر الدالة',R,0,-30,14,C3.g);
+  else{const r=it.wr?b/m:-b/m;const R=[r/sc,0];g.save();g.strokeStyle=C3.g;g.lineWidth=3;g.beginPath();g.arc(sx(R[0]),sy(R[1]),13*Math.max(.8,k),0,7);g.stroke();g.restore();dot(g,R,C3.g,7);wl(g,'صفر الدالة',R,0,-30,14,C3.g);
    lines.push({s:'المستقيم يقطع محور السينات عند س = '+numStr(r),c:C3.g,b:1,px:15});lines.push({s:'الحل = صفر الدالة = '+numStr(r),c:C3.g,b:1,px:17});
-   lines.push({s:'تحقّقي: '+termsStr([[m,'']])+'('+numStr(r)+')'+(b?(b>0?' + ':' − ')+dg(Math.abs(b)):'')+' = ٠ ✓',c:C3.m,px:14})}}
+   if(!it.wr)lines.push({s:'تحقّقي: '+termsStr([[m,'']])+'('+numStr(r)+')'+(b?(b>0?' + ':' − ')+dg(Math.abs(b)):'')+' = ٠ ✓',c:C3.m,px:14})}}
  else lines.push({s:'اضغطي «أظهري الحل»',c:C3.m,px:13});
  const A=cAof(it);labCard(g,it,lines,A[0],A[1],c3W())}
 function zeroBox(it){const A=cAof(it);return cardBox(it,A[0],A[1],c3W())}
@@ -1651,25 +1690,26 @@ function drawSlope(g,it,ghost){const sc=SC(),k=K(),A=it.p[0],B=it.p[1];const a=A
  const par=v=>v<0?'('+fmt(v)+')':fmt(v);
  const lines=[{s:'معدل التغير والميل',b:1,al:'c',px:18},{tok:[{s:'م ='},{frac:['ص٢ − ص١','س٢ − س١']},{s:'='},{frac:['التغير الرأسي','التغير الأفقي']}],px:16,hh:2.5}];
  if(it.q)lines.push({s:'أوجدي ميل المستقيم المار بالنقطتين أ ، ب',b:1});
- else{lines.push({tok:[{s:'م ='},{frac:[fmt(b[1])+' − '+par(a[1]),fmt(b[0])+' − '+par(a[0])]},{s:'='},{frac:[fmt(dy),fmt(dx)]},...(Math.abs(dx)>1e-9?[{s:'='},...numTok(dy/dx)]:[])],px:17,hh:2.6,b:1});
+ else{if(it.wr&&Math.abs(dy)>1e-9){lines.push({tok:[{s:'م ='},{frac:[fmt(b[0])+' − '+par(a[0]),fmt(b[1])+' − '+par(a[1])]},{s:'='},{frac:[fmt(dx),fmt(dy)]},{s:'='},...numTok(dx/dy)],px:17,hh:2.6,b:1})}else
+  lines.push({tok:[{s:'م ='},{frac:[fmt(b[1])+' − '+par(a[1]),fmt(b[0])+' − '+par(a[0])]},{s:'='},{frac:[fmt(dy),fmt(dx)]},...(Math.abs(dx)>1e-9?[{s:'='},...numTok(dy/dx)]:[])],px:17,hh:2.6,b:1});
   const ty=Math.abs(dx)<1e-9?['الميل غير معرّف: المستقيم رأسي (لا يمكن القسمة على صفر)',C3.r]:Math.abs(dy)<1e-9?['الميل = صفر: المستقيم أفقي',C3.p]:dy/dx>0?['الميل موجب: المستقيم يرتفع من اليسار إلى اليمين',C3.g]:['الميل سالب: المستقيم ينخفض من اليسار إلى اليمين',C3.o];
   lines.push({s:ty[0],c:ty[1],b:1,px:15})}
  const Q=cAof(it);labCard(g,it,lines,Q[0],Q[1],c3W())}
 function slopeBox(it){const Q=cAof(it);return uni(boxOf(it.p.slice(0,2),.8),cardBox(it,Q[0],Q[1],c3W()))}
 
 /* ===== 7) arithmetic sequences as linear functions ===== */
-function drawSeq(g,it,ghost){const a1=it.a1==null?3:it.a1,d=it.d==null?2:it.d,sc=SC(),k=K();const T=[1,2,3,4,5].map(n=>[n,a1+(n-1)*d]);
+function drawSeq(g,it,ghost){const a1=it.a1==null?3:it.a1,d0=it.d==null?2:it.d,d=d0,sc=SC(),k=K();const T=[1,2,3,4,5].map(n=>[n,a1+(n-1)*d]);
  const W2=T.map(q=>[q[0]/sc,q[1]/sc]);if(!it.q)fullLine(g,d,a1-d,'#9fb7e8',Math.max(1.5,2*k),true);
  for(let i=0;i<4;i++){const p=W2[i],q=W2[i+1],c=[q[0],p[1]];seg(g,p,c,C3.o,2*Math.max(.7,k));seg(g,c,q,C3.g,2*Math.max(.7,k));if(!it.q)wl(g,sgn(d),[c[0],(c[1]+q[1])/2],18,0,13,C3.g)}
  W2.forEach((q,i)=>{dot(g,q,C3.b,6);wl(g,pair(dg(i+1),fmt(T[i][1])),q,0,d>=0?-18:18,12,C3.b)});
  const lines=[{s:'المتتابعات الحسابية كدوال خطية',b:1,al:'c',px:18},{s:T.map(q=>fmt(q[1])).join('، ')+'، ...',px:20,b:1,al:'c'}];
  lines.push({tbl:[['ن',...T.map(q=>dg(q[0]))],['الحد',...T.map(q=>fmt(q[1]))]],px:15});
  if(it.q)lines.push({s:'أوجدي أساس المتتابعة، واكتبي معادلة الحد النوني',b:1});
- else{lines.push({s:'أساس المتتابعة: د = '+fmt(a1+d)+' − '+(a1<0?'('+fmt(a1)+')':fmt(a1))+' = '+fmt(d),c:C3.g,b:1,px:15});
+ else{const dW=it.wr?-d:d;lines.push({s:it.wr?'أساس المتتابعة: د = '+fmt(a1)+' − '+(a1+d<0?'('+fmt(a1+d)+')':fmt(a1+d))+' = '+fmt(dW):'أساس المتتابعة: د = '+fmt(a1+d)+' − '+(a1<0?'('+fmt(a1)+')':fmt(a1))+' = '+fmt(d),c:C3.g,b:1,px:15});
   lines.push({tok:[{s:'أ'},{s:'ن',sub:1},{s:'='},{s:'أ'},{s:'١',sub:1},{s:'+'},{s:'(ن − ١)د'}],px:17});
-  lines.push({tok:[{s:'أ'},{s:'ن',sub:1},{s:'='},{s:fmt(a1)},{s:'+'},{s:'(ن − ١)'+(d<0?'('+fmt(d)+')':fmt(d))}],px:17});
-  lines.push({tok:[{s:'أ'},{s:'ن',sub:1},{s:'='},...termsTok([[d,'ن'],[a1-d,'']])],px:18,c:C3.b,b:1});
-  if(it.nq){const v=a1+(it.nq-1)*d;lines.push({tok:[{s:'أ'},{s:dg(it.nq),sub:1},{s:'='},{s:fmt(a1)},{s:'+'},{s:'('+dg(it.nq)+' − ١)'+(d<0?'('+fmt(d)+')':fmt(d))},{s:'='},{s:fmt(v)}],px:16,c:C3.p,b:1})}
+  lines.push({tok:[{s:'أ'},{s:'ن',sub:1},{s:'='},{s:fmt(a1)},{s:'+'},{s:'(ن − ١)'+(dW<0?'('+fmt(dW)+')':fmt(dW))}],px:17});
+  lines.push({tok:[{s:'أ'},{s:'ن',sub:1},{s:'='},...termsTok([[dW,'ن'],[a1-dW,'']])],px:18,c:C3.b,b:1});
+  if(it.nq){const v=a1+(it.nq-1)*dW;lines.push({tok:[{s:'أ'},{s:dg(it.nq),sub:1},{s:'='},{s:fmt(a1)},{s:'+'},{s:'('+dg(it.nq)+' − ١)'+(dW<0?'('+fmt(dW)+')':fmt(dW))},{s:'='},{s:fmt(v)}],px:16,c:C3.p,b:1})}
   lines.push({s:'المتتابعة الحسابية دالة خطية، وأساسها د هو ميل المستقيم',c:C3.m,px:13})}
  const A=cAof(it);labCard(g,it,lines,A[0],A[1],c3W())}
 function seqBox(it){const A=cAof(it);return cardBox(it,A[0],A[1],c3W())}
@@ -1677,9 +1717,9 @@ function seqBox(it){const A=cAof(it);return cardBox(it,A[0],A[1],c3W())}
 /* ===== 8) slope-intercept form ===== */
 var SLP=[-3,-2,-1.5,-1,-2/3,-.5,-1/3,0,1/3,.5,2/3,1,1.5,2,3];
 function drawSi(g,it,ghost){const m=it.m==null?2:it.m,b=it.b==null?1:it.b,sc=SC(),k=K(),f=q3(m)||[m,1];
- fullLine(g,m,b,C3.b,Math.max(2,3*k));
+ if(it.wr){const mW=b===m?-m:b,bW=m;fullLine(g,mW,bW,C3.b,Math.max(2,3*k));dot(g,[0,bW/sc],C3.p,7)}else fullLine(g,m,b,C3.b,Math.max(2,3*k));
  const B0=[0,b/sc];
- if(!it.q){/* two slope steps from the intercept */const run=f[1],rise=f[0];let p=[0,b];for(let s=0;s<2&&rise!==0;s++){const c=[p[0]+run,p[1]],q=[p[0]+run,p[1]+rise];seg(g,[p[0]/sc,p[1]/sc],[c[0]/sc,c[1]/sc],C3.o,Math.max(2,2.5*k),false,1);seg(g,[c[0]/sc,c[1]/sc],[q[0]/sc,q[1]/sc],C3.g,Math.max(2,2.5*k),false,1);
+ if(!it.q&&!it.wr){/* two slope steps from the intercept */const run=f[1],rise=f[0];let p=[0,b];for(let s=0;s<2&&rise!==0;s++){const c=[p[0]+run,p[1]],q=[p[0]+run,p[1]+rise];seg(g,[p[0]/sc,p[1]/sc],[c[0]/sc,c[1]/sc],C3.o,Math.max(2,2.5*k),false,1);seg(g,[c[0]/sc,c[1]/sc],[q[0]/sc,q[1]/sc],C3.g,Math.max(2,2.5*k),false,1);
    if(s===0){wl(g,dg(run),[(p[0]+c[0])/2/sc,p[1]/sc],0,rise>0?16:-16,14,C3.o);wl(g,fmt(rise),[c[0]/sc,(c[1]+q[1])/2/sc],18,0,14,C3.g)}dot(g,[q[0]/sc,q[1]/sc],C3.b,5);p=q}
   dot(g,B0,C3.p,7);wl(g,'المقطع الصادي '+pair(dg(0),fmt(b)),B0,-58,b>=0?-16:16,13,C3.p)}
  const lines=[{s:'صيغة الميل والمقطع',b:1,al:'c',px:18},{tok:[{s:'ص'},{s:'='},{s:'م'},{s:'س'},{s:'+'},{s:'ب'}],px:17,c:C3.m}];
@@ -1697,12 +1737,12 @@ function siBox(it){const A=cAof(it);return cardBox(it,A[0],A[1],c3W())}
 function drawPs(g,it,ghost){const P=it.p[0],sc=SC(),k=K(),m=it.m==null?2:it.m,x1=Math.round(W2V(P[0])),y1=Math.round(W2V(P[1]));const b=y1-m*x1;
  fullLine(g,m,b,C3.b,Math.max(2,3*k));dot(g,P,C3.o,7);wl(g,pair(fmt(x1),fmt(y1)),P,0,-20,15,C3.o);if(!ghost&&g===ctx)handleDot(g,[sx(P[0]),sy(P[1])]);
  const f=q3(m)||[m,1];if(!it.q&&m!==0){const c=[x1+f[1],y1],q=[x1+f[1],y1+f[0]];seg(g,[x1/sc,y1/sc],[c[0]/sc,c[1]/sc],C3.o,Math.max(2,2.5*k),false,1);seg(g,[c[0]/sc,c[1]/sc],[q[0]/sc,q[1]/sc],C3.g,Math.max(2,2.5*k),false,1)}
- const yS=v=>v===0?'ص':v>0?'ص − '+dg(v):'ص + '+dg(-v),xS=v=>v===0?'س':v>0?'س − '+dg(v):'س + '+dg(-v);
+ const SG=it.wr?-1:1,yS=v0=>{const v=v0*SG;return v===0?'ص':v>0?'ص − '+dg(v):'ص + '+dg(-v)},xS=v0=>{const v=v0*SG;return v===0?'س':v>0?'س − '+dg(v):'س + '+dg(-v)};
  const lines=[{s:'صيغة الميل ونقطة',b:1,al:'c',px:18},{tok:[{s:'ص − ص'},{s:'١',sub:1},{s:'='},{s:'م(س − س'},{s:'١',sub:1},{s:')'}],px:17,c:C3.m},
   {s:'النقطة (س١، ص١) = '+pair(fmt(x1),fmt(y1))+'  ،  الميل م = '+numStr(m),px:14}];
  if(it.q)lines.push({s:'اكتبي معادلة المستقيم بصيغة الميل ونقطة',b:1});
  else{lines.push({tok:[{s:yS(y1)},{s:'='},...(m===1?[{s:'('+xS(x1)+')'}]:m===-1?[{s:'−('+xS(x1)+')'}]:Number.isInteger(m)?[{s:(m<0?'−':'')+dg(Math.abs(m))+'('+xS(x1)+')'}]:[...numTok(m),{s:'('+xS(x1)+')'}])],px:21,b:1,c:C3.b});
-  lines.push({s:'وبصيغة الميل والمقطع:',c:C3.m,px:14});lines.push({tok:lineTok(m,b),px:19,b:1,c:C3.g})}
+  lines.push({s:'وبصيغة الميل والمقطع:',c:C3.m,px:14});lines.push({tok:lineTok(m,it.wr?-y1+m*x1:b),px:19,b:1,c:C3.g})}
  const A=cAof(it);labCard(g,it,lines,A[0],A[1],c3W())}
 function psBox(it){const A=cAof(it);return uni(boxOf([it.p[0]],1),cardBox(it,A[0],A[1],c3W()))}
 
@@ -1710,31 +1750,31 @@ function psBox(it){const A=cAof(it);return uni(boxOf([it.p[0]],1),cardBox(it,A[0
 var PPM=[-3,-2,-1,-.5,0,.5,1,2,3];
 function drawPp(g,it,ghost){const sc=SC(),k=K(),m=it.m==null?2:it.m,b=it.b==null?-1:it.b,per=it.mode==='per',P=it.p[0],px=Math.round(W2V(P[0])),py=Math.round(W2V(P[1]));
  fullLine(g,m,b,C3.b,Math.max(2,3*k));lineLabel(g,m,b,lineTok(m,b),C3.b,1);
- let m2,b2;if(per){if(m===0){m2=null;b2=px}else{m2=-1/m;b2=py-m2*px}}else{m2=m;b2=py-m*px}
+ let m2,b2;if(per){if(m===0){m2=null;b2=px}else{m2=it.wr?-m:-1/m;b2=py-m2*px}}else{m2=it.wr&&m!==0?-m:m;b2=py-m2*px}
  fullLine(g,m2,b2,C3.o,Math.max(2,3*k));lineLabel(g,m2,b2,m2===null?'س = '+fmt(px):lineTok(m2,b2),C3.o,-1);
  dot(g,P,C3.o,7);wl(g,pair(fmt(px),fmt(py)),P,0,-20,14,C3.o);if(!ghost&&g===ctx)handleDot(g,[sx(P[0]),sy(P[1])]);
- if(per){let X,Y;if(m2===null){X=px;Y=m*px+b}else{X=(b2-b)/(m-m2);Y=m*X+b}const R=[X/sc,Y/sc];const u=[1,m],ul=Math.hypot(...u),v=m2===null?[0,1]:[1,m2],vl=Math.hypot(...v);
+ if(per&&!it.wr){let X,Y;if(m2===null){X=px;Y=m*px+b}else{X=(b2-b)/(m-m2);Y=m*X+b}const R=[X/sc,Y/sc];const u=[1,m],ul=Math.hypot(...u),v=m2===null?[0,1]:[1,m2],vl=Math.hypot(...v);
   rightMark(g,R,[u[0]/ul*1.6,u[1]/ul*1.6],[v[0]/vl*1.6*(m2!==null&&m2<0?-1:1),v[1]/vl*1.6*(m2!==null&&m2<0?-1:1)],C3.r)}
  const lines=[{s:per?'المستقيمات المتعامدة':'المستقيمات المتوازية',b:1,al:'c',px:18},{tok:[{s:'المستقيم ١:'},...lineTok(m,b)],px:16,c:C3.b,b:1},
   {tok:[{s:'المستقيم ٢:'},...(m2===null?[{s:'س = '+fmt(px)}]:lineTok(m2,b2))],px:16,c:C3.o,b:1}];
  if(it.q)lines.push({s:per?'كيف تعرفين أن المستقيمين متعامدان من ميليهما؟':'كيف تعرفين أن المستقيمين متوازيان من ميليهما؟',b:1});
- else if(!per){lines.push({tok:[{s:'م١ ='},...numTok(m),{s:'،  م٢ ='},...numTok(m)],px:16});lines.push({s:'الميلان متساويان والمقطعان مختلفان ← المستقيمان متوازيان',c:C3.g,b:1,px:15})}
+ else if(!per){lines.push({tok:[{s:'م١ ='},...numTok(m),{s:'،  م٢ ='},...numTok(m2)],px:16});lines.push({s:'الميلان متساويان والمقطعان مختلفان ← المستقيمان متوازيان',c:C3.g,b:1,px:15})}
  else if(m===0){lines.push({s:'المستقيم الأفقي (ميله صفر) يعامد المستقيمَ الرأسي (ميله غير معرّف)',c:C3.g,b:1,px:15})}
- else{lines.push({tok:[{s:'م١ × م٢ ='},...numTok(m),{s:'×'},...(m2<0?[{s:'('},...numTok(m2),{s:')'}]:numTok(m2)),{s:'='},{s:fmt(-1)}],px:16,hh:2});lines.push({s:'حاصل ضرب الميلين = \u202D١−\u202C ← المستقيمان متعامدان',c:C3.g,b:1,px:15});lines.push({s:'ميل العمودي = مقلوب الميل مع تغيير الإشارة',c:C3.m,px:13})}
+ else{lines.push({tok:[{s:'م١ × م٢ ='},...numTok(m),{s:'×'},...(m2<0?[{s:'('},...numTok(m2),{s:')'}]:numTok(m2)),{s:'='},{s:fmt(it.wr?m*m2:-1)}],px:16,hh:2});lines.push({s:'حاصل ضرب الميلين = \u202D١−\u202C ← المستقيمان متعامدان',c:C3.g,b:1,px:15});lines.push({s:'ميل العمودي = مقلوب الميل مع تغيير الإشارة',c:C3.m,px:13})}
  const A=cAof(it);labCard(g,it,lines,A[0],A[1],c3W())}
 function ppBox(it){const A=cAof(it);return uni(boxOf([it.p[0]],1),cardBox(it,A[0],A[1],c3W()))}
 
 /* ===== 11) solving inequalities ===== */
 var INQ_P=[[1,4,'<',7],[1,-3,'≥',2],[3,0,'≤',12],[-2,0,'<',6],[2,-3,'>',5],[-3,1,'≥',-8],[-1,2,'≤',5]];
-function inqSteps(a,b,op,c){const S0=[{e:[a,b,op,c]}];if(b){c-=b;S0.push({e:[a,0,op,c],t:b>0?'اطرحي '+dg(b)+' من الطرفين':'أضيفي '+dg(-b)+' إلى الطرفين'});b=0}
- if(a!==1){if(a===-1){S0.push({e:[1,0,FLIP[op],-c],t:'اضربي الطرفين في \u202D١−\u202C واقلبي إشارة المتباينة',fl:1})}else S0.push({e:[1,0,a<0?FLIP[op]:op,c/a],t:'اقسمي الطرفين على '+(a<0?'('+fmt(a)+')':dg(a))+(a<0?' واقلبي إشارة المتباينة':''),fl:a<0});}return S0}
-function drawInq(g,it,ghost){const O=it.p[0],e0=INQ_P[(it.pi||0)%INQ_P.length],ST=inqSteps(...e0),s=Math.min(it.s||0,ST.length-1),fin=ST[ST.length-1].e,k0=fin[3],op=fin[2];
+function inqSteps(a,b,op,c,wr){const S0=[{e:[a,b,op,c]}];if(b){c-=b;S0.push({e:[a,0,op,c],t:b>0?'اطرحي '+dg(b)+' من الطرفين':'أضيفي '+dg(-b)+' إلى الطرفين'});b=0}
+ if(a!==1){if(a===-1){S0.push({e:[1,0,wr?op:FLIP[op],-c],t:'اضربي الطرفين في \u202D١−\u202C'+(wr?'':' واقلبي إشارة المتباينة'),fl:!wr})}else S0.push({e:[1,0,a<0&&!wr?FLIP[op]:op,c/a],t:'اقسمي الطرفين على '+(a<0?'('+fmt(a)+')':dg(a))+(a<0&&!wr?' واقلبي إشارة المتباينة':''),fl:a<0&&!wr});}return S0}
+function drawInq(g,it,ghost){const O=it.p[0],e0=INQ_P[(it.pi||0)%INQ_P.length],ST=inqSteps(...e0,it.wr),s=Math.min(it.s||0,ST.length-1),fin=ST[ST.length-1].e,k0=fin[3],op=it.wr&&e0[0]>0?({'<':'≤','≤':'<','>':'≥','≥':'>'}[fin[2]]):fin[2];
  const lo=Math.round(k0)-6,hi=Math.round(k0)+6,X=nlDraw(g,O,lo,hi);
  const lines=[{s:'حل المتباينات',b:1,al:'c',px:18}];
  for(let i=0;i<=s;i++){const E=ST[i].e;if(ST[i].t)lines.push({s:ST[i].t+(ST[i].fl?' ⚠️':''),c:ST[i].fl?C3.r:C3.o,b:1,px:15});lines.push({tok:[...termsTok([[E[0],'س'],[E[1],'']]),{s:E[2]},{s:fmt(E[3])}],px:20,c:i===s?C3.d:C3.m,b:i===s?1:0})}
  if(s===ST.length-1){if(labDone(it)||it.rv>=it._tot-1){nlIv(g,X,O[1],lo,hi,rayIv(op,k0),C3.g,0);ltxt(g,fmt(k0),sx(X(k0)),sy(O[1])-22*Math.max(.8,K()),16,C3.g,true)}
   lines.push({s:(op==='<'||op==='>')?'دائرة مفتوحة: العدد '+fmt(k0)+' ليس من الحلول':'دائرة مغلقة: العدد '+fmt(k0)+' من الحلول',c:C3.g,px:14});
-  const tv=k0+((op==='>'||op==='≥')?2:-2);const L=e0[0]*tv+e0[1];lines.push({s:'تحقّقي بعدد من المنطقة المظللة: س = '+fmt(tv)+' ← '+fmt(L)+' '+e0[2]+' '+fmt(e0[3])+' ✓',c:C3.m,px:13})}
+  const tv=k0+((op==='>'||op==='≥')?2:-2);const L=e0[0]*tv+e0[1];if(!it.wr)lines.push({s:'تحقّقي بعدد من المنطقة المظللة: س = '+fmt(tv)+' ← '+fmt(L)+' '+e0[2]+' '+fmt(e0[3])+' ✓',c:C3.m,px:13})}
  else lines.push({s:'اضغطي «الخطوة التالية»',c:C3.m,px:13});
  labCard(g,it,lines,O[0],O[1]-1.5,12)}
 function inqBox(it){const O=it.p[0];return uni([O[0]-7,O[1]-1.5,O[0]+7,O[1]+1],cardBox(it,O[0],O[1]-1.5,12))}
@@ -1746,7 +1786,7 @@ function cmpStr(P,c,b,full){const L=b?termsStr([[1,'س'],[b,'']]):'س';const [oa
  return L+' '+oa+' '+fmt(ka)+'  '+c+'  '+L+' '+ob+' '+fmt(kb)}
 function drawCmp(g,it,ghost){const O=it.p[0],P=CMP_P[(it.pi||0)%CMP_P.length],c=it.c||P.c,b=P.b;
  const A=[P.A[0],P.A[1]-b],B=[P.B[0],P.B[1]-b];const ks=[A[1],B[1]];const lo=Math.min(...ks)-4,hi=Math.max(...ks)+4;const ia=rayIv(...A),ib=rayIv(...B);
- const res=c==='و'?ivAnd(ia,ib):ivOr(ia,ib);
+ const res=(c==='و')!==!!it.wr?ivAnd(ia,ib):ivOr(ia,ib);
  const rows=[[O[1]+.4,ia,C3.b,'س '+A[0]+' '+fmt(A[1])],[O[1]-2.1,ib,C3.o,'س '+B[0]+' '+fmt(B[1])],[O[1]-4.6,null,C3.g,c==='و'?'«و»: الأعداد المشتركة (التقاطع)':'«أو»: كل الأعداد المظللة (الاتحاد)']];
  rows.forEach(([y,iv,col,t],ri)=>{const X=nlDraw(g,[O[0],y],lo,hi);g.save();g.font=labFont(15,1);const tw=g.measureText(t).width;g.restore();ltxt(g,t,sx(X(hi)+.8)-tw/2,sy(y)-24*Math.max(.8,K()),15,col,true);
   if(ri<2)nlIv(g,X,y,lo,hi,iv,col,0);else if(!it.q&&labDone(it))res.forEach(r=>nlIv(g,X,y,lo,hi,r,col,0))});
@@ -1777,7 +1817,7 @@ var SYS_P=[
  {E:[[1,1,2,'ص = −س + ٢'],[2,2,4,'٢س + ٢ص = ٤']],sol:null,ty:2,
   s:['عوّضي −س + ٢ بدلاً من ص في المعادلة الثانية:','٢س + ٢(−س + ٢) = ٤','٤ = ٤  عبارة صحيحة دائماً ✓'],
   e:['اضربي المعادلة الأولى (س + ص = ٢) في ٢:','٢س + ٢ص = ٤','وهي نفس المعادلة الثانية ← المستقيمان متطابقان']}];
-function drawSys(g,it,ghost){const P=SYS_P[(it.pi||0)%SYS_P.length],sc=SC(),k=K(),mt=it.mt||'g',n=it.n||0;
+function drawSys(g,it,ghost){const P0=SYS_P[(it.pi||0)%SYS_P.length],P=it.wr?Object.assign({},P0,{sol:P0.sol?[P0.sol[1],P0.sol[0]]:null,ty:P0.sol?P0.ty:(P0.ty===0?2:0)}):P0,sc=SC(),k=K(),mt=it.mt||'g',n=it.n||0;
  const ln=(E,col,side,dash)=>{if(Math.abs(E[1])<1e-9){fullLine(g,null,E[2]/E[0],col,Math.max(2,3*k),dash);return}const m=-E[0]/E[1],b=E[2]/E[1];fullLine(g,m,b,col,Math.max(2,3*k),dash);lineLabel(g,m,b,E[3],col,side)};
  ln(P.E[0],C3.b,1);ln(P.E[1],C3.o,-1,P.ty===2);
  const show=mt==='g'?n>=1:n>=(mt==='s'?P.s:P.e).length;
@@ -1876,6 +1916,227 @@ function bindLabs3(){const on=(id,f)=>{const e=$('#'+id);if(e)e.onclick=f};const
  on('l3SySt',()=>step('sys',it=>{const P=SYS_P[(it.pi||0)%SYS_P.length],mx=it.mt==='g'||!it.mt?1:(it.mt==='s'?P.s:P.e).length;if((it.n||0)>=mx){toast('اكتمل الحل ✓');return}it.n=(it.n||0)+1}));
 }
 
+/* ================= GRADE 7 (أول متوسط) LABS ================= */
+function rvK(it){return it.rv==null?999:it.rv}
+function g7qt(n,pos,kind){/* Arabic count phrase: n pieces positive/negative */const P=kind==='b'?['بطاقة','بطاقتين','بطاقات']:['قطعة','قطعتين','قطع'],A=pos?['موجبة','موجبتين','موجبة']:['سالبة','سالبتين','سالبة'];
+ if(n===1)return P[0]+' واحدة '+A[0];if(n===2)return P[1]+' '+A[1];if(n<=10)return dg(n)+' '+P[2]+' '+A[2];return dg(n)+' '+P[0]+' '+A[0]}
+function pN(v){return v<0?'('+fmt(v)+')':fmt(v)}
+function g7counter(g,c,pos,al,mk){const k=Math.max(.7,K()),r=.36*S.G;g.save();g.globalAlpha=al==null?1:al;g.fillStyle=pos?'#ffd43b':'#f03e3e';g.strokeStyle=pos?'#b08900':'#a51111';g.lineWidth=2*k;g.beginPath();g.arc(sx(c[0]),sy(c[1]),r,0,7);g.fill();g.stroke();
+ g.strokeStyle=pos?'#5c4500':'#fff';g.lineWidth=2.6*k;g.beginPath();g.moveTo(sx(c[0])-r*.5,sy(c[1]));g.lineTo(sx(c[0])+r*.5,sy(c[1]));if(pos){g.moveTo(sx(c[0]),sy(c[1])-r*.5);g.lineTo(sx(c[0]),sy(c[1])+r*.5)}g.stroke();
+ if(mk==='new'){g.globalAlpha=1;g.strokeStyle='#2f9e44';g.lineWidth=3*k;g.beginPath();g.arc(sx(c[0]),sy(c[1]),r+4*k,0,7);g.stroke()}
+ if(mk==='del'){g.globalAlpha=1;g.strokeStyle='#1d2433';g.lineWidth=2.4*k;g.beginPath();g.moveTo(sx(c[0])-r,sy(c[1])-r);g.lineTo(sx(c[0])+r,sy(c[1])+r);g.moveTo(sx(c[0])+r,sy(c[1])-r);g.lineTo(sx(c[0])-r,sy(c[1])+r);g.stroke()}g.restore()}
+function g7mat(g,cx,cy,w,h){const k=K();g.save();g.fillStyle='#fffdf5';g.strokeStyle='#4f5d75';g.lineWidth=2.4*k;g.beginPath();const X=sx(cx-w/2),Y=sy(cy+h/2);if(g.roundRect)g.roundRect(X,Y,w*S.G,h*S.G,10*k);else g.rect(X,Y,w*S.G,h*S.G);g.fill();g.stroke();g.restore()}
+/* counters on a mat; list of {pos, m:''|'new'|'del'|'pair'} ; pairs drawn side by side */
+function g7layout(L,cx,cy,w){const per=Math.max(1,Math.floor((w-.4)/.95)),rows=Math.ceil(L.length/per);return L.map((c,i)=>{const r=Math.floor(i/per),j=i%per,n=Math.min(per,L.length-r*per);return [cx+((n-1)/2-j)*.95,cy+((rows-1)/2-r)*.95]})}
+function g7nlArrows(g,X,y,moves,col){/* moves: [[from,to,label,color]] drawn above the line */const k=Math.max(.8,K());moves.forEach((m,i)=>{const yy=y+.75+i*.75;seg(g,[X(m[0]),yy],[X(m[1]),yy],m[3]||col,Math.max(2,3*K()),false,1);
+  g.save();g.strokeStyle='#8a96a8';g.setLineDash([4,4]);g.lineWidth=1.2;g.beginPath();g.moveTo(sx(X(m[0])),sy(y));g.lineTo(sx(X(m[0])),sy(yy));g.moveTo(sx(X(m[1])),sy(y));g.lineTo(sx(X(m[1])),sy(yy));g.stroke();g.restore();
+  ltxt(g,m[2],sx((X(m[0])+X(m[1]))/2),sy(yy)-12*k,14,m[3]||col,true)})}
+
+/* ===== 1) integers, absolute value, compare & order ===== */
+var G7INT={set:[[4,-6,0],[-2,5,3],[-7,1,-4]],abs:[-5,4,-8,7],cmp:[[-5,-3],[-8,-4],[5,-1],[-10,-13]],ord:[[4,0,-2,9,-6],[-1,-5,3,0,2]]};
+function drawG7int(g,it,ghost){const O=it.p[0],md=it.mode||'set',P=G7INT[md],e=P[(it.pi||0)%P.length],k=rvK(it);const R=[0.5];
+ let nums=md==='abs'?[e,0]:md==='cmp'?e:e;const lo=Math.min(-6,Math.min(...nums)-2),hi=Math.max(6,Math.max(...nums)+2);const X=nlDraw(g,O,lo,hi),y=O[1];
+ const lines=[{s:{set:'تمثيل الأعداد الصحيحة بيانياً',abs:'القيمة المطلقة',cmp:'مقارنة الأعداد الصحيحة',ord:'ترتيب الأعداد الصحيحة'}[md],b:1,al:'c',px:18}];
+ const mark=(v,col,lab)=>{dot(g,[X(v),y],col,7);ltxt(g,lab==null?fmt(v):lab,sx(X(v)),sy(y)-22*Math.max(.8,K()),16,col,true)};
+ if(md==='set'){lines.push({s:'مثّلي المجموعة {'+e.map(fmt).join('، ')+'} بيانياً على خط الأعداد',b:1});
+  const wi=it.wr?e.findIndex(v=>v<0):-1;e.forEach((v0,i)=>{const v=i===wi?-v0:v0,vt=v0;lines.push({s:fmt(vt)+(v===0?' ← عند الصفر':v>0?' ← '+dg(v)+(v===1?' وحدة':v===2?' وحدتان':' وحدات')+' يمين الصفر (عدد موجب)':' ← '+dg(-v)+(-v===1?' وحدة':-v===2?' وحدتان':' وحدات')+' يسار الصفر (عدد سالب)'),c:vt>0?C3.b:vt<0?C3.r:C3.d,px:15});if(k>=i+1)mark(v,vt>0?C3.b:vt<0?C3.r:C3.d,fmt(vt))})}
+ if(md==='abs'){lines.push({tok:[{s:'أوجدي'},{s:'|'+fmt(e)+'|'}],b:1,px:18});
+  lines.push({s:'النقطة '+fmt(e)+' على خط الأعداد',px:15});if(k>=1)mark(e,C3.p);
+  lines.push({s:'تبعد '+dg(Math.abs(e))+' وحدات عن الصفر',c:C3.o,b:1,px:15});if(k>=2){const yy=y+.8;seg(g,[X(0),yy],[X(e),yy],C3.o,Math.max(2,3*K()),false,1);ltxt(g,dg(Math.abs(e))+' وحدات',sx((X(0)+X(e))/2),sy(yy)-12*Math.max(.8,K()),14,C3.o,true)}
+  lines.push({tok:[{s:'إذن'},{s:'|'+fmt(e)+'|'},{s:'='},{s:it.wr?fmt(-Math.abs(e)):dg(Math.abs(e))}],c:C3.g,b:1,px:19});
+  lines.push({s:'القيمة المطلقة لعدد: المسافة بينه وبين الصفر على خط الأعداد، فهي لا تكون سالبة',c:C3.m,px:13})}
+ if(md==='cmp'){const [a,b]=e,op=(a<b)!==!!it.wr?'<':'>';lines.push({s:'ضعي > أو < لتصبح الجملة صحيحة:  '+fmt(a)+'  ●  '+fmt(b),b:1,px:17});
+  lines.push({s:'مثّلي العددين على خط الأعداد',px:15});if(k>=1){mark(a,C3.b);mark(b,C3.o)}
+  lines.push({s:(a<b)!==!!it.wr?fmt(a)+' يقع يسار '+fmt(b):fmt(a)+' يقع يمين '+fmt(b),px:15,c:C3.o,b:1});
+  lines.push({s:'العدد الواقع إلى اليسار دائماً أقل من العدد الواقع إلى اليمين',c:C3.m,px:13});
+  lines.push({s:'إذن  '+fmt(a)+'  '+op+'  '+fmt(b),c:C3.g,b:1,px:20})}
+ if(md==='ord'){lines.push({s:'رتّبي الأعداد من الأصغر إلى الأكبر: '+e.map(fmt).join('، '),b:1,px:16});
+  lines.push({s:'مثّلي الأعداد على خط الأعداد',px:15});if(k>=1)e.forEach(v=>mark(v,C3.b));
+  lines.push({s:'اقرئي الأعداد من اليسار إلى اليمين',c:C3.o,b:1,px:15});
+  lines.push({s:'الترتيب من الأصغر إلى الأكبر: '+e.slice().sort(it.wr?(a,b)=>Math.abs(a)-Math.abs(b):(a,b)=>a-b).map(fmt).join('، '),c:C3.g,b:1,px:17})}
+ labCard(g,it,lines,O[0],y-1.7,13)}
+function g7intBox(it){const O=it.p[0];return uni([O[0]-9,O[1]-1.5,O[0]+9,O[1]+2],cardBox(it,O[0],O[1]-1.7,13))}
+
+/* ===== 2) coordinate plane ===== */
+var G7CP=[['د',-4,2],['ك',2,-5],['ل',3,1],['هـ',-2,-3],['ن',0,4],['م',-5,0]];
+function quadName(x,y){if(x===0&&y===0)return 'هي نقطة الأصل';if(x===0)return 'تقع على محور الصادات';if(y===0)return 'تقع على محور السينات';return 'تقع في الربع '+(x>0&&y>0?'الأول':x<0&&y>0?'الثاني':x<0?'الثالث':'الرابع')}
+function drawG7cp(g,it,ghost){const sc=SC(),k=rvK(it),md=it.mode||'plot',[n,x0,y0]=G7CP[(it.pi||0)%G7CP.length],kk=Math.max(.8,K());const WR=!!it.wr&&x0!==y0;
+ [['الربع الأول',1,1],['الربع الثاني',-1,1],['الربع الثالث',-1,-1],['الربع الرابع',1,-1]].forEach(([t,a,b])=>ltxt(g,t,sx(a*3.2/sc),sy(b*5.5/sc),15,'rgba(31,78,156,.45)',true));
+ const lines=[{s:'المستوى الإحداثي',b:1,al:'c',px:18}];/* wrong: moves along the axes are swapped */const x=WR&&md==='plot'?y0:x0,y=WR&&md==='plot'?x0:y0,P=[x/sc,y/sc];
+ const showO=()=>{g.save();g.strokeStyle=C3.p;g.lineWidth=3;g.beginPath();g.arc(sx(0),sy(0),11*kk,0,7);g.stroke();g.restore();wl(g,'نقطة الأصل (٠، ٠)',[0,0],-62,18,13,C3.p)};
+ if(md==='plot'){lines.push({s:'مثّلي النقطة '+n+pair(fmt(x0),fmt(y0))+' بيانياً',b:1,px:17});
+  lines.push({s:'ابدئي من نقطة الأصل (٠، ٠)',px:15,c:C3.p});if(k===1)showO();
+  lines.push({s:x===0?'الإحداثي السيني ٠: لا تتحرّكي يميناً ولا يساراً':'الإحداثي السيني '+fmt(x0)+': تحرّكي '+dg(Math.abs(x))+(Math.abs(x)===1?' وحدة':Math.abs(x)===2?' وحدتين':' وحدات')+' إلى '+(x>0?'اليمين':'اليسار'),c:C3.o,b:1,px:15});
+  if(k>=2&&x!==0)seg(g,[0,0],[x/sc,0],C3.o,Math.max(3,4*K()),false,1);
+  lines.push({s:y===0?'الإحداثي الصادي ٠: لا تتحرّكي إلى أعلى ولا إلى أسفل':'الإحداثي الصادي '+fmt(y0)+': تحرّكي '+dg(Math.abs(y))+(Math.abs(y)===1?' وحدة':Math.abs(y)===2?' وحدتين':' وحدات')+' إلى '+(y>0?'أعلى':'أسفل'),c:C3.g,b:1,px:15});
+  if(k>=3&&y!==0)seg(g,[x/sc,0],P,C3.g,Math.max(3,4*K()),false,1);
+  lines.push({s:'عيّني النقطة '+n+' وسمّيها',px:15});if(k>=4){dot(g,P,C3.b,8);wl(g,n+pair(fmt(x0),fmt(y0)),P,0,-22,16,C3.b)}
+  lines.push({s:'النقطة '+n+' '+quadName(x,y),c:C3.g,b:1,px:16})}
+ else{dot(g,P,C3.b,8);wl(g,n,P,0,-20,17,C3.b);
+  lines.push({s:'اكتبي الزوج المرتّب الذي يعبّر عن النقطة '+n+'، ثم حدّدي الربع الذي تقع فيه',b:1,px:15});
+  lines.push({s:'ابدئي من نقطة الأصل',px:15,c:C3.p});if(k===1)showO();
+  lines.push({s:'تحرّكي على محور السينات '+(x>0?'يميناً':x<0?'يساراً':'(لا حركة)')+' لتحديد الإحداثي السيني: '+fmt(x),c:C3.o,b:1,px:15});if(k>=2&&x!==0)seg(g,[0,0],[x/sc,0],C3.o,Math.max(3,4*K()),false,1);
+  lines.push({s:'تحرّكي '+(y>0?'إلى أعلى':y<0?'إلى أسفل':'(لا حركة)')+' لإيجاد الإحداثي الصادي: '+fmt(y),c:C3.g,b:1,px:15});if(k>=3&&y!==0)seg(g,[x/sc,0],P,C3.g,Math.max(3,4*K()),false,1);
+  const rx=WR?y0:x0,ry=WR?x0:y0;lines.push({s:'إذن النقطة '+n+' تقابل الزوج المرتّب '+pair(fmt(rx),fmt(ry))+'، و'+quadName(x,y),c:C3.g,b:1,px:15});if(k>=4)wl(g,n+pair(fmt(rx),fmt(ry)),P,0,-20,17,C3.g)}
+ const A=cAof(it);labCard(g,it,lines,A[0],A[1],c3W())}
+function g7cpBox(it){const A=cAof(it);return cardBox(it,A[0],A[1],c3W())}
+
+/* ===== 3) adding integers with counters ===== */
+var G7ADD=[[-3,-6],[-4,2],[5,-3],[3,4],[-5,2],[-2,6]];
+function addExpr(a,b){return fmt(a)+' + '+pN(b)}
+function drawG7add(g,it,ghost){const O=it.p[0],e=[it.a==null?G7ADD[0][0]:it.a,it.b==null?G7ADD[0][1]:it.b],[a,b]=e,s=it.wr?(a*b<0?Math.sign(a)*(Math.abs(a)+Math.abs(b)):-(a+b)):a+b,k=rvK(it);
+ const mw=8,mh=3.6,mc=[O[0],O[1]+mh/2+.3];g7mat(g,mc[0],mc[1],mw,mh);
+ const mixed=a*b<0&&!it.wr,np=Math.min(Math.abs(a),Math.abs(b));
+ /* build counters: first group a, second group b; zero pairs = first np of each */
+ const L=[];const A1=[],B1=[];for(let i=0;i<Math.abs(a);i++)A1.push({pos:a>0});for(let i=0;i<Math.abs(b);i++)B1.push({pos:b>0});
+ const lines=[{s:'جمع الأعداد الصحيحة',b:1,al:'c',px:18},{s:'استعملي قطع العد لإيجاد '+addExpr(a,b),b:1,px:17}];
+ lines.push({s:'ضمّي '+(a?g7qt(Math.abs(a),a>0):'٠')+' مع '+(b?g7qt(Math.abs(b),b>0):'٠'),px:15});const st1=1;
+ let stPair=-1,stRem=-1;
+ if(mixed){lines.push({s:'احذفي جميع الأزواج الصفرية ('+dg(np)+(np===1?' زوج':np===2?' زوجان':' أزواج')+')',c:C3.o,b:1,px:15});stPair=2;lines.push({s:'أوجدي عدد القطع الباقية: '+(s?g7qt(Math.abs(s),s>0):'لا يبقى شيء ← المجموع صفر'),px:15});stRem=3}
+ else{lines.push({s:'أوجدي المجموع الكلي للقطع: '+g7qt(Math.abs(s),s>0),px:15});stRem=2}
+ const stEq=lines.length-2+1;lines.push({tok:[{s:'إذن'},{s:fmt(a)},{s:'+'},{s:pN(b)},{s:'='},{s:fmt(s)}],c:C3.g,b:1,px:20});
+ /* counters drawing */
+ if(k>=st1){let items;if(stRem>0&&k>=stRem){const n=Math.abs(s);items=Array.from({length:n},()=>({pos:s>0}))}
+  else if(mixed&&k>=stPair){/* pairs side by side, rest after */items=[];for(let i=0;i<np;i++){items.push({pos:true,m:'del',pr:1},{pos:false,m:'del',pr:1})}const rest=Math.abs(a)>Math.abs(b)?A1.slice(np):B1.slice(np);rest.forEach(c=>items.push({pos:c.pos}))}
+  else items=A1.concat(B1);
+  const P=g7layout(items,mc[0],mc[1],mw);items.forEach((c,i)=>g7counter(g,P[i],c.pos,c.m==='del'?.45:1,c.m));
+  if(mixed&&k>=stPair&&k<stRem){for(let i=0;i<np;i++){const p1=P[2*i],p2=P[2*i+1];const x0=Math.min(p1[0],p2[0])-.48,x1=Math.max(p1[0],p2[0])+.48,yc=p1[1];g.save();g.strokeStyle=C3.o;g.lineWidth=2.4;g.beginPath();if(g.roundRect)g.roundRect(sx(x0),sy(yc+.48),(x1-x0)*S.G,.96*S.G,.48*S.G);g.stroke();g.restore()}}}
+ /* number line */
+ lines.push({s:'باستعمال خط الأعداد:',c:C3.p,b:1,px:15});const nlS=lines.length-2;
+ lines.push({s:'ابدئي من ٠، وتحرّكي '+dg(Math.abs(a))+(Math.abs(a)<=2&&Math.abs(a)>0?(Math.abs(a)===1?' وحدة':' وحدتين'):' وحدات')+' إلى '+(a>=0?'اليمين':'اليسار')+' للوصول إلى '+fmt(a),px:15,c:C3.b});
+ lines.push({s:'ثم تحرّكي '+dg(Math.abs(b))+(Math.abs(b)<=2&&Math.abs(b)>0?(Math.abs(b)===1?' وحدة':' وحدتين'):' وحدات')+' إلى '+(b>=0?'اليمين':'اليسار')+' ← تصلين إلى '+fmt(s),px:15,c:C3.o});
+ if(k>=nlS){const lo=Math.min(0,a,s)-1,hi=Math.max(0,a,s)+1,Y=O[1]-2.3;const X=nlDraw(g,[O[0],Y],Math.min(lo,-5),Math.max(hi,5));const mv=[];if(k>=nlS+1)mv.push([0,a,sgn(a),C3.b]);if(k>=nlS+2)mv.push([a,s,sgn(b),C3.o]);g7nlArrows(g,X,Y,mv,C3.b);if(k>=nlS+2)dot(g,[X(s),Y],C3.g,7)}
+ labCard(g,it,lines,O[0],O[1]-(k>=nlS?3.5:.2),12.5)}
+function g7addBox(it){const O=it.p[0];return uni([O[0]-6,O[1]-3,O[0]+6,O[1]+4.3],cardBox(it,O[0],O[1]-.2,12.5))}
+
+/* ===== 4) subtracting integers with counters ===== */
+var G7SUB=[[5,2],[4,-3],[-6,-3],[-5,1],[2,6],[-3,-5]];
+function drawG7sub(g,it,ghost){const O=it.p[0],a=it.a==null?G7SUB[0][0]:it.a,b=it.b==null?G7SUB[0][1]:it.b,d=it.wr?a+b:a-b,k=rvK(it);
+ const mw=8.6,mh=3.8,mc=[O[0],O[1]+mh/2+.3];g7mat(g,mc[0],mc[1],mw,mh);
+ const sb=b>0,nb=Math.abs(b),have=(a!==0&&(a>0)===sb)?Math.abs(a):0,need=Math.max(0,nb-have);
+ const lines=[{s:'طرح الأعداد الصحيحة',b:1,al:'c',px:18},{s:'استعملي قطع العد لإيجاد '+fmt(a)+' − '+pN(b),b:1,px:17}];
+ lines.push({s:a?'ضعي '+g7qt(Math.abs(a),a>0)+' على اللوحة':'اللوحة فارغة (العدد صفر)',px:15});
+ let stAdd=-1;if(need&&nb){lines.push({s:'لا يوجد ما يكفي من القطع '+(sb?'الموجبة':'السالبة')+' للحذف؛ أضيفي '+dg(need)+(need===1?' زوجاً صفرياً':need===2?' زوجين صفريين':' أزواج صفرية')+' إلى اللوحة',c:C3.g,b:1,px:15});stAdd=lines.length-2}
+ if(nb){lines.push({s:'احذفي منها '+g7qt(nb,sb),c:C3.o,b:1,px:15})}const stDel=nb?lines.length-2:-1;
+ lines.push({s:'أوجدي عدد القطع الباقية: '+(d?g7qt(Math.abs(d),d>0):'لا يبقى شيء'),px:15});const stRem=lines.length-2;
+ lines.push({tok:[{s:'إذن'},{s:fmt(a)},{s:'−'},{s:pN(b)},{s:'='},{s:fmt(d)}],c:C3.g,b:1,px:20});
+ lines.push({s:'الطرح = جمع المعكوس:  '+fmt(a)+' − '+pN(b)+' = '+fmt(a)+' + '+pN(it.wr?b:-b)+' = '+fmt(d),c:C3.p,b:1,px:15});
+ if(k>=1){let items=[];for(let i=0;i<Math.abs(a);i++)items.push({pos:a>0});
+  if(stAdd>0&&k>=stAdd){for(let i=0;i<need;i++)items.push({pos:true,m:k===stAdd?'new':''},{pos:false,m:k===stAdd?'new':''})}
+  if(k>=stRem){const n=Math.abs(d);items=Array.from({length:n},()=>({pos:d>0}))}
+  else if(stDel>0&&k>=stDel){let left=nb;items=items.map(c=>{if(left>0&&c.pos===sb){left--;return Object.assign({},c,{m:'del'})}return Object.assign({},c,{m:''})})}
+  const P=g7layout(items,mc[0],mc[1],mw);items.forEach((c,i)=>g7counter(g,P[i],c.pos,c.m==='del'?.45:1,c.m))}
+ labCard(g,it,lines,O[0],O[1]-.2,12.5)}
+function g7subBox(it){const O=it.p[0];return uni([O[0]-4.5,O[1],O[0]+4.5,O[1]+4.3],cardBox(it,O[0],O[1]-.2,12.5))}
+
+/* ===== 5) solving equations with models (algebra tiles on two mats) ===== */
+var G7MEQ=[[1,2,5],[1,2,-1],[1,-3,2],[3,0,6],[2,0,-8],[2,3,9],[3,-2,7]];
+function meqSteps(a,b,c,wr){const T=(n,t,m)=>Array.from({length:Math.abs(n)},()=>({t,m:m||''}));const st=[];let R=[...T(a,'x'),...T(b,b>0?'u':'n')],L=[...T(c,c>0?'u':'n')];
+ const eqTok=(A,B,C)=>[...termsTok([[A,'س'],[B,'']]),{s:'='},{s:fmt(C)}];
+ if(b){const same=(c>0)===(b>0)&&Math.abs(c)>=Math.abs(b);const ty=b>0?'u':'n',word=b>0?'الموجبة':'السالبة';
+  if(same){/* remove |b| from each side */st.push({s:'احذفي '+dg(Math.abs(b))+' من البطاقات '+word+' من كل طرف',c:C3.o,R:R.map((t,i)=>i>=a?Object.assign({},t,{m:'del'}):t),L:(()=>{let n=Math.abs(b);return L.map(t=>t.t===ty&&n-->0?Object.assign({},t,{m:'del'}):t)})()});
+   R=R.slice(0,a);let n=Math.abs(b);L=L.filter(t=>!(t.t===ty&&n-->0));if(wr){const v=c+b;L=T(v,v>0?'u':'n')}st.push({tok:eqTok(a,0,wr?c+b:c-b),R,L})}
+  else{const oty=b>0?'n':'u',ow=b>0?'السالبة':'الموجبة';const Ra=[...R,...T(b,oty,'new')],La=[...L,...T(b,oty,'new')];
+   st.push({s:'أضيفي '+dg(Math.abs(b))+' من البطاقات '+ow+' إلى كل طرف',c:C3.g,R:Ra,L:La});
+   const Rd=Ra.map((t,i)=>i>=a?Object.assign({},t,{m:'del'}):Object.assign({},t,{m:''}));let n=Math.abs(b);const Ld=La.map(t=>Object.assign({},t,{m:''})).map(t=>(t.t===ty&&n-->0)?Object.assign({},t,{m:'del'}):t);
+   /* left side: zero pairs between original c and added */ let pairs=0;const Ld2=La.map(t=>Object.assign({},t,{m:''}));if(c!==0&&(c>0)===(b>0)){const cnt=Math.min(Math.abs(c),Math.abs(b));let p1=cnt,p2=cnt;Ld2.forEach(t=>{if(t.t===(c>0?'u':'n')&&p1>0){t.m='del';p1--}else if(t.t===oty&&p2>0){t.m='del';p2--}});pairs=cnt}
+   st.push({s:'احذفي جميع الأزواج الصفرية',c:C3.o,R:Rd,L:pairs?Ld2:La.map(t=>Object.assign({},t,{m:''}))});
+   R=R.slice(0,a);const v=wr?c+b:c-b;L=T(v,v>0?'u':'n');st.push({tok:eqTok(a,0,v),R,L})}
+  c=wr?c+b:c-b}
+ if(a!==1&&wr&&!b){st.push({s:'اطرحي '+dg(a)+' من كل طرف',c:C3.o,R,L});st.push({tok:[{s:'إذن'},{s:'س'},{s:'='},{s:fmt(c-a)}],c:C3.g,b:1,px:20,R:R.slice(0,1),L:T(c-a,c-a>0?'u':'n')});return st}
+ if(a!==1&&!Number.isInteger(c/a)){st.push({tok:[{s:'إذن'},{s:'س'},{s:'='},...numTok(c/a)],c:C3.g,b:1,px:20,R,L});return st}
+ if(a!==1){st.push({s:'قسّمي البطاقات في كل طرف إلى '+(a===2?'مجموعتين متساويتين':dg(a)+' مجموعات متساوية'),c:C3.p,R,L,grp:a});
+  st.push({s:'كل بطاقة س تقابل '+fmt(c/a),px:15,R,L,grp:a})}
+ st.push({tok:[{s:'إذن'},{s:'س'},{s:'='},{s:fmt(c/a)}],c:C3.g,b:1,px:20,R:R.slice(0,1),L:a!==1?L.slice(0,Math.abs(c/a)):L});return st}
+function meqTile(g,t,c,mk){const k=K(),w=t==='x'?.55:.55,h=t==='x'?1.45:.55;g.save();g.globalAlpha=mk==='del'?.4:1;const X=sx(c[0]-w/2),Y=sy(c[1]+h/2),Wp=w*S.G,Hp=h*S.G;
+ g.fillStyle=t==='x'?'#2f9e44':t==='u'?'#ffd43b':'#e03131';g.strokeStyle=t==='x'?'#1b6b2c':t==='u'?'#b08900':'#8a1010';g.lineWidth=1.6*k;g.beginPath();g.rect(X,Y,Wp,Hp);g.fill();g.stroke();
+ g.fillStyle=t==='u'?'#5c4500':'#fff';g.font=labFont(t==='x'?17:12,1);g.textAlign='center';g.textBaseline='middle';g.direction='rtl';if(t==='x'){g.save();g.translate(X+Wp/2,Y+Hp/2);g.rotate(-Math.PI/2);g.fillText('س',0,1);g.restore()}else g.fillText(t==='u'?dg(1):fmt(-1),X+Wp/2,Y+Hp/2+1);
+ g.globalAlpha=1;if(mk==='new'){g.strokeStyle='#2f9e44';g.lineWidth=3*k;g.strokeRect(X-3*k,Y-3*k,Wp+6*k,Hp+6*k)}
+ if(mk==='del'){g.strokeStyle='#1d2433';g.lineWidth=2.2*k;g.beginPath();g.moveTo(X,Y);g.lineTo(X+Wp,Y+Hp);g.moveTo(X+Wp,Y);g.lineTo(X,Y+Hp);g.stroke()}g.restore()}
+function meqSide(g,L,cx,cy,w,grp){if(!L.length)return;const xs=L.filter(t=>t.t==='x'),us=L.filter(t=>t.t!=='x');
+ if(grp){/* rows = groups */const per=Math.ceil(L.length/grp);const rowsT=[];for(let r=0;r<grp;r++)rowsT.push(L.slice(r*per,r*per+per));const rh=Math.min(1.75,4.2/grp);
+  rowsT.forEach((row,r)=>{const y=cy+((grp-1)/2-r)*rh;row.forEach((t,j)=>meqTile(g,t.t,[cx+((row.length-1)/2-j)*.75,y],t.m));const x0=cx-(row.length/2)*.75-.15,x1=cx+(row.length/2)*.75+.15;g.save();g.strokeStyle=C3.p;g.lineWidth=2;g.setLineDash([5,4]);g.beginPath();if(g.roundRect)g.roundRect(sx(x0),sy(y+rh/2-.05),(x1-x0)*S.G,(rh-.1)*S.G,8);g.stroke();g.restore()});return}
+ /* x tiles in one row on the right, unit tiles in a grid to their left */
+ const xw=xs.length*.75,cols=Math.max(1,Math.min(5,Math.floor((w-xw-.6)/.75))),rows=Math.ceil(us.length/cols);const totalW=xw+(us.length?Math.min(cols,us.length)*.75:0);let x=cx+totalW/2;
+ xs.forEach(t=>{meqTile(g,'x',[x-.375,cy],t.m);x-=.75});const ux0=x;us.forEach((t,i)=>{const r=Math.floor(i/cols),j=i%cols;meqTile(g,t.t,[ux0-.375-j*.75,cy+((rows-1)/2-r)*.72],t.m)})}
+function drawG7meq(g,it,ghost){const O=it.p[0],e=G7MEQ[(it.pi||0)%G7MEQ.length],[a,b,c]=e,ST=meqSteps(a,b,c,it.wr),k=Math.min(rvK(it),ST.length);
+ const mw=6.6,mh=4.6,cy=O[1]+mh/2+.3,cR=O[0]+mw/2+.5,cL=O[0]-mw/2-.5;g7mat(g,cR,cy,mw,mh);g7mat(g,cL,cy,mw,mh);ltxt(g,'=',sx(O[0]),sy(cy),34,C3.d,true);
+ const st=k>0?ST[k-1]:{R:[...Array.from({length:a},()=>({t:'x',m:''})),...Array.from({length:Math.abs(b)},()=>({t:b>0?'u':'n',m:''}))],L:Array.from({length:Math.abs(c)},()=>({t:c>0?'u':'n',m:''}))};
+ meqSide(g,st.R,cR,cy,mw,st.grp);meqSide(g,st.L,cL,cy,mw,st.grp);
+ ltxt(g,'الطرف الأيمن',sx(cR),sy(O[1]+.05),13,C3.m,true);ltxt(g,'الطرف الأيسر',sx(cL),sy(O[1]+.05),13,C3.m,true);
+ const lines=[{s:'حل المعادلات باستعمال النماذج',b:1,al:'c',px:18},{tok:[{s:'حلّي:'},...termsTok([[a,'س'],[b,'']]),{s:'='},{s:fmt(c)}],b:1,px:20}];
+ ST.forEach(s=>lines.push(s.tok?{tok:s.tok,px:s.px||19,c:s.c||C3.d,b:1}:{s:s.s,c:s.c||C3.d,b:1,px:s.px||15}));
+ if(!it.wr)lines.push({s:'تحقّقي: '+(a===1?'':dg(a))+'('+fmt(c/a)+')'+(b?(b>0?' + '+dg(b):' − '+dg(-b)):'')+' = '+fmt(c)+' ✓',c:C3.m,px:14});
+ labCard(g,it,lines,O[0],O[1]-.4,13)}
+function g7meqBox(it){const O=it.p[0];return uni([O[0]-7.8,O[1],O[0]+7.8,O[1]+5.2],cardBox(it,O[0],O[1]-.4,13))}
+
+/* ===== 6) graphing functions ===== */
+var G7FG=[[2,1],[1,-3],[-1,2],[3,-2]];
+function fgCell(m,b,x){const xs='('+fmt(x)+')';const head=m===1?xs:m===-1?'−'+xs:dg(Math.abs(m))+xs;return (m<0&&m!==-1?'−':'')+head+(b?(b>0?' + '+dg(b):' − '+dg(-b)):'')}
+function drawG7fg(g,it,ghost){const [m,b]=G7FG[(it.pi||0)%G7FG.length],sc=SC(),k=rvK(it),xs=[-1,0,1,2],kk=K();
+ const rhs=termsStr([[m,'س'],[b,'']]);
+ const lines=[{s:'التمثيل البياني للدوال',b:1,al:'c',px:18},{tok:[{s:'مثّلي بيانياً:'},...lineTok(m,b)],b:1,px:19}];
+ lines.push({s:'اختاري أربع قيم للمدخلات س: '+xs.slice().reverse().map(fmt).join('، '),px:15});
+ lines.push({tbl:[['س',rhs,'ص','(س، ص)']],px:14});
+
+ xs.slice().reverse().forEach(x=>{const y=it.wr&&x===-1?-m*x+b:m*x+b;lines.push({tbl:[[fmt(x),fgCell(m,b,x),fmt(y),pair(fmt(x),fmt(y))]],px:14})});
+ lines.push({s:'صِلي النقاط بمستقيم',c:C3.b,b:1,px:15});
+ lines.push({s:'كل نقطة على المستقيم حلٌّ للمعادلة، ولأن تمثيلها مستقيم تُسمّى معادلة خطية',c:C3.g,b:1,px:14});
+ xs.slice().reverse().forEach((x,i)=>{if(k>=3+i){const y=it.wr&&x===-1?-m*x+b:m*x+b,P=[x/sc,y/sc];dot(g,P,C3.b,7);wl(g,pair(fmt(x),fmt(y)),P,m>0?-36:36,-12,13,C3.b)}});
+ if(k>=7)fullLine(g,m,b,C3.b,Math.max(2,3*kk));
+ const A=cAof(it);labCard(g,it,lines,A[0],A[1],c3W())}
+function g7fgBox(it){const A=cAof(it);return cardBox(it,A[0],A[1],c3W())}
+
+/* ===== 7) order of operations ===== */
+const OP_R='#e03131';
+var G7ORD=[
+ {e:[{s:'١٤'},{s:'+'},{s:'٣'},{s:'(٧ − ٢)',c:OP_R}],st:[['اطرحي ٢ من ٧ لأنها بين قوسين',[{s:'١٤'},{s:'+'},{s:'٣'},{s:'(٥)',c:OP_R}]],['اضربي ٣ في ٥',[{s:'١٤'},{s:'+'},{s:'١٥',c:OP_R}]],['اجمعي ١٤ و ١٥',[{s:'٢٩',c:OP_R}]]],w:[['اطرحي ٢ من ٧ لأنها بين قوسين',[{s:'١٤'},{s:'+'},{s:'٣'},{s:'(٥)',c:OP_R}]],['اجمعي ١٤ و ٣',[{s:'١٧',c:OP_R},{s:'(٥)'}]],['اضربي ١٧ في ٥',[{s:'٨٥',c:OP_R}]]]},
+ {e:[{s:'٥'},{s:'×'},{s:'٣'},{s:'٢',sup:1},{s:'−'},{s:'٧'}],st:[['أوجدي قيمة ٣ أس ٢ (القوى قبل الضرب)',[{s:'٥'},{s:'×'},{s:'٩',c:OP_R},{s:'−'},{s:'٧'}]],['اضربي ٥ في ٩',[{s:'٤٥',c:OP_R},{s:'−'},{s:'٧'}]],['اطرحي ٧ من ٤٥',[{s:'٣٨',c:OP_R}]]],w:[['أوجدي قيمة ٣ أس ٢',[{s:'٥'},{s:'×'},{s:'٦',c:OP_R},{s:'−'},{s:'٧'}]],['اضربي ٥ في ٦',[{s:'٣٠',c:OP_R},{s:'−'},{s:'٧'}]],['اطرحي ٧ من ٣٠',[{s:'٢٣',c:OP_R}]]]},
+ {e:[{s:'٨'},{s:'−'},{s:'٣'},{s:'×'},{s:'٢'},{s:'+'},{s:'٧'}],st:[['اضربي ٣ في ٢ (الضرب قبل الجمع والطرح)',[{s:'٨'},{s:'−'},{s:'٦',c:OP_R},{s:'+'},{s:'٧'}]],['اطرحي ٦ من ٨ (من اليمين إلى اليسار)',[{s:'٢',c:OP_R},{s:'+'},{s:'٧'}]],['اجمعي ٢ و ٧',[{s:'٩',c:OP_R}]]],w:[['اطرحي ٣ من ٨',[{s:'٥',c:OP_R},{s:'×'},{s:'٢'},{s:'+'},{s:'٧'}]],['اضربي ٥ في ٢',[{s:'١٠',c:OP_R},{s:'+'},{s:'٧'}]],['اجمعي ١٠ و ٧',[{s:'١٧',c:OP_R}]]]},
+ {e:[{s:'٥'},{s:'+'},{s:'(١٢ − ٣)'}],st:[['اطرحي ٣ من ١٢ لأنها بين قوسين',[{s:'٥'},{s:'+'},{s:'٩',c:OP_R}]],['اجمعي ٥ و ٩',[{s:'١٤',c:OP_R}]]],w:[['اطرحي ٣ من ١٢ لأنها بين قوسين',[{s:'٥'},{s:'+'},{s:'٨',c:OP_R}]],['اجمعي ٥ و ٨',[{s:'١٣',c:OP_R}]]]},
+ {e:[{s:'(٥ − ١)'},{s:'٢',sup:1},{s:'÷'},{s:'٤'}],st:[['اطرحي ١ من ٥ لأنها بين قوسين',[{s:'(٤)',c:OP_R},{s:'٢',sup:1},{s:'÷'},{s:'٤'}]],['أوجدي قيمة ٤ أس ٢',[{s:'١٦',c:OP_R},{s:'÷'},{s:'٤'}]],['اقسمي ١٦ على ٤',[{s:'٤',c:OP_R}]]],w:[['اطرحي ١ من ٥ لأنها بين قوسين',[{s:'(٤)',c:OP_R},{s:'٢',sup:1},{s:'÷'},{s:'٤'}]],['أوجدي قيمة ٤ أس ٢',[{s:'٨',c:OP_R},{s:'÷'},{s:'٤'}]],['اقسمي ٨ على ٤',[{s:'٢',c:OP_R}]]]},
+ {e:[{s:'٢٠'},{s:'−'},{s:'(٤ − ٢)'},{s:'×'},{s:'٣'}],st:[['اطرحي ٢ من ٤ لأنها بين قوسين',[{s:'٢٠'},{s:'−'},{s:'٢',c:OP_R},{s:'×'},{s:'٣'}]],['اضربي ٢ في ٣',[{s:'٢٠'},{s:'−'},{s:'٦',c:OP_R}]],['اطرحي ٦ من ٢٠',[{s:'١٤',c:OP_R}]]],w:[['اطرحي ٢ من ٤ لأنها بين قوسين',[{s:'٢٠'},{s:'−'},{s:'٢',c:OP_R},{s:'×'},{s:'٣'}]],['اطرحي ٢ من ٢٠',[{s:'١٨',c:OP_R},{s:'×'},{s:'٣'}]],['اضربي ١٨ في ٣',[{s:'٥٤',c:OP_R}]]]}];
+function drawG7ord(g,it,ghost){const O=it.p[0],E=G7ORD[(it.pi||0)%G7ORD.length];
+ const clean=t=>t.map(x=>Object.assign({},x,{c:undefined}));
+ const lines=[{s:'ترتيب العمليات',b:1,al:'c',px:19},{s:'١) الأقواس  ٢) القوى  ٣) الضرب والقسمة  ٤) الجمع والطرح — من اليمين إلى اليسار',c:C3.m,px:13},{tok:[{s:'احسبي قيمة:'},...clean(E.e)],b:1,px:24}];
+ const SS=it.wr?E.w:E.st;SS.forEach(([why,tk],i)=>{lines.push({s:why,c:C3.o,b:1,px:15});lines.push({tok:[{s:'='},...tk],b:1,px:24,c:i===SS.length-1?C3.g:C3.d})});
+ labCard(g,it,lines,O[0],O[1]+3,14)}
+function g7ordBox(it){const O=it.p[0];return cardBox(it,O[0],O[1]+3,14)}
+
+/* ===== 8) perimeter & area of a rectangle ===== */
+function drawG7pa(g,it,ghost){const O=it.p[0],l=it.l||6,w=it.w||4,k=rvK(it),kk=Math.max(.8,K());const x0=Math.round(O[0]-l/2),y0=Math.round(O[1]);const R=[[x0,y0],[x0+l,y0],[x0+l,y0+w],[x0,y0+w]];
+ const lines=[{s:'المحيط والمساحة',b:1,al:'c',px:18},{s:'أوجدي محيط المستطيل ومساحته',b:1,px:17},
+  {s:'محيط المستطيل: مح = ٢ل + ٢ض',c:C3.o,b:1,px:16},...(it.wr?[{s:'مح = '+dg(l)+' + '+dg(w),px:17},{s:'مح = '+dg(l+w)+' وحدة',c:C3.o,b:1,px:17}]:[{s:'مح = ٢('+dg(l)+') + ٢('+dg(w)+')',px:17},{s:'مح = '+dg(2*l)+' + '+dg(2*w)+' = '+dg(2*l+2*w)+' وحدة',c:C3.o,b:1,px:17}]),
+  {s:'مساحة المستطيل: م = ل × ض',c:C3.b,b:1,px:16},{s:'م = '+dg(l)+' × '+dg(w),px:17},{s:'م = '+dg(l*w)+' وحدة مربعة',c:C3.b,b:1,px:17}];
+ if(k>=4){g.save();g.fillStyle='rgba(47,111,222,.22)';g.fillRect(sx(x0),sy(y0+w),l*S.G,w*S.G);g.restore();if(k>=6){for(let i=0;i<l;i++)for(let j=0;j<w;j++)ltxt(g,dg(j*l+i+1),sx(x0+i+.5),sy(y0+j+.5),12,'rgba(31,78,156,.75)',false)}}
+ poly(g,R,null,C3.d,Math.max(2,3*kk));if(k>=1&&k<4)poly(g,R,null,C3.o,Math.max(4,6*kk));
+ ltxt(g,'ل = '+dg(l),sx(x0+l/2),sy(y0)+20*kk,16,C3.d,true);g.save();g.font=labFont(16,1);const tw=g.measureText('ض = '+dg(w)).width;g.restore();ltxt(g,'ض = '+dg(w),sx(x0+l)+tw/2+10*kk,sy(y0+w/2),16,C3.d,true);
+ labCard(g,it,lines,O[0],O[1]-1.2,12)}
+function g7paBox(it){const O=it.p[0],l=it.l||6,w=it.w||4;return uni([O[0]-l/2-1,O[1]-1,O[0]+l/2+2.5,O[1]+w+.5],cardBox(it,O[0],O[1]-1.2,12))}
+
+/* ---- registration (merged into the grade-9 tables) ---- */
+Object.assign(LAB3_DRAW,{g7int:drawG7int,g7cp:drawG7cp,g7add:drawG7add,g7sub:drawG7sub,g7meq:drawG7meq,g7fg:drawG7fg,g7ord:drawG7ord,g7pa:drawG7pa});
+Object.assign(LAB3_BOX,{g7int:g7intBox,g7cp:g7cpBox,g7add:g7addBox,g7sub:g7subBox,g7meq:g7meqBox,g7fg:g7fgBox,g7ord:g7ordBox,g7pa:g7paBox});
+Object.assign(LAB3_COORD,{g7cp:1,g7fg:1});
+Object.assign(LAB3_KEYS,{g7int:['mode','pi','q'],g7cp:['mode','pi','cA','q'],g7add:['a','b','q'],g7sub:['a','b','q'],g7meq:['pi','q'],g7fg:['pi','cA','q'],g7ord:['pi','q'],g7pa:['l','w','q']});
+function lab7New(k,it,c){if(k==='g7int')Object.assign(it,{mode:'set',pi:0,p:[[c[0],c[1]+3]]});if(k==='g7cp')Object.assign(it,{mode:'plot',pi:0});if(k==='g7add')Object.assign(it,{a:G7ADD[0][0],b:G7ADD[0][1],p:[[c[0],c[1]+1]]});
+ if(k==='g7sub')Object.assign(it,{a:G7SUB[0][0],b:G7SUB[0][1],p:[[c[0],c[1]+1]]});if(k==='g7meq')Object.assign(it,{pi:0,p:[[c[0],c[1]+1.5]]});if(k==='g7fg')Object.assign(it,{pi:0});if(k==='g7ord')Object.assign(it,{pi:0,p:[[c[0],c[1]]]});if(k==='g7pa')Object.assign(it,{l:6,w:4,p:[[c[0],c[1]+1]]})}
+function lab7Unpack(x,it){if(x.k==='g7int')it.mode=['set','abs','cmp','ord'].includes(x.mode)?x.mode:'set';if(x.k==='g7cp')it.mode=x.mode==='read'?'read':'plot';
+ ['l','w'].forEach(key=>{if(typeof x[key]==='number'&&isFinite(x[key]))it[key]=Math.max(1,Math.min(12,Math.round(x[key])))})}
+function bindLabs7(){const on=(id,f)=>{const e=$('#'+id);if(e)e.onclick=f};const ins=(id,k)=>on(id,()=>{labInsert(k)});
+ const step=(k,f)=>{const it=labGet(k);LABA.delete(it);pushHist();f(it);it.rv=0;changed();return it};
+ ins('g7InIns','g7int');$$('#g7InMd button').forEach(b=>b.onclick=()=>step('g7int',it=>{it.mode=b.dataset.m;it.pi=0}));on('g7InNx',()=>step('g7int',it=>{it.pi=(it.pi||0)+1}));
+ ins('g7CpIns','g7cp');$$('#g7CpMd button').forEach(b=>b.onclick=()=>step('g7cp',it=>{it.mode=b.dataset.m}));on('g7CpNx',()=>step('g7cp',it=>{it.pi=((it.pi||0)+1)%G7CP.length}));
+ ins('g7AdIns','g7add');let ai=0;on('g7AdNx',()=>step('g7add',it=>{ai=(ai+1)%G7ADD.length;[it.a,it.b]=G7ADD[ai]}));
+ [['g7AdAm','a',-1],['g7AdAp','a',1],['g7AdBm','b',-1],['g7AdBp','b',1]].forEach(([id,key,d])=>on(id,()=>step('g7add',it=>{it[key]=Math.max(-8,Math.min(8,(it[key]||0)+d))})));
+ ins('g7SbIns','g7sub');let si=0;on('g7SbNx',()=>step('g7sub',it=>{si=(si+1)%G7SUB.length;[it.a,it.b]=G7SUB[si]}));
+ [['g7SbAm','a',-1],['g7SbAp','a',1],['g7SbBm','b',-1],['g7SbBp','b',1]].forEach(([id,key,d])=>on(id,()=>step('g7sub',it=>{it[key]=Math.max(-7,Math.min(7,(it[key]||0)+d))})));
+ ins('g7MqIns','g7meq');const mp=$('#g7MqP');if(mp){G7MEQ.forEach((e,i)=>{const b=document.createElement('button');b.textContent=termsStr([[e[0],'س'],[e[1],'']])+' = '+fmt(e[2]);b.onclick=()=>step('g7meq',it=>{it.pi=i});mp.appendChild(b)})}
+ ins('g7FgIns','g7fg');on('g7FgNx',()=>step('g7fg',it=>{it.pi=((it.pi||0)+1)%G7FG.length}));
+ ins('g7OrIns','g7ord');on('g7OrNx',()=>step('g7ord',it=>{it.pi=((it.pi||0)+1)%G7ORD.length}));
+ ins('g7PaIns','g7pa');[['g7PaLm','l',-1],['g7PaLp','l',1],['g7PaWm','w',-1],['g7PaWp','w',1]].forEach(([id,key,d])=>on(id,()=>step('g7pa',it=>{it[key]=Math.max(1,Math.min(key==='l'?10:6,(it[key]||(key==='l'?6:4))+d))})));
+}
+
 /* ---------- dispatch ---------- */
 function drawLab(g,it,ghost){g.save();try{(LAB3_DRAW[it.k]||{par:drawPar,pg:drawPg,cg:drawCg,sy:drawSy,pyth:drawPyth,irr:drawIrr,dist:drawDist,rate:drawRate,sim:drawSim,dil:drawDil,pct:drawPct,tri:drawTri180,cgx:drawCgx}[it.k]||drawPar)(g,it,ghost)}catch(e){console.warn('lab',e)}g.restore()}
 function labBox(it){try{return (LAB3_BOX[it.k]||{par:parBox,pg:pgBox,cg:cgBox,sy:syBox,pyth:pythBox,irr:irrBox,dist:distBox,rate:rateBox,sim:simBox,dil:dilBox,pct:pctBox,tri:triBox,cgx:cgxBox}[it.k]||parBox)(it)}catch(e){const O=it.p[0];return [O[0]-5,O[1]-5,O[0]+5,O[1]+5]}}
@@ -1905,7 +2166,7 @@ function labAnim(it,dur,step,done){const st={};LABA.set(it,st);const t0=performa
 
 /* ---------- serialise for the classroom challenge ---------- */
 var LAB_KEYS={...LAB3_KEYS,pyth:['a','b','q'],irr:['n','q'],dist:['q'],rate:['m','b','lin','q'],sim:['T','kf','ns','q'],dil:['kf','q'],pct:['pi','n','q'],tri:['ax','bx','cx','q'],cgx:['mode','built','r','s','z','q'],par:['ang','gap','par','hi','hiI','m','q'],pg:['n','r','reg','v','d','m','q'],cg:['A','o','r','s','q'],sy:['sh','ax','q']};
-function labPack(it){const o={k:it.k};(LAB_KEYS[it.k]||[]).forEach(k=>{if(it[k]!==undefined&&it[k]!==null)o[k]=it[k]});return JSON.stringify(o)}
+function labPack(it){const o={k:it.k};if(it.wr)o.wr=1;(LAB_KEYS[it.k]||[]).forEach(k=>{if(it[k]!==undefined&&it[k]!==null)o[k]=it[k]});return JSON.stringify(o)}
 function labUnpack(o){let x;try{x=JSON.parse(String(o.x||'{}'))}catch(e){return null}if(!x||!LAB_KEYS[x.k]||!Array.isArray(o.p)||o.p.length<2)return null;
  const fin=v=>typeof v==='number'&&isFinite(v),pt=q=>Array.isArray(q)&&q.length===2&&fin(q[0])&&fin(q[1])&&Math.abs(q[0])<1e4&&Math.abs(q[1])<1e4;
  const P=[];for(let i=0;i+1<o.p.length&&i<26;i+=2)P.push([+o.p[i]/10,+o.p[i+1]/10]);const it={t:'lab',k:x.k,p:P,c:'#1d2433',w:3};if(!P.length||!P.every(pt))return null;
@@ -1925,6 +2186,8 @@ function labUnpack(o){let x;try{x=JSON.parse(String(o.x||'{}'))}catch(e){return 
  if(x.k==='cg'){it.A=Array.isArray(x.A)&&x.A.length===3&&x.A.every(pt)?x.A:CG_A;it.o=pt(x.o)?x.o:[8.5,.5];it.r=fin(x.r)?x.r%360:0;it.s=x.s===-1?-1:1}
  if(x.k==='sy'){it.sh=SY_SH[x.sh]?x.sh:'sq';it.ax=!!x.ax}
  if(LAB3_DRAW[x.k])lab3Unpack(x,it,cl,pt);
+ if(/^g7/.test(x.k))lab7Unpack(x,it);
+ it.wr=!!x.wr;
  it.q=!!x.q;return it}
 
 /* ---------- side-panel controls ---------- */
@@ -1944,10 +2207,11 @@ function labNew(k){const c=[Math.round(ux(W/2)),Math.round(uy(H/2))];const it={t
  if(k==='tri')Object.assign(it,{ax:.5,bx:-3,cx:3.5,p:[[c[0],c[1]+2]]});
  if(k==='cgx')Object.assign(it,{mode:'sss',built:false,r:0,s:1,z:1.5,p:[[c[0],c[1]]]});
  if(LAB3_DRAW[k])lab3New(k,it,c);
+ if(/^g7/.test(k))lab7New(k,it,c);
  it.rv=0;
  it.q=$('#labQ')?$('#labQ').checked:false;return it}
 function labInsert(k){commitText();if(!page().items.length){if({dist:1,rate:1,dil:1}[k]||LAB3_COORD[k])page().bg='coord';else if(page().bg==='coord')page().bg='grid'}if(LAB3_COORD[k]){S.G=34;S.panX=Math.round(W*.13);S.panY=Math.round(H*.04);if(typeof updateZoom==='function')updateZoom()}const it=labNew(k);pushHist();page().items.push(it);S.sel=page().items.length-1;if(S.tool!=='select')setTool('select');changed();
- toast({pyth:'اسحبي رأسَي الساقين لتغيير طوليهما',irr:'اكتبي العدد تحت الجذر ثم «مثّلي»',dist:'اسحبي النقطتين أ ، ب',rate:'غيّري المعدل أو اجعلي العلاقة غير خطية',sim:'اختاري عامل المقياس',dil:'اسحبي الرؤوس أو مركز التمدد',pct:'اختاري النسبة المئوية',tri:'اسحبي رؤوس المثلث، ثم «انقلي الزاويتين»',cgx:'اضغطي «كوّني مثلثاً»',par:'اسحبي النقطة البرتقالية لتغيير ميل القاطع',pg:'اسحبي أي رأس لتغيير شكل المضلع',cg:'اسحبي المثلث البرتقالي، أو استعملي الأزرار',sy:'اختاري الشكل، ثم «اطوي» أو «دوّري»',bal:'اضغطي «الخطوة التالية» لحل المعادلة',abs:'غيّري المركز والمسافة',rel:'جرّبي «اختبار الخط الرأسي»',lg:'اختاري الطريقة ثم «الخطوة التالية»',zero:'اضغطي «أظهري الحل»',slope:'اسحبي النقطتين أ ، ب',seq:'غيّري الحد الأول والأساس',si:'غيّري الميل والمقطع',ps:'اسحبي النقطة أو غيّري الميل',pp:'اسحبي النقطة البرتقالية',inq:'اضغطي «الخطوة التالية»',cmp:'بدّلي بين «و» و«أو»',sys:'اختاري طريقة الحل ثم «الخطوة التالية»'}[k]);return it}
+ toast({pyth:'اسحبي رأسَي الساقين لتغيير طوليهما',irr:'اكتبي العدد تحت الجذر ثم «مثّلي»',dist:'اسحبي النقطتين أ ، ب',rate:'غيّري المعدل أو اجعلي العلاقة غير خطية',sim:'اختاري عامل المقياس',dil:'اسحبي الرؤوس أو مركز التمدد',pct:'اختاري النسبة المئوية',tri:'اسحبي رؤوس المثلث، ثم «انقلي الزاويتين»',cgx:'اضغطي «كوّني مثلثاً»',par:'اسحبي النقطة البرتقالية لتغيير ميل القاطع',pg:'اسحبي أي رأس لتغيير شكل المضلع',cg:'اسحبي المثلث البرتقالي، أو استعملي الأزرار',sy:'اختاري الشكل، ثم «اطوي» أو «دوّري»',bal:'اضغطي «الخطوة التالية» لحل المعادلة',abs:'غيّري المركز والمسافة',rel:'جرّبي «اختبار الخط الرأسي»',lg:'اختاري الطريقة ثم «الخطوة التالية»',zero:'اضغطي «أظهري الحل»',slope:'اسحبي النقطتين أ ، ب',seq:'غيّري الحد الأول والأساس',si:'غيّري الميل والمقطع',ps:'اسحبي النقطة أو غيّري الميل',pp:'اسحبي النقطة البرتقالية',inq:'اضغطي «الخطوة التالية»',cmp:'بدّلي بين «و» و«أو»',sys:'اختاري طريقة الحل ثم «الخطوة التالية»',g7int:'اضغطي «الخطوة التالية»',g7cp:'اضغطي «الخطوة التالية»',g7add:'اضغطي «الخطوة التالية»',g7sub:'اضغطي «الخطوة التالية»',g7meq:'اضغطي «الخطوة التالية»',g7fg:'اضغطي «الخطوة التالية»',g7ord:'اضغطي «الخطوة التالية»',g7pa:'اضغطي «الخطوة التالية»'}[k]);return it}
 function labGet(k,noNew){const its=page().items;const s=its[S.sel];if(s&&s.t==='lab'&&s.k===k)return s;for(let i=its.length-1;i>=0;i--)if(its[i].t==='lab'&&its[i].k===k)return its[i];return noNew?null:labInsert(k)}
 function labSet(k,f){const it=labGet(k);if(!it)return;LABA.delete(it);pushHist();f(it);changed();return it}
 function lerp(a,b,t){return a+(b-a)*t}
@@ -2525,7 +2789,9 @@ function pushPlayer(){if(!sJoined||!SP.g||!SP.a)return;const st=sStatus;let item
 function onBoardChange(){if(!S.student)return;clearTimeout(pushT);pushT=setTimeout(pushPlayer,500)}
 function loadBase(h){S.pages=[newPage(h.bg||'coord',[0.5,1,2,5,10,100].includes(+h.sc)?+h.sc:1)];S.cur=0;S.sel=-1;S.polyDraft=null;
  const base=decode(h.b).map(i=>Object.assign(i,{b:true}));let mine=[];try{mine=JSON.parse(localStorage.getItem('mb_st_items_'+h.g)||'[]')}catch(e){}
- page().items=base.concat(Array.isArray(mine)?mine:[]);sLoadedG=h.g;S.G=40;S.panX=0;S.panY=0;updateZoom();updateUI();draw();resize()}
+ page().items=base.concat(Array.isArray(mine)?mine:[]);sLoadedG=h.g;S.G=40;S.panX=0;S.panY=0;updateZoom();updateUI();draw();resize();fitLabs(base)}
+function fitLabs(base){/* zoom a lesson card into view on small screens */const L=base.filter(i=>i.t==='lab'&&!LAB3_COORD[i.k]);if(!L.length)return;draw();let b=null;L.forEach(i=>{let q;try{q=labBox(i)}catch(e){q=null}if(!q)return;b=b?[Math.min(b[0],q[0]),Math.min(b[1],q[1]),Math.max(b[2],q[2]),Math.max(b[3],q[3])]:q.slice()});if(!b)return;
+ const top=110,availH=H-top-110,w=b[2]-b[0]+1,h=b[3]-b[1]+1;const G=Math.max(14,Math.min(40,(W-16)/w,availH/h));S.G=G;S.panX=-((b[0]+b[2])/2)*G;S.panY=((b[1]+b[3])/2)*G+(top-110)/2;updateZoom();draw()}
 function studentSend(){if(!sHost||sHost.s!=='run'){toast('التحدي لم يبدأ بعد');return}
  if(SP.bonOn&&SP.bonG===SP.g){if(!page().items.some(i=>!i.b&&!i.m1)){toast('ارسمي حل التحدي الإضافي أولاً 🚀');return}SP.bSentG=SP.g;saveSP();pushPlayer();setSendBtn();toast('أُرسل التحدي الإضافي ⭐');return}if(sHost.qa?!cleanS(sAns,80):!page().items.some(i=>!i.b)){toast(sHost.qa?'اكتبي إجابتك أولاً ✍️':'ارسمي أولاً ثم أرسلي ✏️');if(sHost.qa)$('#ansIn').focus();return}
  sStatus='sent';SP.sentG=SP.g;saveSP();pushPlayer();setSendBtn();toast('تم الإرسال للمعلمة ✓ يمكنك التعديل وستصلها التعديلات')}
@@ -2833,7 +3099,7 @@ function bindLabs2(){const on=(id,f)=>{const e=$('#'+id);if(e)e.onclick=f};
  on('labCxGo',()=>{const it=labGet('cgx');pushHist();const rs=[0,40,150,200,290];it.r=rs[Math.floor(Math.random()*rs.length)];it.s=it.mode==='aaa'?1:(Math.random()<.5?-1:1);it.z=[.6,1.4,1.7][Math.floor(Math.random()*3)];it.built=false;
   labAnim(it,1500,(t,st)=>{st.t=t},()=>{LABA.delete(it);it.built=true;changed()})});
  on('labCxR',()=>labSet('cgx',it=>{it.built=false}))}
-bindLabs2();bindLabs3();
+bindLabs2();bindLabs3();bindLabs7();
 (function(){const ADV={bal:it=>{const L=balSteps(...(it.e||BAL_P[0])).length;if((it.s||0)>=L-1)return false;it.pv=it.s||0;it.s=(it.s||0)+1;labAnim(it,850,(t,st)=>{st.t=easeL(t)},()=>{LABA.delete(it);it.pv=null;draw()});return true},
   inq:it=>{const L=inqSteps(...INQ_P[(it.pi||0)%INQ_P.length]).length;if((it.s||0)>=L-1)return false;it.s=(it.s||0)+1;return true},
   lg:it=>{const mx=it.mode==='int'?3:lgPts(LG_P[(it.pi||0)%LG_P.length]).length;if((it.n||0)>=mx)return false;it.n=(it.n||0)+1;return true},
@@ -2847,6 +3113,17 @@ bindLabs2();bindLabs3();
   if(ADV[it.k]&&ADV[it.k](it)){re();requestAnimationFrame(()=>{if(it.rv<(it._tot||0)){it.rv++;re()}});return}toast('اكتمل الحل ✓')};
  $('#labPv').onclick=()=>{const it=act();if(!it)return;draw();pushHist();if(it.rv==null)it.rv=it._tot||0;if(it.rv>0){it.rv--;re();return}if(BACK[it.k]&&BACK[it.k](it)){it.rv=999;re()}};
  $('#labAll').onclick=()=>{const it=act();if(!it)return;pushHist();if(ADV[it.k]){let g=0;while(ADV[it.k](it)&&g++<40);LABA.delete(it);it.pv=null}it.rv=999;re()};
+ const WR_OK=k=>!!LAB3_DRAW[k];
+ function wrBtn(){const it=act(),b=$('#labWr');const on=!!(it&&it.wr);b.classList.toggle('on',on);b.textContent=on?'⚠️ المعروض حل خاطئ — اضغطي للصحيح':'⚠️ حل فيه خطأ شائع'}
+ setInterval(()=>{if(!S.student)wrBtn()},700);
+ $('#labWr').onclick=()=>{const it=act();if(!it){toast('أضيفي درساً أولاً');return}if(!WR_OK(it.k)){toast('هذا الدرس يناسبه تحدي الرسم، وليس له حل خاطئ جاهز');return}
+  pushHist();it.wr=!it.wr;LABA.delete(it);it.pv=null;re();wrBtn();toast(it.wr?'الحل المعروض الآن فيه خطأ شائع مقصود — لا توجد أي علامة تكشفه للطالبات':'عاد الحل الصحيح ✓')};
+ $('#labTF').onclick=()=>{const it=act();if(!it){toast('أضيفي درساً أولاً');return}
+  $('#labAll').onclick();const goTF=()=>{openDash();const q=$('#qaSeg button[data-q="2"]');if(q)q.click();const pr=$('#mcRow [data-p="ok"]');if(pr)pr.click();
+   T.mcOk=it.wr?1:0;mcChanged(true);const ti=$('#taskIn');ti.value='هل الحل المعروض على السبورة صحيح؟ اختاري: صح ✓ أو خطأ ✗';T.task=ti.value;ti.dispatchEvent(new Event('input',{bubbles:true}));
+   const sb=$('#sendBase');if(!sb.checked){sb.checked=true;sb.dispatchEvent(new Event('change',{bubbles:true}))}if(typeof updBaseInfo==='function')updBaseInfo();
+   toast('جاهز: الإجابة الصحيحة «'+(it.wr?'خطأ ✗':'صح ✓')+'» — اختاري نوع الجولة ثم «ابدئي التحدي»')};
+  setTimeout(goTF,120)};
 })();
 /* lessons picker: grade -> lesson (only the chosen lesson is shown) */
 (function(){const GR=[['1','الصف الأول المتوسط'],['2','الصف الثاني المتوسط'],['3','الصف الثالث المتوسط']];
