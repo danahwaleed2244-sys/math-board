@@ -2682,7 +2682,7 @@ function captureBase(){const items=$('#sendBase').checked?page().items.filter(i=
  T.baseEnc=r.arr;T.base=decode(r.arr);T.bg=$('#sendBase').checked?page().bg:'coord';T.sc=$('#sendBase').checked?SC():1;return r.ov}
 function updBaseInfo(){const n=page().items.filter(i=>i.t!=='prot').length;$('#baseSize').textContent=$('#sendBase').checked?(n?`سيصل للطالبات ${dg(n)} شكل من صفحتك الحالية (الصفحة ${dg(S.cur+1)}).`:'صفحتك الحالية فارغة — ستصل الخلفية فقط.'):'ستبدأ الطالبات بصفحة فارغة.'}
 function pageSig(){if(!$('#sendBase').checked)return 'none';return S.cur+'|'+page().bg+'|'+JSON.stringify(page().items.filter(i=>i.t!=='prot').map(i=>i.t==='lab'?labPack(i):[i.t,i.p,i.r,i.s]))}
-function openDash(){commitText();T.open=true;$('#dash').classList.remove('hidden');if(!T.pin){T.pin=randPin()}if(!T.g){T.g=newG();T.s='lobby';T.started=0;pushHost()}
+function openDash(){commitText();T.open=true;$('#dash').classList.remove('hidden');if(!T.pin){T.pin=store.get('mb_pin',null)||randPin()}store.set('mb_pin',T.pin);if(!T.g){T.g=newG();T.s='lobby';T.started=0;pushHost()}
  if(T.s==='end'&&T.baseSig!==pageSig()){$('#againCh').onclick();toast('جهّزتُ تحدياً جديداً بما في صفحتك الحالية ✓')}
  $('#taskIn').value=T.task;$('#allowTf').checked=T.tf;updBaseInfo();renderKind();if(typeof computeKey==='function')computeKey();renderDash()}
 function closeDash(){T.open=false;$('#dash').classList.add('hidden')}
@@ -2753,7 +2753,7 @@ $('#zToBoard').onclick=()=>{const pl=T.players.get(zKey);if(!pl)return;const ite
  S.pages.splice(S.cur+1,0,np);S.cur++;S.sel=-1;$('#zoomView').classList.add('hidden');closeDash();S.G=40;S.panX=0;S.panY=0;updateZoom();changed();toast(`رسمة ${pl.n} الآن في صفحة جديدة على سبورتك`)};
 
 $('#classBtn').onclick=openDash;$('#dashClose').onclick=closeDash;
-$('#pinNew').onclick=()=>{T.pin=randPin();pushHost();renderDash()};
+$('#pinNew').onclick=()=>{const old=T.pin;if(old&&ROOM){try{ROOM.presence(Object.assign(hostPayload(),{pin:old,s:'closed',b:[],ti:''}))}catch(e){}}T.pin=randPin();store.set('mb_pin',T.pin);setTimeout(()=>{pushHost();renderDash()},400);toast('رمز جديد: '+dg(T.pin)+' — أُغلق الرمز القديم')};
 $('#taskIn').oninput=e=>{T.task=e.target.value;pushHost();if(T.s!=='lobby')recordLive(2000)};
 $('#allowTf').onchange=e=>{T.tf=e.target.checked;pushHost()};
 $('#sendBase').onchange=()=>{updBaseInfo();if(typeof computeKey==='function')computeKey()};
@@ -2792,7 +2792,7 @@ function pushPlayer(){if(!sJoined||!SP.g||!SP.a)return;const st=sStatus;let item
 function onBoardChange(){if(!S.student)return;clearTimeout(pushT);pushT=setTimeout(pushPlayer,500)}
 function loadBase(h){S.pages=[newPage(h.bg||'coord',[0.5,1,2,5,10,100].includes(+h.sc)?+h.sc:1)];S.cur=0;S.sel=-1;S.polyDraft=null;
  const base=decode(h.b).map(i=>Object.assign(i,{b:true}));let mine=[];try{mine=JSON.parse(localStorage.getItem('mb_st_items_'+h.g)||'[]')}catch(e){}
- page().items=base.concat(Array.isArray(mine)?mine:[]);sLoadedG=h.g;S.G=40;S.panX=0;S.panY=0;updateZoom();updateUI();draw();resize();fitLabs(base)}
+ page().items=base.concat(Array.isArray(mine)?mine:[]);sLoadedG=h.g;S.G=Math.max(20,Math.min(40,(W-12)/17));S.panX=0;S.panY=0;updateZoom();updateUI();draw();resize();fitLabs(base)}
 function fitLabs(base){/* zoom a lesson card into view on small screens */const L=base.filter(i=>i.t==='lab'&&!LAB3_COORD[i.k]);if(!L.length)return;draw();let b=null;L.forEach(i=>{let q;try{q=labBox(i)}catch(e){q=null}if(!q)return;b=b?[Math.min(b[0],q[0]),Math.min(b[1],q[1]),Math.max(b[2],q[2]),Math.max(b[3],q[3])]:q.slice()});if(!b)return;
  const top=110,availH=H-top-110,w=b[2]-b[0]+1,h=b[3]-b[1]+1;const G=Math.max(14,Math.min(40,(W-16)/w,availH/h));S.G=G;S.panX=-((b[0]+b[2])/2)*G;S.panY=((b[1]+b[3])/2)*G+(top-110)/2;updateZoom();draw()}
 function studentSend(){if(!sHost||sHost.s!=='run'){toast('التحدي لم يبدأ بعد');return}
@@ -2807,6 +2807,7 @@ function studentRender0(){
  if(roomReady&&!ROOM){jShow('jOff');return}
  if(!sJoined){jShow('jStep1');return}
  sHost=findHost(SP.pin)||sHost;
+ if(sHost&&sHost.s==='closed'){const old=SP.pin;SP.pin=null;SP.g=null;saveSP();sJoined=false;sHost=null;$('#taskBar').classList.add('hidden');$('#jPin').value='';jShow('jStep1');const e=$('#jErr');e.textContent='المعلمة غيّرت رمز التحدي ('+dg(old||'')+'). اكتبي الرمز الجديد الظاهر على شاشتها.';e.classList.remove('hidden');return}
  if(isFB()&&sHost&&sHost.t){if(Date.now()-sHost.t<20*60e3)sLive=SP.pin+'|'+sHost.g}
  if(isFB()&&sHost&&sHost.t&&Date.now()-sHost.t>20*60e3&&sLive!==SP.pin+'|'+sHost.g){const old=SP.pin;SP.pin=null;SP.g=null;saveSP();sJoined=false;sHost=null;$('#taskBar').classList.add('hidden');$('#jPin').value='';jShow('jStep1');const e=$('#jErr');e.textContent='انتهى التحدي السابق ('+dg(old||'')+'). اكتبي رمز التحدي الجديد الظاهر على شاشة المعلمة.';e.classList.remove('hidden');return}
  if(!sHost){jShow('jWait');$('#jMe').textContent=SP.a||'⏳';$('#jHi').textContent='جارٍ الوصول للمعلمة…';return}
@@ -2841,11 +2842,11 @@ async function tryJoin(){const pin=toW($('#jPin').value.trim()),name=cleanS($('#
  if(!pin)return fail('اكتبي رمز الدخول الظاهر على شاشة المعلمة.');if(!name)return fail('اكتبي اسمك.');
  if(!ROOM)return fail(roomReady?'تعذّر الاتصال. افتحي الرابط وأنتِ مسجّلة الدخول ثم حدّثي الصفحة.':'لحظة… جارٍ الاتصال، حاولي بعد ثانية.');
  const b=$('#jGo');b.disabled=true;b.textContent='جارٍ التحقق…';if(ROOM.watch)ROOM.watch(pin);let h=findHost(pin);for(let k=0;!h&&k<(ROOM.watch?15:8);k++){await new Promise(r=>setTimeout(r,400));h=findHost(pin)}
- b.disabled=false;b.textContent='التالي ←';if(!h)return fail('الرمز غير صحيح، أو لم تفتح المعلمة التحدي بعد.');
+ b.disabled=false;b.textContent='التالي ←';if(!h)return fail('الرمز غير صحيح، أو لم تفتح المعلمة التحدي بعد.');if(h.s==='closed')return fail('هذا الرمز انتهى. اكتبي الرمز الظاهر الآن على شاشة المعلمة.');
  if(!(SP.g===h.g&&SP.n===name))Object.assign(SP,{pin,n:name,a:null,g:h.g,sentG:null});SP.pin=pin;sHost=h;sJoined=true;saveSP();if(SP.a)pushPlayer();studentRender()}
 function startStudent(){S.student=true;document.body.classList.add('student');S.pages=[newPage('coord')];S.cur=0;sLoadedG=null;updateUI();draw();
  if(SP.pin)$('#jPin').value=SP.pin;if(SP.n)$('#jName').value=SP.n;jShow('jStep1');
- if(SP.pin&&SP.n&&SP.g){let n=0;const iv=setInterval(()=>{const h=findHost(SP.pin);if(h&&h.g===SP.g&&!(h.t&&Date.now()-h.t>6*3600e3)){sHost=h;sJoined=true;if(SP.a)pushPlayer();studentRender();clearInterval(iv)}else if(++n>12)clearInterval(iv)},500)}
+ if(SP.pin&&SP.n&&SP.g){let n=0;const iv=setInterval(()=>{const h=findHost(SP.pin);if(h&&h.s!=='closed'&&!(h.t&&Date.now()-h.t>20*60e3)){sHost=h;sJoined=true;if(SP.a)pushPlayer();studentRender();clearInterval(iv)}else if(++n>12)clearInterval(iv)},500)}
  studentRender()}
 
 /* ================= RESEARCH / EVIDENCE LOG ================= */
@@ -3303,7 +3304,7 @@ function makeStudentRoom(){let pin=null,host=null,unsub=null;const fns=[],conn=[
   watch(p){p=String(p||'');if(!p||p===pin)return;if(unsub)unsub();pin=p;host=null;
    unsub=F.onSnapshot(F.doc(FS,'rooms/'+p),s=>{host=s.exists()?fsDec(s.data()):null;conn.forEach(f=>f(true));fire()},e=>{console.warn('room',e);host=null;fire()})},
   presence:async o=>{if(!pin||!FUSER)return;await F.setDoc(F.doc(FS,'rooms/'+pin+'/players/'+FUSER.uid),fsEnc(Object.assign({},o,{t:Date.now()})))}}}
-function attachRoom(){ROOM.onPeers(()=>{if(S.student){if(!sJoined&&SP.pin&&SP.n&&SP.g){const h=findHost(SP.pin);if(h&&h.g===SP.g&&!(h.t&&Date.now()-h.t>6*3600e3)){sHost=h;sJoined=true;if(SP.a)pushPlayer()}}studentRender()}else teacherPeers()});if(ROOM.onConnection)ROOM.onConnection(on=>setConn(on?'on':'wait'))}
+function attachRoom(){ROOM.onPeers(()=>{if(S.student){if(!sJoined&&SP.pin&&SP.n&&SP.g){const h=findHost(SP.pin);if(h&&h.s!=='closed'&&!(h.t&&Date.now()-h.t>20*60e3)){sHost=h;sJoined=true;if(SP.a)pushPlayer()}}studentRender()}else teacherPeers()});if(ROOM.onConnection)ROOM.onConnection(on=>setConn(on?'on':'wait'))}
 function teacherReady(){return !!(UID&&DB&&FUSER&&!FUSER.isAnonymous)}
 function requireTeacher(cb,msg){if(!FBMODE||teacherReady()){cb&&cb();return}authPending=cb;$('#authMsg').textContent=msg||'سجّلي الدخول بحساب Google لاستخدام «تحدي الصف» و«البحث الإجرائي». الرسم على السبورة لا يحتاج تسجيل دخول.';$('#authBox').classList.remove('hidden')}
 $('#authCancel').onclick=()=>{authPending=null;$('#authBox').classList.add('hidden')};
