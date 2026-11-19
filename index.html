@@ -290,6 +290,22 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
 #solBox .sh{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;font-weight:800;background:#fff3d6;border-radius:12px 12px 0 0;cursor:pointer}
 #solBox .sh button{border:0;background:transparent;font-size:18px;cursor:pointer}
 #solBox.min .sb{display:none}
+#solMin{font-weight:800;min-width:30px}
+#solBox .sh span::after{content:'  (اضغطي للتصغير)';font-size:11px;font-weight:600;color:#a07a20}
+#solBox.min .sh span::after{content:'  (اضغطي للفتح)'}
+@media (max-width:600px){
+ #toolbar{padding:3px 4px;gap:2px}
+ #tools{flex:1 1 100%;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-left:0;padding:0 2px;
+  -webkit-mask-image:linear-gradient(to left,#000 88%,transparent);mask-image:linear-gradient(to left,#000 88%,transparent)}
+ #tools::-webkit-scrollbar{display:none}
+ #tools .tool{flex-shrink:0}
+ #toolbar .group{padding:0 3px}
+ #toolbar .tool{min-width:40px;height:46px;padding:2px 3px}
+ #toolbar .tool .lb{font-size:10px}
+ #fsBtn{display:none!important}
+ #solBox{left:6px;bottom:8px;width:calc(100% - 12px);font-size:14px}
+ #solBox .sb{max-height:42vh;overflow-y:auto}
+}
 #solBox .sb{padding:8px 10px 10px}
 #solBox .srow{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:4px 0;border-bottom:1px dashed #eadfbf}
 #solBox .srow.hd{font-weight:700;color:#8a6a10;font-size:13px}
@@ -697,12 +713,14 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
     <div class="muted" id="jWaitMsg">انتظري حتى تبدأ المعلمة التحدي. اسمك ظاهر عندها الآن.</div>
     <div class="faces" id="jFaces"></div>
     <button class="btn2" id="jChange">تغيير الشخصية</button>
+    <button class="btn2 jre">دخول برمز آخر 🔑</button>
   </div>
   <div class="jcard hidden" id="jEnd">
     <div class="me-big" id="jMedal"></div>
     <h2 id="jRank"></h2>
     <div class="muted" id="jEndMsg"></div>
     <button class="btn2" id="jSeeBoard">مشاهدة رسمتي</button>
+    <button class="btn2 jre">دخول تحدٍّ جديد برمز 🔑</button>
   </div>
   <div class="jcard hidden" id="jOff">
     <div class="lg">📡</div>
@@ -1529,8 +1547,16 @@ function evp(e){const r=cv.getBoundingClientRect();const x=e.clientX-r.left,y=e.
 const base=()=>({c:S.color,w:S.width});
 
 let penSeen=false,inkOnly=false;const ACT=new Set();
+const TP=new Map();function tpMid(){const v=[...TP.values()];return [(v[0][0]+v[1][0])/2,(v[0][1]+v[1][1])/2,Math.hypot(v[0][0]-v[1][0],v[0][1]-v[1][1])]}
 cv.addEventListener('pointerdown',e=>{
  if(e.pointerType==='pen')penSeen=true;
+ blurSol();
+ /* two fingers = move/zoom the board, whatever tool is chosen */
+ if(e.pointerType==='touch'){TP.set(e.pointerId,[e.clientX,e.clientY]);
+  if(TP.size===2&&!S.anim&&!(drag&&drag.ptype==='pen')){
+   if(drag){if(['draw','shape','circle','gshape'].includes(drag.type)){S.draft=null;drag=null}else if(drag.type!=='pan2')endDrag({pointerId:drag.id})}
+   ACT.clear();const m=tpMid();drag={type:'pan2',id:-7,mx:m[0],my:m[1],d:m[2]};try{cv.setPointerCapture(e.pointerId)}catch(_){}reqDraw();return}
+  if(drag&&drag.type==='pan2')return}
  /* palm rejection: once the Apple Pencil is used, finger/palm touches do not draw */
  if(e.pointerType==='touch'&&penSeen&&S.tool!=='hand'&&S.tool!=='select')return;
  if(S.anim)return;
@@ -1559,6 +1585,9 @@ cv.addEventListener('pointerdown',e=>{
  }
 });
 cv.addEventListener('pointermove',e=>{
+ if(e.pointerType==='touch'&&TP.has(e.pointerId)){TP.set(e.pointerId,[e.clientX,e.clientY]);
+  if(drag&&drag.type==='pan2'){if(TP.size>=2){const m=tpMid();S.panX+=m[0]-drag.mx;S.panY+=m[1]-drag.my;drag.mx=m[0];drag.my=m[1];
+    if(drag.d>20&&m[2]>20&&Math.abs(m[2]/drag.d-1)>.01){const r=cv.getBoundingClientRect();zoomAt(m[0]-r.left,m[1]-r.top,m[2]/drag.d);drag.d=m[2]}else reqDraw()}return}}
  if(e.pointerType==='touch'&&penSeen&&(!drag||drag.id!==e.pointerId))return;
  const p=evp(e);S.hover={x:snapv(p.ux),y:snapv(p.uy)};
  $('#coordLbl').textContent=pair(fmt(Math.round(p.ux*SC()*10)/10),fmt(Math.round(p.uy*SC()*10)/10));
@@ -1578,6 +1607,8 @@ cv.addEventListener('pointermove',e=>{
  if(inkOnly)inkOnly=false;else reqDraw();
 });
 function endDrag(e){
+ if(TP.has(e.pointerId))TP.delete(e.pointerId);
+ if(drag&&drag.type==='pan2'){if(TP.size<2){drag=null;ACT.clear();if(!TP.size)TP.clear()}return}
  ACT.delete(e.pointerId);
  if(!drag||drag.id!==e.pointerId)return;const d=drag;drag=null;
  if(d.type==='draw'&&S.draft&&e.clientX!=null){const q=evp(e),pts=S.draft.p,l=pts[pts.length-1];if(Math.hypot(l[0]-q.ux,l[1]-q.uy)*S.G>1)pts.push([q.ux,q.uy])}
@@ -2024,7 +2055,7 @@ function studentRender0(){
  document.body.classList.toggle('notf',!sHost.tf);
  $('#hdrWho').textContent=sHost.tn?'المعلمة: '+cleanS(sHost.tn,40):'';$('#hdrSch').textContent=cleanS(sHost.sn,40);$('#hdrSch').style.display=sHost.sn?'':'none';
  $('#taskTxt').textContent=cleanS(sHost.ti,200)||'ارسمي على السبورة ثم اضغطي «إرسال للمعلمة»';$('#meTag').textContent=SP.a+' '+SP.n;
- if(sHost.s==='lobby'){jShow('jWait');$('#jMe').textContent=SP.a;$('#jHi').textContent='أهلاً يا '+SP.n+'!';$('#jWaitMsg').textContent='انتظري حتى تبدأ المعلمة التحدي. اسمك ظاهر عندها الآن.';
+ if(sHost.s==='lobby'){jShow('jWait');$('#jMe').textContent=SP.a;$('#jHi').textContent='أهلاً يا '+SP.n+'!';$('#jWaitMsg').textContent='رمز التحدي: '+dg(SP.pin||'')+' — انتظري حتى تبدأ المعلمة التحدي. اسمك ظاهر عندها الآن.';
   const f=$('#jFaces');f.innerHTML='';classmates().forEach(p=>{const d=document.createElement('div');d.className='face';d.innerHTML='<span></span><b></b>';d.firstChild.textContent=p.a;d.lastChild.textContent=p.n;f.appendChild(d)});$('#taskBar').classList.add('hidden');return}
  if(sLoadedG!==sHost.g)loadBase(sHost);
  $('#taskBar').classList.remove('hidden');setSendBtn();
@@ -2037,6 +2068,7 @@ function renderAv(){const g=$('#jAv');g.innerHTML='';const taken=new Map(classma
   b.querySelector('span').textContent=e;b.querySelector('small').textContent=nm;if(taken.has(e))b.querySelector('em').textContent='مع '+taken.get(e);
   b.onclick=()=>{sPick=e;renderAv()};g.appendChild(b)});$('#jAvGo').disabled=!sPick}
 $('#jAvGo').onclick=()=>{if(!sPick)return;SP.a=sPick;saveSP();pushPlayer();studentRender()};
+$$('.jre').forEach(b=>b.onclick=()=>{setPresence({r:'p',g:null});SP.pin=null;SP.g=null;saveSP();sJoined=false;sHost=null;$('#jPin').value='';$('#taskBar').classList.add('hidden');jShow('jStep1');setTimeout(()=>$('#jPin').focus(),50)});
 $('#jChange').onclick=()=>{sPick=SP.a;SP.a=null;saveSP();setPresence({r:'p',g:null});studentRender()};
 $('#jSeeBoard').onclick=()=>{sView='board';jShow(null)};
 $('#jPin').oninput=e=>{e.target.value=toW(e.target.value).replace(/\D/g,'')};
@@ -2051,7 +2083,7 @@ async function tryJoin(){const pin=toW($('#jPin').value.trim()),name=cleanS($('#
  if(!(SP.g===h.g&&SP.n===name))Object.assign(SP,{pin,n:name,a:null,g:h.g,sentG:null});SP.pin=pin;sHost=h;sJoined=true;saveSP();if(SP.a)pushPlayer();studentRender()}
 function startStudent(){S.student=true;document.body.classList.add('student');S.pages=[newPage('coord')];S.cur=0;sLoadedG=null;updateUI();draw();
  if(SP.pin)$('#jPin').value=SP.pin;if(SP.n)$('#jName').value=SP.n;jShow('jStep1');
- if(SP.pin&&SP.n&&SP.g){let n=0;const iv=setInterval(()=>{const h=findHost(SP.pin);if(h&&h.g===SP.g){sHost=h;sJoined=true;if(SP.a)pushPlayer();studentRender();clearInterval(iv)}else if(++n>12)clearInterval(iv)},500)}
+ if(SP.pin&&SP.n&&SP.g){let n=0;const iv=setInterval(()=>{const h=findHost(SP.pin);if(h&&h.g===SP.g&&!(h.t&&Date.now()-h.t>6*3600e3)){sHost=h;sJoined=true;if(SP.a)pushPlayer();studentRender();clearInterval(iv)}else if(++n>12)clearInterval(iv)},500)}
  studentRender()}
 
 /* ================= RESEARCH / EVIDENCE LOG ================= */
@@ -2311,6 +2343,7 @@ bindLabs2();
 T.sol=T.sol||false;
 $('#solChk').onchange=e=>{T.sol=e.target.checked;pushHost()};
 let sSol={g:null,x:[],y:[],rule:'',min:false,built:''};
+function blurSol(){const a=document.activeElement;if(a&&a.closest&&a.closest('#solBox,#ansBox'))a.blur()}
 function solBase(){return page().items.find(i=>i.b&&i.t==='poly')}
 function solLabs(pl){return pl.p.map((_,i)=>String((pl.labels&&pl.labels[i])||LAB_L[i]||dg(i+1)).replace(/[′']/g,''))}
 function parseNumAr(v){v=String(v||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٫,]/g,'.').replace(/\s|⁦|⁩/g,'');
@@ -2320,19 +2353,20 @@ function solStr(){if(!sHost||!sHost.sol)return '';const pl=solBase();if(!pl)retu
 function solSave(){SP.sol={g:sSol.g,x:sSol.x,y:sSol.y,rule:sSol.rule};saveSP()}
 function buildSol(pl){const sc=SC(),L=solLabs(pl);const esc2=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
  let h='<div class="srow hd"><span>رؤوس الأصل</span><span>رؤوس الصورة (اكتبيها أولاً)</span></div>';
- pl.p.forEach((q,i)=>{h+=`<div class="srow"><span class="o">${esc2(L[i])}${esc2(pair(fmt(q[0]*sc),fmt(q[1]*sc)))}</span><span class="i">${esc2(L[i])}′(<input data-c="x" data-i="${i}" dir="auto" autocomplete="off" inputmode="text" value="${esc2(sSol.x[i]||'')}">،<input data-c="y" data-i="${i}" dir="auto" autocomplete="off" inputmode="text" value="${esc2(sSol.y[i]||'')}">)</span></div>`});
- h+=`<div class="srule"><input id="solRule" autocomplete="off" placeholder="القاعدة أو خطواتك، مثال: أضفتُ ٣ للإحداثي السيني" value="${esc2(sSol.rule||'')}"></div><button class="primary sbtn" id="solDraw">✏️ ارسمي الصورة من الجدول</button>`;
+ pl.p.forEach((q,i)=>{h+=`<div class="srow"><span class="o">${esc2(L[i])}${esc2(pair(fmt(q[0]*sc),fmt(q[1]*sc)))}</span><span class="i">${esc2(L[i])}′(<input data-c="x" data-i="${i}" dir="auto" autocomplete="off" inputmode="text" enterkeyhint="next" value="${esc2(sSol.x[i]||'')}">،<input data-c="y" data-i="${i}" dir="auto" autocomplete="off" inputmode="text" enterkeyhint="next" value="${esc2(sSol.y[i]||'')}">)</span></div>`});
+ h+=`<div class="srule"><input id="solRule" autocomplete="off" enterkeyhint="done" placeholder="القاعدة أو خطواتك، مثال: أضفتُ ٣ للإحداثي السيني" value="${esc2(sSol.rule||'')}"></div><button class="primary sbtn" id="solDraw">✏️ ارسمي الصورة من الجدول</button>`;
  $('#solBody').innerHTML=h;
  $$('#solBody input').forEach(inp=>{inp.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();const all=[...$$('#solBody input')];const k=all.indexOf(inp);if(all[k+1])all[k+1].focus();else inp.blur()}});
   inp.addEventListener('input',()=>{if(inp.id==='solRule')sSol.rule=inp.value;else sSol[inp.dataset.c][+inp.dataset.i]=inp.value;solSave();onBoardChange()})});
  $('#solDraw').onclick=()=>{const pl2=solBase();if(!pl2)return;const sc2=SC();const pts=[];for(let i=0;i<pl2.p.length;i++){const x=parseNumAr(sSol.x[i]),y=parseNumAr(sSol.y[i]);if(x==null||y==null){toast('أكملي إحداثيات الرأس '+solLabs(pl2)[i]+'′ أولاً');return}pts.push([x/sc2,y/sc2])}
   pushHist();const its=page().items;for(let i=its.length-1;i>=0;i--)if(its[i].solp)its.splice(i,1);
-  its.push({t:'poly',p:pts,c:'#1f9d55',w:4,fill:true,labels:solLabs(pl2).map(l=>l+'′'),solp:1});changed();toast('رُسمت الصورة من جدولك ✔ راجعيها ثم أرسلي')};
+  its.push({t:'poly',p:pts,c:'#1f9d55',w:4,fill:true,labels:solLabs(pl2).map(l=>l+'′'),solp:1});changed();blurSol();solMinSet(true);toast('رُسمت الصورة من جدولك ✔ راجعيها ثم أرسلي')};
  sSol.built=sSol.g+':'+pl.p.length}
 function updSolBox(){const pl=solBase();const on=!!(S.student&&sJoined&&sHost&&sHost.sol&&sHost.s==='run'&&$('#join').classList.contains('hidden')&&pl);$('#solBox').classList.toggle('hidden',!on);if(!on)return;
  if(sSol.g!==sHost.g){const sv=SP.sol&&SP.sol.g===sHost.g?SP.sol:null;sSol={g:sHost.g,x:sv?sv.x||[]:[],y:sv?sv.y||[]:[],rule:sv?sv.rule||'':'',min:sSol.min,built:''}}
- if(sSol.built!==sSol.g+':'+pl.p.length)buildSol(pl);$('#solBox').classList.toggle('min',!!sSol.min)}
-$('#solHead').onclick=()=>{sSol.min=!sSol.min;$('#solBox').classList.toggle('min',sSol.min);$('#solMin').textContent=sSol.min?'＋':'—'};
+ if(sSol.built!==sSol.g+':'+pl.p.length)buildSol(pl);$('#solBox').classList.toggle('min',!!sSol.min);$('#solMin').textContent=sSol.min?'＋':'—'}
+function solMinSet(v){sSol.min=v;$('#solBox').classList.toggle('min',v);$('#solMin').textContent=v?'＋':'—';if(v)blurSol()}
+$('#solHead').onclick=()=>solMinSet(!sSol.min);
 
 /* ================= CHALLENGE EXTRAS: multiple choice, hints, bonus, timer, wheel ================= */
 T.mc=!!T.mc;T.mcOpts=T.mcOpts&&T.mcOpts.length?T.mcOpts:['انسحاب','انعكاس','دوران','تمدد'];T.mcOk=T.mcOk||0;T.hint=T.hint!==false;T.bon=!!T.bon;T.tmr=!!T.tmr;T.tmrMin=T.tmrMin||2;T.tEnd=T.tEnd||0;
@@ -2441,7 +2475,7 @@ function makeStudentRoom(){let pin=null,host=null,unsub=null;const fns=[],conn=[
   watch(p){p=String(p||'');if(!p||p===pin)return;if(unsub)unsub();pin=p;host=null;
    unsub=F.onSnapshot(F.doc(FS,'rooms/'+p),s=>{host=s.exists()?fsDec(s.data()):null;conn.forEach(f=>f(true));fire()},e=>{console.warn('room',e);host=null;fire()})},
   presence:async o=>{if(!pin||!FUSER)return;await F.setDoc(F.doc(FS,'rooms/'+pin+'/players/'+FUSER.uid),fsEnc(Object.assign({},o,{t:Date.now()})))}}}
-function attachRoom(){ROOM.onPeers(()=>{if(S.student){if(!sJoined&&SP.pin&&SP.n&&SP.g){const h=findHost(SP.pin);if(h&&h.g===SP.g){sHost=h;sJoined=true;if(SP.a)pushPlayer()}}studentRender()}else teacherPeers()});if(ROOM.onConnection)ROOM.onConnection(on=>setConn(on?'on':'wait'))}
+function attachRoom(){ROOM.onPeers(()=>{if(S.student){if(!sJoined&&SP.pin&&SP.n&&SP.g){const h=findHost(SP.pin);if(h&&h.g===SP.g&&!(h.t&&Date.now()-h.t>6*3600e3)){sHost=h;sJoined=true;if(SP.a)pushPlayer()}}studentRender()}else teacherPeers()});if(ROOM.onConnection)ROOM.onConnection(on=>setConn(on?'on':'wait'))}
 function teacherReady(){return !!(UID&&DB&&FUSER&&!FUSER.isAnonymous)}
 function requireTeacher(cb,msg){if(!FBMODE||teacherReady()){cb&&cb();return}authPending=cb;$('#authMsg').textContent=msg||'سجّلي الدخول بحساب Google لاستخدام «تحدي الصف» و«البحث الإجرائي». الرسم على السبورة لا يحتاج تسجيل دخول.';$('#authBox').classList.remove('hidden')}
 $('#authCancel').onclick=()=>{authPending=null;$('#authBox').classList.add('hidden')};
