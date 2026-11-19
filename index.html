@@ -3,6 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>(function(){/* installable app: teacher or student icon/name depending on the page */var st=location.hash==='#student'||/[?&]app=student/.test(location.search),h=document.head;
+ function add(t,a){var e=document.createElement(t);for(var k in a)e.setAttribute(k,a[k]);h.appendChild(e)}
+ add('link',{rel:'manifest',href:st?'manifest-student.json':'manifest-teacher.json'});
+ add('link',{rel:'apple-touch-icon',href:st?'icons/student-180.png':'icons/teacher-180.png'});
+ add('meta',{name:'apple-mobile-web-app-title',content:st?'تحدي الرياضيات':'سبورتي'});
+ add('meta',{name:'theme-color',content:st?'#1f9d55':'#2f6fde'});})();</script>
 <title>سبورة الرياضيات</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -2818,7 +2827,7 @@ function studentRender0(){
  sHost=findHost(SP.pin)||sHost;
  if(sHost&&sHost.s==='closed'){const old=SP.pin;SP.pin=null;SP.g=null;saveSP();sJoined=false;sHost=null;$('#taskBar').classList.add('hidden');$('#jPin').value='';jShow('jStep1');const e=$('#jErr');e.textContent='المعلمة غيّرت رمز التحدي ('+dg(old||'')+'). اكتبي الرمز الجديد الظاهر على شاشتها.';e.classList.remove('hidden');return}
  if(isFB()&&sHost&&sHost.t){if(Date.now()-sHost.t<20*60e3)sLive=SP.pin+'|'+sHost.g}
- if(isFB()&&sHost&&sHost.t&&Date.now()-sHost.t>20*60e3&&sLive!==SP.pin+'|'+sHost.g){const old=SP.pin;SP.pin=null;SP.g=null;saveSP();sJoined=false;sHost=null;$('#taskBar').classList.add('hidden');$('#jPin').value='';jShow('jStep1');const e=$('#jErr');e.textContent='انتهى التحدي السابق ('+dg(old||'')+'). اكتبي رمز التحدي الجديد الظاهر على شاشة المعلمة.';e.classList.remove('hidden');return}
+ if(isFB()&&sHost&&sHost.t&&Date.now()-sHost.t>20*60e3&&sLive!==SP.pin+'|'+sHost.g){const old=SP.pin;SP.pin=null;SP.g=null;saveSP();sJoined=false;sHost=null;$('#taskBar').classList.add('hidden');$('#jPin').value=old||'';jShow('jStep1');const e=$('#jErr');e.textContent='التحدي السابق انتهى. الرمز مكتوب لك؛ اضغطي «التالي» عندما تفتح المعلمة التحدي الجديد. (إذا تغيّر الرمز، اكتبي الرمز الظاهر على شاشتها)';e.classList.remove('hidden');return}
  if(!sHost){jShow('jWait');$('#jMe').textContent=SP.a||'⏳';$('#jHi').textContent='جارٍ الوصول للمعلمة…';return}
  let gNew=false;if(sHost.g!==SP.g){SP.g=sHost.g;sStatus='draw';saveSP();sLoadedG=null;sAns='';$('#ansIn').value='';gNew=true}
  sStatus=SP.sentG===SP.g?'sent':'draw';
@@ -3344,7 +3353,7 @@ function backupCSV(){const A=analyze();const rows=[['الطالبة','القبل
 $('#classBtn').onclick=()=>requireTeacher(openDash);$('#rsBtn').onclick=()=>requireTeacher(openRS);
 
 /* ================= BOOT ================= */
-(async function boot(){const wantStudent=location.hash==='#student';if(wantStudent)startStudent();
+(async function boot(){const wantStudent=location.hash==='#student'||/[?&]app=student/.test(location.search);if(wantStudent)startStudent();
  const C=window.claude&&typeof window.claude.use==='function'?window.claude:null;let room=null,user=null;
  if(!C){await fbBoot(wantStudent);renderKind();return}
  let db=null;if(C){try{[room,user,db]=await Promise.all([C.use('room'),C.use('user'),wantStudent?Promise.resolve(null):C.use('db')])}catch(e){}}
