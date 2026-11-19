@@ -228,6 +228,7 @@ body.student.notf #tfSec{display:none}
 @media (max-width:1100px){.dash-grid{grid-template-columns:1fr}.dcol{position:static}}
 @media (max-width:700px){.copy{display:none}#header .who{display:none}#header .ttl{font-size:16px}}
 @media (max-width:820px){#side{position:absolute;right:0;top:0;bottom:0;z-index:8;box-shadow:-6px 0 20px rgba(0,0,0,.12)}}
+.stepBar{display:grid;grid-template-columns:2fr 1fr 1fr;gap:6px;margin:8px 0}.stepBar button{padding:10px 4px;font-size:14.5px}
 #labSec details.lab{display:none}#labSec details.lab.cur{display:block;border-color:#b9cdf0}#labSec details.lab>summary{display:none}#labSec details.lab .lb{padding-top:10px}
 .labPick{display:grid;grid-template-columns:auto 1fr;gap:6px 8px;align-items:center;margin:8px 0 4px}.labPick label{font-weight:700;font-size:13.5px;color:#1f4e9c}.labPick select{width:100%;padding:8px;border:1px solid var(--line);border-radius:9px;font:inherit;font-size:14px;background:#fff}
 #labSec .grh{font-weight:800;color:#1f4e9c;background:#eaf1fc;border-radius:8px;padding:5px 10px;margin:8px 0 2px;font-size:14px}
@@ -450,7 +451,7 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
       <section id="labSec">
         <h3>📚 الدروس التفاعلية</h3>
         <div class="note">أدرجي المعمل ثم استعملي الأزرار. للسحب والتحريك استعملي أداة «تحديد».</div>
-        <div class="labPick"><label>الصف</label><select id="labGr" autocomplete="off"></select><label>الدرس</label><select id="labLs" autocomplete="off"></select></div><div class="muted small" id="labHint">اختاري الدرس من القائمة لتظهر أدواته.</div>
+        <div class="labPick"><label>الصف</label><select id="labGr" autocomplete="off"></select><label>الدرس</label><select id="labLs" autocomplete="off"></select></div><div class="muted small" id="labHint">اختاري الدرس من القائمة لتظهر أدواته.</div><div class="stepBar"><button class="primary" id="labNx">الخطوة التالية ←</button><button class="btn2" id="labPv">→ السابقة</button><button class="btn2" id="labAll">الحل كاملاً</button></div>
         <details class="lab"><summary>نظرية فيثاغورس</summary><div class="lb">
           <button class="primary ins" id="labPyIns">＋ مثلث قائم ومربعات على أضلاعه</button>
           <div class="seg" id="labPySet"><button data-ab="3,4">٣ و ٤</button><button data-ab="6,8">٦ و ٨</button><button data-ab="5,12">٥ و ١٢</button><button data-ab="1,2">١ و ٢</button></div>
@@ -524,7 +525,7 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
         <details class="lab" data-g="3"><summary>حل المعادلات (ميزان المعادلة)</summary><div class="lb">
           <button class="primary ins" id="l3BaIns">＋ ميزان ومعادلة</button>
           <div class="seg" id="l3BaP"></div>
-          <div class="seg"><button id="l3BaNx">الخطوة التالية ←</button><button id="l3BaPv">→ السابقة</button><button id="l3BaRs">من البداية</button><button id="l3BaRn">معادلة أخرى 🎲</button></div>
+          <div class="seg"><button id="l3BaRs">من البداية</button><button id="l3BaRn">معادلة أخرى 🎲</button></div>
         </div></details>
         <details class="lab" data-g="3"><summary>حل المعادلات التي تتضمن القيمة المطلقة</summary><div class="lb">
           <button class="primary ins" id="l3AbIns">＋ معادلة قيمة مطلقة على خط الأعداد</button>
@@ -537,11 +538,11 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
         <details class="lab" data-g="3"><summary>تمثيل المعادلات الخطية بيانياً</summary><div class="lb">
           <button class="primary ins" id="l3LgIns">＋ معادلة خطية</button>
           <div class="seg" id="l3LgMd"><button data-m="tbl">باستعمال جدول</button><button data-m="int">باستعمال المقطعين</button></div>
-          <div class="seg"><button id="l3LgSt">الخطوة التالية ←</button><button id="l3LgNx">معادلة أخرى</button></div>
+          <div class="seg"><button id="l3LgNx">معادلة أخرى</button></div>
         </div></details>
         <details class="lab" data-g="3"><summary>حل المعادلات الخطية بيانياً</summary><div class="lb">
           <button class="primary ins" id="l3ZrIns">＋ معادلة ودالتها المرتبطة</button>
-          <div class="seg"><button id="l3ZrSh">أظهري الحل (صفر الدالة)</button><button id="l3ZrNx">معادلة أخرى</button></div>
+          <div class="seg"><button id="l3ZrNx">معادلة أخرى</button></div>
         </div></details>
         <details class="lab" data-g="3"><summary>معدل التغير والميل</summary><div class="lb">
           <button class="primary ins" id="l3SlIns">＋ مستقيم يمر بنقطتين</button>
@@ -568,7 +569,7 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
         </div></details>
         <details class="lab" data-g="3"><summary>حل المتباينات</summary><div class="lb">
           <button class="primary ins" id="l3IqIns">＋ متباينة وخط الأعداد</button>
-          <div class="seg"><button id="l3IqNx">الخطوة التالية ←</button><button id="l3IqRs">من البداية</button><button id="l3IqNw">متباينة أخرى</button></div>
+          <div class="seg"><button id="l3IqRs">من البداية</button><button id="l3IqNw">متباينة أخرى</button></div>
         </div></details>
         <details class="lab" data-g="3"><summary>حل المتباينات المركبة</summary><div class="lb">
           <button class="primary ins" id="l3CmIns">＋ متباينة مركبة</button>
@@ -582,7 +583,7 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
         <details class="lab" data-g="3"><summary>حل نظام من معادلتين خطيتين</summary><div class="lb">
           <button class="primary ins" id="l3SyIns">＋ نظام من معادلتين</button>
           <div class="seg" id="l3SyMt"><button data-m="g">بيانياً</button><button data-m="s">بالتعويض</button><button data-m="e">بالحذف</button></div>
-          <div class="seg"><button id="l3SySt">الخطوة التالية ←</button><button id="l3SyNw">نظام آخر</button></div>
+          <div class="seg"><button id="l3SyNw">نظام آخر</button></div>
         </div></details>
         <label class="chk"><input type="checkbox" id="labQ"> وضع السؤال: إخفاء الإجابات في البطاقة</label>
       </section>
@@ -883,7 +884,7 @@ const snapv=v=>S.snap?Math.round(v):v;
 const K=()=>S.G/BASE;
 const AD='٠١٢٣٤٥٦٧٨٩';
 function dg(s){s=String(s);return S.arNum?s.replace(/[0-9]/g,d=>AD[d]).replace(/([٠-٩])\.(?=[٠-٩])/g,'$1٫'):s}
-function fmt(n){let r=Math.round(n*100)/100;if(Object.is(r,-0)||Math.abs(r)<1e-9)r=0;if(r<0)return '\u200F−'+dg(String(-r));return dg(String(r).replace('-','−'))}
+function fmt(n){let r=Math.round(n*100)/100;if(Object.is(r,-0)||Math.abs(r)<1e-9)r=0;if(r<0)return '\u202D'+dg(String(-r))+'−\u202C';return dg(String(r).replace('-','−'))}
 const SC=()=>page().sc||1;
 const PROT_IC='<svg width="20" height="12" viewBox="0 0 40 22" style="vertical-align:-1px;margin-left:4px"><path d="M2 20 A18 18 0 0 1 38 20 Z" fill="#eaf1fc" stroke="currentColor" stroke-width="2.4"/><path d="M20 20 L20 15 M8 9.5 L10.8 12.2 M32 9.5 L29.2 12.2 M20 2.6 L20 6" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="2" fill="currentColor"/></svg>';
 function unitsW(n){n=Math.abs(n);if(Math.abs(n-1)<1e-9)return 'وحدة واحدة';if(Math.abs(n-2)<1e-9)return 'وحدتين';if(Number.isInteger(n)&&n>=3&&n<=10)return dg(n)+' وحدات';return fmt(n)+' وحدة'}
@@ -1059,7 +1060,13 @@ function nAngle(a){a%=2*Math.PI;return a<0?a+2*Math.PI:a}
 function sector(g,c,r,a1,a2,fill,stroke,lw){g.beginPath();g.moveTo(c[0],c[1]);g.arc(c[0],c[1],r,-a1,-a2,true);g.closePath();
  if(fill){g.fillStyle=fill;g.fill()}if(stroke){g.beginPath();g.arc(c[0],c[1],r,-a1,-a2,true);g.strokeStyle=stroke;g.lineWidth=lw||2;g.stroke()}}
 /* info card under a lab: lines [{s|tok,c,b,px,al}] ; cx,top in world units ; wU width in units */
-function labCard(g,it,lines,cx,top,wU){const k=K(),w=wU*S.G,pad=12*k,x0=sx(cx)-w/2,y0=sy(top);g.save();const rows=[];
+var LAB_G={par:1,pg:1,cg:0,sy:1,pyth:2,irr:1,dist:1,rate:2,sim:0,dil:1,pct:1,tri:1,cgx:1,bal:2,abs:2,rel:2,lg:2,zero:3,slope:2,seq:2,si:2,ps:3,pp:3,inq:2,cmp:2,sys:4};
+function isHintL(L){return L&&typeof L.s==='string'&&/^(اضغطي|اسحبي)/.test(L.s)}
+function labReveal(it,lines){lines=lines.filter(Boolean);if(it.rv==null){it._tot=0;it._done=true;return lines}const G=LAB_G[it.k]==null?1:LAB_G[it.k];let tot=0;lines.forEach((L,i)=>{if(i>=G&&!isHintL(L))tot++});
+ if(it.rv>tot)it.rv=tot;it._tot=tot;it._done=it.rv>=tot;let n=0;const out=lines.filter((L,i)=>{if(i<G)return true;if(isHintL(L))return it._done||!lines.some((M,j)=>j>=G&&!isHintL(M));n++;return n<=it.rv});
+ if(!it._done&&!out.some(isHintL))out.push({s:'اضغطي «الخطوة التالية» ←',c:'#8a96a8',px:13});return out}
+function labDone(it){return it.rv==null||!!it._done}
+function labCard(g,it,lines,cx,top,wU){lines=labReveal(it,lines);const k=K(),w=wU*S.G,pad=12*k,x0=sx(cx)-w/2,y0=sy(top);g.save();const rows=[];
  lines.forEach(L=>{if(!L)return;const px=L.px||17,h=px*(L.hh||1.6);if(L.tok){rows.push(Object.assign({},L,{h}));return}if(L.tbl){rows.push(Object.assign({},L,{h:px*1.75*L.tbl.length+6}));return}g.font=labFont(px,L.b);g.direction='rtl';
   let cur='';String(L.s).split(' ').forEach(wd=>{const t=cur?cur+' '+wd:wd;if(cur&&g.measureText(t).width>w-2*pad){rows.push(Object.assign({},L,{s:cur,h}));cur=wd}else cur=t});if(cur)rows.push(Object.assign({},L,{s:cur,h}))});
  const Hh=rows.reduce((a,r)=>a+r.h*k,0)+pad*2;LABH.set(it,Hh/S.G);
@@ -1249,7 +1256,7 @@ function syBox(it){const O=it.p[0];return [O[0]-7,O[1]-5.3-(LABH.get(it)||4.2),O
 /* ---------- grade 8 labs (part 2) ---------- */
 var K_SUP=s=>({s:dg(s),sup:1});
 function TK(s,c,b){return {s:String(s),c,b}}
-function sgn(v){return v>0?'\u200F+'+dg(String(Math.round(v*100)/100)):fmt(v)}
+function sgn(v){return v>0?'\u202D'+dg(String(Math.round(v*100)/100))+'+\u202C':fmt(v)}
 function nfmt(v){return fmt(Math.round(v*100)/100)}
 function isqrt(n){const r=Math.round(Math.sqrt(n));return r*r===n?r:null}
 /* tokens: {s}, {s,sup}, {frac:[top,bottom]}, {sqrt:'٢٥'}, {s,o:overline} */
@@ -1471,17 +1478,17 @@ function cgxBox(it){const O=it.p[0];return uni([O[0]-8.2,O[1]-1.2,O[0]+8.8,O[1]+
 /* ---- shared helpers ---- */
 function q3(v){for(const d of [1,2,3,4,5,6]){const n=v*d;if(Math.abs(n-Math.round(n))<1e-9)return [Math.round(n),d]}return null}
 function numTok(v){const f=q3(v);if(!f||f[1]===1)return [{s:fmt(v)}];return f[0]<0?[{s:'−',sg:1},{frac:[dg(-f[0]),dg(f[1])]}]:[{frac:[dg(f[0]),dg(f[1])]}]}
-function numStr(v){const f=q3(v);if(!f||f[1]===1)return fmt(v);const s=dg(Math.abs(f[0]))+'‏/‏'+dg(f[1]);return f[0]<0?'\u200F−'+s:s}
+function numStr(v){const f=q3(v);if(!f||f[1]===1)return fmt(v);const s=dg(Math.abs(f[0]))+'‏/‏'+dg(f[1]);return f[0]<0?'\u202D'+s+'−\u202C':s}
 /* terms: [[coef,var],...] -> tokens like ٢س − ٣ */
 function termsTok(L){const out=[];let first=true;L.forEach(([c,v])=>{if(Math.abs(c)<1e-12)return;const a=Math.abs(c),neg=c<0;
-  if(!first)out.push({s:neg?'−':'+'});const f=q3(a);const pre=first&&neg?'\u200F−':'';
-  if(!v)out.push(...(f&&f[1]>1?[...(pre?[{s:pre,sg:1}]:[]),{frac:[dg(f[0]),dg(f[1])]}]:[{s:pre+dg(String(Math.round(a*100)/100))}]));
-  else if(Math.abs(a-1)<1e-12)out.push({s:pre+v});
-  else if(f&&f[1]>1){if(pre)out.push({s:pre,sg:1});out.push({frac:[dg(f[0]),dg(f[1])]},{s:v})}
-  else out.push({s:pre+dg(String(Math.round(a*100)/100))+v});first=false});
+  if(!first)out.push({s:neg?'−':'+'});const f=q3(a);const pre='';const NEG=first&&neg;
+  if(!v)out.push(...(f&&f[1]>1?[...(NEG?[{s:'−',sg:1}]:[]),{frac:[dg(f[0]),dg(f[1])]}]:[{s:NEG?fmt(-Math.round(a*100)/100):dg(String(Math.round(a*100)/100))}]));
+  else if(Math.abs(a-1)<1e-12)out.push({s:(NEG?'−':'')+v});
+  else if(f&&f[1]>1){if(NEG)out.push({s:'−',sg:1});out.push({frac:[dg(f[0]),dg(f[1])]},{s:v})}
+  else out.push({s:(NEG?fmt(-Math.round(a*100)/100):dg(String(Math.round(a*100)/100)))+v});first=false});
  if(first)out.push({s:dg(0)});return out}
 function termsStr(L){let s='',first=true;L.forEach(([c,v])=>{if(Math.abs(c)<1e-12)return;const a=Math.abs(c),neg=c<0;
-  s+=first?(neg?'\u200F−':''):(neg?' − ':' + ');const n=numStr(a);s+=v?(Math.abs(a-1)<1e-12?v:n+v):n;first=false});return first?dg(0):s}
+  const n=numStr(a);const body=v?(Math.abs(a-1)<1e-12?v:n+v):n;if(first)s+=neg?(v&&Math.abs(a-1)<1e-12?'−'+v:(q3(a)&&q3(a)[1]===1?fmt(-a)+(v||''):'−'+body)):body;else s+=(neg?' − ':' + ')+body;first=false});return first?dg(0):s}
 function lineTok(m,b,fn){return [{s:fn||'ص'},{s:'='},...termsTok([[m,'س'],[b,'']])]}
 function lineStr(m,b,fn){return (fn||'ص')+' = '+termsStr([[m,'س'],[b,'']])}
 const V2W=v=>v/SC(),W2V=w=>w*SC();
@@ -1560,7 +1567,7 @@ function drawAbs(g,it,ghost){const O=it.p[0],a=it.a||0,b=it.b==null?3:it.b,op=it
  lines.push({s:'معناها: بُعد س عن العدد '+fmt(a)+' '+(op==='='?'يساوي':op==='<'?'أقل من':op==='≤'?'أقل من أو يساوي':op==='>'?'أكبر من':'أكبر من أو يساوي')+' '+fmt(b)+(b===1?' وحدة':' وحدات'),c:C3.m,px:14});
  /* centre */
  dot(g,[X(a),y],C3.p,6);ltxt(g,'المركز',sx(X(a)),sy(y)+40*Math.max(.8,K()),13,C3.p,true);
- if(!it.q&&b>0){[-1,1].forEach(sg=>{const k=K(),yy=y+1.1;seg(g,[X(a),yy],[X(a+sg*b),yy],C3.p,Math.max(1.5,2*k),true,1);ltxt(g,dg(b),sx(X(a+sg*b/2)),sy(yy)-12*Math.max(.8,k),14,C3.p,true)})}
+ if(!it.q&&labDone(it)&&b>0){[-1,1].forEach(sg=>{const k=K(),yy=y+1.1;seg(g,[X(a),yy],[X(a+sg*b),yy],C3.p,Math.max(1.5,2*k),true,1);ltxt(g,dg(b),sx(X(a+sg*b/2)),sy(yy)-12*Math.max(.8,k),14,C3.p,true)})}
  let ivs=[];
  if(b<0){lines.push({s:op==='='||op==='<'||op==='≤'?'لا يوجد حل: القيمة المطلقة (المسافة) لا تكون سالبة أبداً':'الحل: جميع الأعداد الحقيقية، لأن القيمة المطلقة دائماً ≥ ٠',c:op==='>'||op==='≥'?C3.g:C3.r,b:1,px:15});if(op==='>'||op==='≥')ivs=[[-Infinity,0,Infinity,0]]}
  else if(op==='='){if(b===0){ivs=[[a,1,a,1]];lines.push({s:'س '+(a>0?'− '+dg(a):a<0?'+ '+dg(-a):'')+' = ٠  ←  س = '+fmt(a)+' (حل واحد)',c:C3.g,b:1})}
@@ -1569,8 +1576,8 @@ function drawAbs(g,it,ghost){const O=it.p[0],a=it.a||0,b=it.b==null?3:it.b,op=it
    lines.push({s:fmt(-b)+' '+op+' '+L+' '+op+' '+fmt(b)+'   (متباينة مركبة بـ «و»)',px:15});lines.push({s:ivs.length?ivStr(ivs[0]):'لا يوجد حل',c:C3.g,b:1,px:17})}
   else{ivs=[[-Infinity,0,a-b,op==='≥'?1:0],[a+b,op==='≥'?1:0,Infinity,0]];if(b===0&&op==='≥')ivs=[[-Infinity,0,Infinity,0]];
    lines.push({s:L+' '+FLIP[op]+' '+fmt(-b)+'   أو   '+L+' '+op+' '+fmt(b)+'   (بـ «أو»)',px:15});lines.push({s:'س '+FLIP[op]+' '+fmt(a-b)+'   أو   س '+op+' '+fmt(a+b),c:C3.g,b:1,px:17})}}
- if(it.q)lines.splice(3);else ivs.forEach(iv=>nlIv(g,X,y,lo,hi,iv,C3.g,0));
- if(!it.q&&op==='='&&b>0)[a-b,a+b].forEach(v=>ltxt(g,fmt(v),sx(X(v)),sy(y)-18*Math.max(.8,K()),17,C3.g,true));
+ if(it.q)lines.splice(3);else if(labDone(it))ivs.forEach(iv=>nlIv(g,X,y,lo,hi,iv,C3.g,0));
+ if(!it.q&&labDone(it)&&op==='='&&b>0)[a-b,a+b].forEach(v=>ltxt(g,fmt(v),sx(X(v)),sy(y)-18*Math.max(.8,K()),17,C3.g,true));
  labCard(g,it,lines,O[0],y-1.7,12.5)}
 function absBox(it){const O=it.p[0],a=it.a||0,b=it.b==null?3:it.b,w=Math.max(b,2)+4;return uni([O[0]-w,O[1]-1.5,O[0]+w,O[1]+2],cardBox(it,O[0],O[1]-1.7,12.5))}
 
@@ -1713,19 +1720,19 @@ function drawPp(g,it,ghost){const sc=SC(),k=K(),m=it.m==null?2:it.m,b=it.b==null
  if(it.q)lines.push({s:per?'كيف تعرفين أن المستقيمين متعامدان من ميليهما؟':'كيف تعرفين أن المستقيمين متوازيان من ميليهما؟',b:1});
  else if(!per){lines.push({tok:[{s:'م١ ='},...numTok(m),{s:'،  م٢ ='},...numTok(m)],px:16});lines.push({s:'الميلان متساويان والمقطعان مختلفان ← المستقيمان متوازيان',c:C3.g,b:1,px:15})}
  else if(m===0){lines.push({s:'المستقيم الأفقي (ميله صفر) يعامد المستقيمَ الرأسي (ميله غير معرّف)',c:C3.g,b:1,px:15})}
- else{lines.push({tok:[{s:'م١ × م٢ ='},...numTok(m),{s:'×'},...(m2<0?[{s:'('},...numTok(m2),{s:')'}]:numTok(m2)),{s:'='},{s:fmt(-1)}],px:16,hh:2});lines.push({s:'حاصل ضرب الميلين = \u200F−١ ← المستقيمان متعامدان',c:C3.g,b:1,px:15});lines.push({s:'ميل العمودي = مقلوب الميل مع تغيير الإشارة',c:C3.m,px:13})}
+ else{lines.push({tok:[{s:'م١ × م٢ ='},...numTok(m),{s:'×'},...(m2<0?[{s:'('},...numTok(m2),{s:')'}]:numTok(m2)),{s:'='},{s:fmt(-1)}],px:16,hh:2});lines.push({s:'حاصل ضرب الميلين = \u202D١−\u202C ← المستقيمان متعامدان',c:C3.g,b:1,px:15});lines.push({s:'ميل العمودي = مقلوب الميل مع تغيير الإشارة',c:C3.m,px:13})}
  const A=cAof(it);labCard(g,it,lines,A[0],A[1],c3W())}
 function ppBox(it){const A=cAof(it);return uni(boxOf([it.p[0]],1),cardBox(it,A[0],A[1],c3W()))}
 
 /* ===== 11) solving inequalities ===== */
 var INQ_P=[[1,4,'<',7],[1,-3,'≥',2],[3,0,'≤',12],[-2,0,'<',6],[2,-3,'>',5],[-3,1,'≥',-8],[-1,2,'≤',5]];
 function inqSteps(a,b,op,c){const S0=[{e:[a,b,op,c]}];if(b){c-=b;S0.push({e:[a,0,op,c],t:b>0?'اطرحي '+dg(b)+' من الطرفين':'أضيفي '+dg(-b)+' إلى الطرفين'});b=0}
- if(a!==1){if(a===-1){S0.push({e:[1,0,FLIP[op],-c],t:'اضربي الطرفين في \u200F−١ واقلبي إشارة المتباينة',fl:1})}else S0.push({e:[1,0,a<0?FLIP[op]:op,c/a],t:'اقسمي الطرفين على '+(a<0?'('+fmt(a)+')':dg(a))+(a<0?' واقلبي إشارة المتباينة':''),fl:a<0});}return S0}
+ if(a!==1){if(a===-1){S0.push({e:[1,0,FLIP[op],-c],t:'اضربي الطرفين في \u202D١−\u202C واقلبي إشارة المتباينة',fl:1})}else S0.push({e:[1,0,a<0?FLIP[op]:op,c/a],t:'اقسمي الطرفين على '+(a<0?'('+fmt(a)+')':dg(a))+(a<0?' واقلبي إشارة المتباينة':''),fl:a<0});}return S0}
 function drawInq(g,it,ghost){const O=it.p[0],e0=INQ_P[(it.pi||0)%INQ_P.length],ST=inqSteps(...e0),s=Math.min(it.s||0,ST.length-1),fin=ST[ST.length-1].e,k0=fin[3],op=fin[2];
  const lo=Math.round(k0)-6,hi=Math.round(k0)+6,X=nlDraw(g,O,lo,hi);
  const lines=[{s:'حل المتباينات',b:1,al:'c',px:18}];
  for(let i=0;i<=s;i++){const E=ST[i].e;if(ST[i].t)lines.push({s:ST[i].t+(ST[i].fl?' ⚠️':''),c:ST[i].fl?C3.r:C3.o,b:1,px:15});lines.push({tok:[...termsTok([[E[0],'س'],[E[1],'']]),{s:E[2]},{s:fmt(E[3])}],px:20,c:i===s?C3.d:C3.m,b:i===s?1:0})}
- if(s===ST.length-1){nlIv(g,X,O[1],lo,hi,rayIv(op,k0),C3.g,0);ltxt(g,fmt(k0),sx(X(k0)),sy(O[1])-22*Math.max(.8,K()),16,C3.g,true);
+ if(s===ST.length-1){if(labDone(it)||it.rv>=it._tot-1){nlIv(g,X,O[1],lo,hi,rayIv(op,k0),C3.g,0);ltxt(g,fmt(k0),sx(X(k0)),sy(O[1])-22*Math.max(.8,K()),16,C3.g,true)}
   lines.push({s:(op==='<'||op==='>')?'دائرة مفتوحة: العدد '+fmt(k0)+' ليس من الحلول':'دائرة مغلقة: العدد '+fmt(k0)+' من الحلول',c:C3.g,px:14});
   const tv=k0+((op==='>'||op==='≥')?2:-2);const L=e0[0]*tv+e0[1];lines.push({s:'تحقّقي بعدد من المنطقة المظللة: س = '+fmt(tv)+' ← '+fmt(L)+' '+e0[2]+' '+fmt(e0[3])+' ✓',c:C3.m,px:13})}
  else lines.push({s:'اضغطي «الخطوة التالية»',c:C3.m,px:13});
@@ -1742,7 +1749,7 @@ function drawCmp(g,it,ghost){const O=it.p[0],P=CMP_P[(it.pi||0)%CMP_P.length],c=
  const res=c==='و'?ivAnd(ia,ib):ivOr(ia,ib);
  const rows=[[O[1]+.4,ia,C3.b,'س '+A[0]+' '+fmt(A[1])],[O[1]-2.1,ib,C3.o,'س '+B[0]+' '+fmt(B[1])],[O[1]-4.6,null,C3.g,c==='و'?'«و»: الأعداد المشتركة (التقاطع)':'«أو»: كل الأعداد المظللة (الاتحاد)']];
  rows.forEach(([y,iv,col,t],ri)=>{const X=nlDraw(g,[O[0],y],lo,hi);g.save();g.font=labFont(15,1);const tw=g.measureText(t).width;g.restore();ltxt(g,t,sx(X(hi)+.8)-tw/2,sy(y)-24*Math.max(.8,K()),15,col,true);
-  if(ri<2)nlIv(g,X,y,lo,hi,iv,col,0);else if(!it.q)res.forEach(r=>nlIv(g,X,y,lo,hi,r,col,0))});
+  if(ri<2)nlIv(g,X,y,lo,hi,iv,col,0);else if(!it.q&&labDone(it))res.forEach(r=>nlIv(g,X,y,lo,hi,r,col,0))});
  const lines=[{s:'المتباينات المركبة',b:1,al:'c',px:18},{s:cmpStr(P,c,b),px:20,b:1,al:'c'}];
  if(b){lines.push({s:b>0?'اطرحي '+dg(b)+' من كل جزء':'أضيفي '+dg(-b)+' إلى كل جزء',c:C3.o,b:1,px:15});lines.push({s:cmpStr({A,B},c,0),px:19,b:1,al:'c'})}
  if(it.q)lines.push({s:'مثّلي الحل على خط الأعداد',b:1});
@@ -1754,27 +1761,27 @@ function cmpBox(it){const O=it.p[0];return uni([O[0]-9,O[1]-6,O[0]+11,O[1]+1],ca
 var SYS_P=[
  {E:[[-2,1,1,'ص = ٢س + ١'],[3,1,11,'٣س + ص = ١١']],sol:[2,5],
   s:['المعادلة الأولى محلولة بالنسبة لـ ص','عوّضي ٢س + ١ بدلاً من ص في المعادلة الثانية:','٣س + (٢س + ١) = ١١','٥س + ١ = ١١  ←  ٥س = ١٠  ←  س = ٢','عوّضي س = ٢ في المعادلة الأولى: ص = ٢(٢) + ١ = ٥'],
-  e:['اكتبي المعادلة الأولى بالصيغة القياسية: \u200F−٢س + ص = ١','اطرحي المعادلتين (معاملا ص متساويان):','(٣س + ص) − (\u200F−٢س + ص) = ١١ − ١','٥س = ١٠  ←  س = ٢','عوّضي س = ٢: ٣(٢) + ص = ١١  ←  ص = ٥']},
+  e:['اكتبي المعادلة الأولى بالصيغة القياسية: \u202D٢−\u202Cس + ص = ١','اطرحي المعادلتين (معاملا ص متساويان):','(٣س + ص) − (\u202D٢−\u202Cس + ص) = ١١ − ١','٥س = ١٠  ←  س = ٢','عوّضي س = ٢: ٣(٢) + ص = ١١  ←  ص = ٥']},
  {E:[[1,1,5,'س + ص = ٥'],[1,-1,1,'س − ص = ١']],sol:[3,2],
   s:['من المعادلة الأولى: ص = ٥ − س','عوّضي في المعادلة الثانية:','س − (٥ − س) = ١','٢س − ٥ = ١  ←  ٢س = ٦  ←  س = ٣','ص = ٥ − ٣ = ٢'],
-  e:['معاملا ص معكوسان جمعيّان (١ و \u200F−١)','اجمعي المعادلتين:','(س + ص) + (س − ص) = ٥ + ١','٢س = ٦  ←  س = ٣','عوّضي س = ٣: ٣ + ص = ٥  ←  ص = ٢']},
- {E:[[2,1,4,'٢س + ص = ٤'],[2,-3,-4,'٢س − ٣ص = \u200F−٤']],sol:[1,2],
-  s:['من المعادلة الأولى: ص = ٤ − ٢س','عوّضي في المعادلة الثانية:','٢س − ٣(٤ − ٢س) = \u200F−٤','٨س − ١٢ = \u200F−٤  ←  ٨س = ٨  ←  س = ١','ص = ٤ − ٢(١) = ٢'],
-  e:['معاملا س متساويان (٢ و ٢)','اطرحي المعادلتين:','(٢س + ص) − (٢س − ٣ص) = ٤ − (\u200F−٤)','٤ص = ٨  ←  ص = ٢','عوّضي ص = ٢: ٢س + ٢ = ٤  ←  س = ١']},
+  e:['معاملا ص معكوسان جمعيّان (١ و \u202D١−\u202C)','اجمعي المعادلتين:','(س + ص) + (س − ص) = ٥ + ١','٢س = ٦  ←  س = ٣','عوّضي س = ٣: ٣ + ص = ٥  ←  ص = ٢']},
+ {E:[[2,1,4,'٢س + ص = ٤'],[2,-3,-4,'٢س − ٣ص = \u202D٤−\u202C']],sol:[1,2],
+  s:['من المعادلة الأولى: ص = ٤ − ٢س','عوّضي في المعادلة الثانية:','٢س − ٣(٤ − ٢س) = \u202D٤−\u202C','٨س − ١٢ = \u202D٤−\u202C  ←  ٨س = ٨  ←  س = ١','ص = ٤ − ٢(١) = ٢'],
+  e:['معاملا س متساويان (٢ و ٢)','اطرحي المعادلتين:','(٢س + ص) − (٢س − ٣ص) = ٤ − (\u202D٤−\u202C)','٤ص = ٨  ←  ص = ٢','عوّضي ص = ٢: ٢س + ٢ = ٤  ←  س = ١']},
  {E:[[1,2,5,'س + ٢ص = ٥'],[3,-1,1,'٣س − ص = ١']],sol:[1,2],
   s:['من المعادلة الثانية: ص = ٣س − ١','عوّضي في المعادلة الأولى:','س + ٢(٣س − ١) = ٥','٧س − ٢ = ٥  ←  ٧س = ٧  ←  س = ١','ص = ٣(١) − ١ = ٢'],
-  e:['اضربي المعادلة الثانية في ٢: ٦س − ٢ص = ٢','الآن معاملا ص معكوسان (٢ و \u200F−٢)، اجمعي:','(س + ٢ص) + (٦س − ٢ص) = ٥ + ٢','٧س = ٧  ←  س = ١','عوّضي س = ١: ١ + ٢ص = ٥  ←  ص = ٢']},
+  e:['اضربي المعادلة الثانية في ٢: ٦س − ٢ص = ٢','الآن معاملا ص معكوسان (٢ و \u202D٢−\u202C)، اجمعي:','(س + ٢ص) + (٦س − ٢ص) = ٥ + ٢','٧س = ٧  ←  س = ١','عوّضي س = ١: ١ + ٢ص = ٥  ←  ص = ٢']},
  {E:[[-2,1,3,'ص = ٢س + ٣'],[-2,1,-1,'ص = ٢س − ١']],sol:null,ty:0,
-  s:['عوّضي ٢س + ٣ بدلاً من ص في المعادلة الثانية:','٢س + ٣ = ٢س − ١','٣ = \u200F−١  عبارة خاطئة ✗'],
+  s:['عوّضي ٢س + ٣ بدلاً من ص في المعادلة الثانية:','٢س + ٣ = ٢س − ١','٣ = \u202D١−\u202C  عبارة خاطئة ✗'],
   e:['اطرحي المعادلتين:','(ص) − (ص) = (٢س + ٣) − (٢س − ١)','٠ = ٤  عبارة خاطئة ✗']},
- {E:[[1,1,2,'ص = \u200F−س + ٢'],[2,2,4,'٢س + ٢ص = ٤']],sol:null,ty:2,
-  s:['عوّضي \u200F−س + ٢ بدلاً من ص في المعادلة الثانية:','٢س + ٢(\u200F−س + ٢) = ٤','٤ = ٤  عبارة صحيحة دائماً ✓'],
+ {E:[[1,1,2,'ص = −س + ٢'],[2,2,4,'٢س + ٢ص = ٤']],sol:null,ty:2,
+  s:['عوّضي −س + ٢ بدلاً من ص في المعادلة الثانية:','٢س + ٢(−س + ٢) = ٤','٤ = ٤  عبارة صحيحة دائماً ✓'],
   e:['اضربي المعادلة الأولى (س + ص = ٢) في ٢:','٢س + ٢ص = ٤','وهي نفس المعادلة الثانية ← المستقيمان متطابقان']}];
 function drawSys(g,it,ghost){const P=SYS_P[(it.pi||0)%SYS_P.length],sc=SC(),k=K(),mt=it.mt||'g',n=it.n||0;
  const ln=(E,col,side,dash)=>{if(Math.abs(E[1])<1e-9){fullLine(g,null,E[2]/E[0],col,Math.max(2,3*k),dash);return}const m=-E[0]/E[1],b=E[2]/E[1];fullLine(g,m,b,col,Math.max(2,3*k),dash);lineLabel(g,m,b,E[3],col,side)};
  ln(P.E[0],C3.b,1);ln(P.E[1],C3.o,-1,P.ty===2);
  const show=mt==='g'?n>=1:n>=(mt==='s'?P.s:P.e).length;
- if(P.sol&&!it.q&&show){const R=[P.sol[0]/sc,P.sol[1]/sc];g.save();g.strokeStyle=C3.g;g.lineWidth=3;g.beginPath();g.arc(sx(R[0]),sy(R[1]),13*Math.max(.8,k),0,7);g.stroke();g.restore();dot(g,R,C3.g,7);wl(g,pair(fmt(P.sol[0]),fmt(P.sol[1])),R,0,-26,16,C3.g)}
+ if(P.sol&&!it.q&&show&&labDone(it)){const R=[P.sol[0]/sc,P.sol[1]/sc];g.save();g.strokeStyle=C3.g;g.lineWidth=3;g.beginPath();g.arc(sx(R[0]),sy(R[1]),13*Math.max(.8,k),0,7);g.stroke();g.restore();dot(g,R,C3.g,7);wl(g,pair(fmt(P.sol[0]),fmt(P.sol[1])),R,0,-26,16,C3.g)}
  const lines=[{s:'حل نظام من معادلتين خطيتين',b:1,al:'c',px:18},{s:P.E[0][3],c:C3.b,b:1,px:18,al:'c',hh:1.4},{s:P.E[1][3],c:C3.o,b:1,px:18,al:'c'},{s:mt==='g'?'الطريقة: بيانياً':mt==='s'?'الطريقة: التعويض':'الطريقة: الحذف',c:C3.p,b:1,px:15}];
  const typ=P.sol?'للنظام حل وحيد ← متسق ومستقل':P.ty===0?'المستقيمان متوازيان ← لا يوجد حل ← غير متسق':'المستقيمان متطابقان ← عدد لا نهائي من الحلول ← متسق وغير مستقل';
  if(it.q)lines.push({s:'حلّي النظام، ثم تحقّقي بيانياً',b:1});
@@ -1817,7 +1824,7 @@ function lab3Unpack(x,it,cl,pt){const f=v=>typeof v==='number'&&isFinite(v);cons
  if(k==='cmp')it.c=x.c==='أو'?'أو':'و';
  if(k==='sys')it.mt=['g','s','e'].includes(x.mt)?x.mt:'g';return it}
 function bindLabs3(){const on=(id,f)=>{const e=$('#'+id);if(e)e.onclick=f};const ins=(id,k,fn)=>on(id,()=>{const it=labInsert(k);if(fn&&it){fn(it);changed()}});
- const step=(k,f)=>{const it=labGet(k);LABA.delete(it);pushHist();f(it);changed();return it};
+ const step=(k,f)=>{const it=labGet(k);LABA.delete(it);pushHist();f(it);it.rv=0;changed();return it};
  const fade=it=>labAnim(it,850,(t,st)=>{st.t=easeL(t)},()=>{LABA.delete(it);it.pv=null;draw()});
  /* balance */
  ins('l3BaIns','bal');const bp=$('#l3BaP');if(bp){BAL_P.forEach((e,i)=>{const b=document.createElement('button');b.textContent=termsStr([[e[0],'س'],[e[1],'']])+' = '+termsStr([[e[2],'س'],[e[3],'']]);b.onclick=()=>step('bal',it=>{it.e=e.slice();it.s=0;it.pv=null});bp.appendChild(b)})}
@@ -1937,6 +1944,7 @@ function labNew(k){const c=[Math.round(ux(W/2)),Math.round(uy(H/2))];const it={t
  if(k==='tri')Object.assign(it,{ax:.5,bx:-3,cx:3.5,p:[[c[0],c[1]+2]]});
  if(k==='cgx')Object.assign(it,{mode:'sss',built:false,r:0,s:1,z:1.5,p:[[c[0],c[1]]]});
  if(LAB3_DRAW[k])lab3New(k,it,c);
+ it.rv=0;
  it.q=$('#labQ')?$('#labQ').checked:false;return it}
 function labInsert(k){commitText();if(!page().items.length){if({dist:1,rate:1,dil:1}[k]||LAB3_COORD[k])page().bg='coord';else if(page().bg==='coord')page().bg='grid'}if(LAB3_COORD[k]){S.G=34;S.panX=Math.round(W*.13);S.panY=Math.round(H*.04);if(typeof updateZoom==='function')updateZoom()}const it=labNew(k);pushHist();page().items.push(it);S.sel=page().items.length-1;if(S.tool!=='select')setTool('select');changed();
  toast({pyth:'اسحبي رأسَي الساقين لتغيير طوليهما',irr:'اكتبي العدد تحت الجذر ثم «مثّلي»',dist:'اسحبي النقطتين أ ، ب',rate:'غيّري المعدل أو اجعلي العلاقة غير خطية',sim:'اختاري عامل المقياس',dil:'اسحبي الرؤوس أو مركز التمدد',pct:'اختاري النسبة المئوية',tri:'اسحبي رؤوس المثلث، ثم «انقلي الزاويتين»',cgx:'اضغطي «كوّني مثلثاً»',par:'اسحبي النقطة البرتقالية لتغيير ميل القاطع',pg:'اسحبي أي رأس لتغيير شكل المضلع',cg:'اسحبي المثلث البرتقالي، أو استعملي الأزرار',sy:'اختاري الشكل، ثم «اطوي» أو «دوّري»',bal:'اضغطي «الخطوة التالية» لحل المعادلة',abs:'غيّري المركز والمسافة',rel:'جرّبي «اختبار الخط الرأسي»',lg:'اختاري الطريقة ثم «الخطوة التالية»',zero:'اضغطي «أظهري الحل»',slope:'اسحبي النقطتين أ ، ب',seq:'غيّري الحد الأول والأساس',si:'غيّري الميل والمقطع',ps:'اسحبي النقطة أو غيّري الميل',pp:'اسحبي النقطة البرتقالية',inq:'اضغطي «الخطوة التالية»',cmp:'بدّلي بين «و» و«أو»',sys:'اختاري طريقة الحل ثم «الخطوة التالية»'}[k]);return it}
@@ -2789,7 +2797,7 @@ $('#tCheck').onclick=()=>{const msg=$('#tCheckMsg');const polys=page().items.fil
 /* ================= WRITTEN ANSWERS ================= */
 T.qa=T.qa||false;T.ansKey=T.ansKey||'';
 function normAns(s){s=String(s||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/٫/g,'.')
- .replace(/[ً-ٰٟـ‌-‏⁦-⁩]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/≌/g,'≅')
+ .replace(/[ً-ٰٟـ‌-‏‪-‮⁦-⁩]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/≌/g,'≅')
  .replace(/درجات|درجة|درجه/g,'').replace(/[°º˚]/g,'').replace(/ق\s*∠/g,'∠').replace(/[∠△]/g,'').replace(/مثلث/g,'').replace(/،/g,',').replace(/[−–]/g,'-').replace(/×/g,'*').toLowerCase();
  return s.split(/\s+/).filter(Boolean).map(w=>{if(w.length>=4){w=w.replace(/^و?ال(?=...)/,'');w=w.replace(/(تان|تين|ان|ين|ات|ه)$/,'')}return w}).join('')}
 const NUMRE=/^-?\d+(\.\d+)?$/;
@@ -2826,6 +2834,20 @@ function bindLabs2(){const on=(id,f)=>{const e=$('#'+id);if(e)e.onclick=f};
   labAnim(it,1500,(t,st)=>{st.t=t},()=>{LABA.delete(it);it.built=true;changed()})});
  on('labCxR',()=>labSet('cgx',it=>{it.built=false}))}
 bindLabs2();bindLabs3();
+(function(){const ADV={bal:it=>{const L=balSteps(...(it.e||BAL_P[0])).length;if((it.s||0)>=L-1)return false;it.pv=it.s||0;it.s=(it.s||0)+1;labAnim(it,850,(t,st)=>{st.t=easeL(t)},()=>{LABA.delete(it);it.pv=null;draw()});return true},
+  inq:it=>{const L=inqSteps(...INQ_P[(it.pi||0)%INQ_P.length]).length;if((it.s||0)>=L-1)return false;it.s=(it.s||0)+1;return true},
+  lg:it=>{const mx=it.mode==='int'?3:lgPts(LG_P[(it.pi||0)%LG_P.length]).length;if((it.n||0)>=mx)return false;it.n=(it.n||0)+1;return true},
+  sys:it=>{const P=SYS_P[(it.pi||0)%SYS_P.length],mx=!it.mt||it.mt==='g'?1:(it.mt==='s'?P.s:P.e).length;if((it.n||0)>=mx)return false;it.n=(it.n||0)+1;return true},
+  zero:it=>{if(it.sh)return false;it.sh=true;return true}};
+ const BACK={bal:it=>{if(!(it.s>0))return false;it.s--;it.pv=null;return true},inq:it=>{if(!(it.s>0))return false;it.s--;return true},lg:it=>{if(!(it.n>0))return false;it.n--;return true},sys:it=>{if(!(it.n>0))return false;it.n--;return true},zero:it=>{if(!it.sh)return false;it.sh=false;return true}};
+ function act(){const its=page().items;const sel=S.sel>=0&&its[S.sel]&&its[S.sel].t==='lab'?its[S.sel]:null;if(sel)return sel;for(let i=its.length-1;i>=0;i--)if(its[i].t==='lab')return its[i];return null}
+ const re=()=>{changed();requestAnimationFrame(()=>draw())};
+ $('#labNx').onclick=()=>{const it=act();if(!it){toast('أضيفي درساً أولاً');return}draw();pushHist();if(it.rv==null)it.rv=0;
+  if(it.rv<(it._tot||0)){it.rv++;re();return}
+  if(ADV[it.k]&&ADV[it.k](it)){re();requestAnimationFrame(()=>{if(it.rv<(it._tot||0)){it.rv++;re()}});return}toast('اكتمل الحل ✓')};
+ $('#labPv').onclick=()=>{const it=act();if(!it)return;draw();pushHist();if(it.rv==null)it.rv=it._tot||0;if(it.rv>0){it.rv--;re();return}if(BACK[it.k]&&BACK[it.k](it)){it.rv=999;re()}};
+ $('#labAll').onclick=()=>{const it=act();if(!it)return;pushHist();if(ADV[it.k]){let g=0;while(ADV[it.k](it)&&g++<40);LABA.delete(it);it.pv=null}it.rv=999;re()};
+})();
 /* lessons picker: grade -> lesson (only the chosen lesson is shown) */
 (function(){const GR=[['1','الصف الأول المتوسط'],['2','الصف الثاني المتوسط'],['3','الصف الثالث المتوسط']];
  const ds=[...document.querySelectorAll('#labSec details.lab')];ds.forEach(d=>{if(!d.dataset.g)d.dataset.g='2';d.dataset.n=d.querySelector('summary').textContent.trim()});
@@ -2843,7 +2865,7 @@ let sSol={g:null,x:[],y:[],rule:'',min:false,built:''};
 function blurSol(){const a=document.activeElement;if(a&&a.closest&&a.closest('#solBox,#ansBox'))a.blur()}
 function solBase(){return page().items.find(i=>i.b&&i.t==='poly')}
 function solLabs(pl){return pl.p.map((_,i)=>String((pl.labels&&pl.labels[i])||LAB_L[i]||dg(i+1)).replace(/[′']/g,''))}
-function parseNumAr(v){v=String(v||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٫,]/g,'.').replace(/\s|⁦|⁩|\u200F|\u200E/g,'');
+function parseNumAr(v){v=String(v||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٫,]/g,'.').replace(/\s|⁦|⁩|‭|‬|\u200F|\u200E/g,'');
  const neg=/[-−–]/.test(v);v=v.replace(/[-−–+]/g,'');let n;const m=v.match(/^(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);if(m)n=+m[1]/+m[2];else if(/^\d+(\.\d+)?$/.test(v))n=+v;else return null;return neg?-n:n}
 function solStr(){if(!sHost||!sHost.sol)return '';const pl=solBase();if(!pl)return '';const L=solLabs(pl);const parts=L.map((l,i)=>{const x=cleanS(sSol.x[i]||'',8),y=cleanS(sSol.y[i]||'',8);return x||y?`${l}′(${x||'…'}، ${y||'…'})`:''}).filter(Boolean);
  const r=cleanS(sSol.rule||'',120);return parts.join('  ')+(r?(parts.length?' — ':'')+r:'')}
