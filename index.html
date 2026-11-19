@@ -2770,7 +2770,7 @@ function noKey(){return T.qa?(!T.mc&&!cleanS(T.ansKey||'',200)):!(T.keySpec&&key
 let nkThen=null;function needKey(go){if(!noKey())return true;nkThen=go;$('#nkOv').classList.remove('hidden');return false}
 $('#nkGo').onclick=()=>{$('#nkOv').classList.add('hidden');const f=nkThen;nkThen=null;if(f)f(true)};
 $('#nkSet').onclick=()=>{$('#nkOv').classList.add('hidden');nkThen=null;const c=$('#keyCard');c.scrollIntoView({block:'center',behavior:'smooth'});c.classList.remove('flash');void c.offsetWidth;c.classList.add('flash');const k=$('#keySel');if(!T.qa&&k&&!k.classList.contains('hidden'))setTimeout(()=>k.focus(),400)};
-$('#startCh').onclick=(ev,ok)=>{if(!needKind())return;if(ok!==true&&!needKey(()=>$('#startCh').onclick(null,true)))return;T.task=$('#taskIn').value;T.tEnd=T.tmr?Date.now()+(T.tmrMin||2)*60000:0;T.tWarned=false;const ov=captureBase();T.baseSig=pageSig();T.s='run';T.started=Date.now();T.sent=[];for(const pl of T.players.values()){pl.changed=0;pl.ok=null;pl.manual=false}computeKey();pushHost();renderDash();recordLive(200);if(ov)toast('الأشكال كثيرة، فأُرسلت مختصرة')};
+$('#startCh').onclick=(ev,ok)=>{if(!needKind())return;if(syncTF())toast('ضُبطت الإجابة الصحيحة على «'+T.mcOpts[T.mcOk]+'» حسب الحل المعروض في صفحتك');if(ok!==true&&!needKey(()=>$('#startCh').onclick(null,true)))return;T.task=$('#taskIn').value;T.tEnd=T.tmr?Date.now()+(T.tmrMin||2)*60000:0;T.tWarned=false;const ov=captureBase();T.baseSig=pageSig();T.s='run';T.started=Date.now();T.sent=[];for(const pl of T.players.values()){pl.changed=0;pl.ok=null;pl.manual=false}computeKey();pushHost();renderDash();recordLive(200);if(ov)toast('الأشكال كثيرة، فأُرسلت مختصرة')};
 $('#endCh').onclick=()=>{T.s='end';pushHost();renderDash();recordLive(100)};
 function resetKeyForm(){T.keySpec='';T.kind=null;['keyMH','keyMV'].forEach(i=>$('#'+i).value='');['keyMHD','keyMVD'].forEach(i=>$('#'+i).value='');$('#keyA').value=0;$('#keyB').value=0;renderKind();computeKey()}
 $('#againCh').onclick=()=>{resetKeyForm();T.tEnd=0;T.g=newG();T.s='lobby';T.sent=[];T.started=0;for(const [k,pl] of [...T.players]){if(pl.demo){pl.items=[];pl.dstr='';pl.st='draw';pl.dirty=true;pl.sentAt=0;pl.step=0;pl.wrong=null}else T.players.delete(k)}pushHost();renderDash();teacherPeers()};
@@ -3133,7 +3133,7 @@ bindLabs2();bindLabs3();bindLabs7();
  function wrBtn(){const it=act(),b=$('#labWr');const on=!!(it&&it.wr);b.classList.toggle('on',on);b.textContent=on?'⚠️ المعروض حل خاطئ — اضغطي للصحيح':'⚠️ حل فيه خطأ شائع'}
  setInterval(()=>{if(!S.student)wrBtn()},700);
  $('#labWr').onclick=()=>{const it=act();if(!it){toast('أضيفي درساً أولاً');return}if(!WR_OK(it.k)){toast('هذا الدرس يناسبه تحدي الرسم، وليس له حل خاطئ جاهز');return}
-  pushHist();it.wr=!it.wr;LABA.delete(it);it.pv=null;re();wrBtn();toast(it.wr?'الحل المعروض الآن فيه خطأ شائع مقصود — لا توجد أي علامة تكشفه للطالبات':'عاد الحل الصحيح ✓')};
+  pushHist();it.wr=!it.wr;LABA.delete(it);it.pv=null;re();wrBtn();if(T.s!=='run'&&syncTF())setTimeout(()=>{try{renderDash()}catch(e){}},50);toast(it.wr?'الحل المعروض الآن فيه خطأ شائع مقصود — لا توجد أي علامة تكشفه للطالبات':'عاد الحل الصحيح ✓')};
  $('#labTF').onclick=()=>{const it=act();if(!it){toast('أضيفي درساً أولاً');return}
   $('#labAll').onclick();const goTF=()=>{openDash();const q=$('#qaSeg button[data-q="2"]');if(q)q.click();const pr=$('#mcRow [data-p="ok"]');if(pr)pr.click();
    T.mcOk=it.wr?1:0;mcChanged(true);const ti=$('#taskIn');ti.value='هل الحل المعروض على السبورة صحيح؟ اختاري: صح ✓ أو خطأ ✗';T.task=ti.value;ti.dispatchEvent(new Event('input',{bubbles:true}));
@@ -3215,6 +3215,7 @@ function renderMcEd(){const L=$('#mcList');L.innerHTML='';T.mcOpts.forEach((o,i)
   const t=r.querySelector('input[type=text]');t.value=o;t.style.background=MC_COL[i%MC_COL.length];t.addEventListener('keydown',e=>e.stopPropagation());
   t.oninput=()=>{T.mcOpts[i]=t.value;mcChanged(false)};r.querySelector('input[type=radio]').onchange=()=>{T.mcOk=i;mcChanged(true)};
   r.querySelector('button').onclick=()=>{if(T.mcOpts.length<=2){toast('يلزم خياران على الأقل');return}T.mcOpts.splice(i,1);if(T.mcOk>=T.mcOpts.length)T.mcOk=0;else if(T.mcOk>i)T.mcOk--;mcChanged(true)};L.appendChild(r)})}
+function syncTF(){/* صح/خطأ challenge: the right card follows the solution shown on the page */if(!(T.qa&&T.mc))return false;const o=T.mcOpts||[];if(!(o.length===2&&/صح/.test(o[0])&&/خطأ/.test(o[1])))return false;const labs=page().items.filter(i=>i.t==='lab'&&LAB3_DRAW[i.k]);if(!labs.length)return false;const w=labs.some(i=>i.wr)?1:0;if(T.mcOk!==w){T.mcOk=w;mcChanged(true);return true}return false}
 function mcChanged(re){T.ansKey=T.mcOpts[T.mcOk]||'';for(const pl of T.players.values()){if(!pl.manual&&pl.st==='sent')pl.ok=gradeOne(pl)}pushHost();if(re)renderMcEd();renderCards();recordLive(1500)}
 $('#mcAdd').onclick=()=>{if(T.mcOpts.length>=6){toast('الحد الأقصى ٦ خيارات');return}T.mcOpts.push('خيار '+dg(T.mcOpts.length+1));mcChanged(true)};
 $$('#mcRow [data-p]').forEach(b=>b.onclick=()=>{T.mcOpts=MC_PRE[b.dataset.p].slice();T.mcOk=0;mcChanged(true)});
