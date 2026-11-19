@@ -100,7 +100,7 @@ h3{margin:0 0 10px;font-size:15px}
 .chip.live .dot{background:#5ff0a8}
 .chip.run{background:#ffc83d;color:#1d2433}
 .chip.end{background:#2fb57f}
-.dbanner{margin:14px 18px 0;background:#fff4d6;border:2px solid #ffc83d;border-radius:12px;padding:10px 14px;font-size:14.5px}
+.dbanner{position:sticky;top:6px;z-index:3;box-shadow:0 4px 14px rgba(0,0,0,.08);margin:14px 18px 0;background:#fff4d6;border:2px solid #ffc83d;border-radius:12px;padding:10px 14px;font-size:14.5px}
 .dash-grid{display:grid;grid-template-columns:290px 1fr 250px;gap:16px;padding:16px 18px 30px;align-items:start}
 .dcol{display:flex;flex-direction:column;gap:14px;position:sticky;top:76px}
 .dcard{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 0 #d6e2f3;display:flex;flex-direction:column;gap:10px}
@@ -883,7 +883,7 @@ const snapv=v=>S.snap?Math.round(v):v;
 const K=()=>S.G/BASE;
 const AD='٠١٢٣٤٥٦٧٨٩';
 function dg(s){s=String(s);return S.arNum?s.replace(/[0-9]/g,d=>AD[d]).replace(/([٠-٩])\.(?=[٠-٩])/g,'$1٫'):s}
-function fmt(n){let r=Math.round(n*100)/100;if(Object.is(r,-0)||Math.abs(r)<1e-9)r=0;if(S.arNum&&r<0)return '\u2066'+dg(String(-r))+'−\u2069';return dg(String(r).replace('-','−'))}
+function fmt(n){let r=Math.round(n*100)/100;if(Object.is(r,-0)||Math.abs(r)<1e-9)r=0;if(r<0)return '\u200F−'+dg(String(-r));return dg(String(r).replace('-','−'))}
 const SC=()=>page().sc||1;
 const PROT_IC='<svg width="20" height="12" viewBox="0 0 40 22" style="vertical-align:-1px;margin-left:4px"><path d="M2 20 A18 18 0 0 1 38 20 Z" fill="#eaf1fc" stroke="currentColor" stroke-width="2.4"/><path d="M20 20 L20 15 M8 9.5 L10.8 12.2 M32 9.5 L29.2 12.2 M20 2.6 L20 6" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="2" fill="currentColor"/></svg>';
 function unitsW(n){n=Math.abs(n);if(Math.abs(n-1)<1e-9)return 'وحدة واحدة';if(Math.abs(n-2)<1e-9)return 'وحدتين';if(Number.isInteger(n)&&n>=3&&n<=10)return dg(n)+' وحدات';return fmt(n)+' وحدة'}
@@ -1249,7 +1249,7 @@ function syBox(it){const O=it.p[0];return [O[0]-7,O[1]-5.3-(LABH.get(it)||4.2),O
 /* ---------- grade 8 labs (part 2) ---------- */
 var K_SUP=s=>({s:dg(s),sup:1});
 function TK(s,c,b){return {s:String(s),c,b}}
-function sgn(v){return v>0?'\u2066'+dg(String(Math.round(v*100)/100))+'+\u2069':fmt(v)}
+function sgn(v){return v>0?'\u200F+'+dg(String(Math.round(v*100)/100)):fmt(v)}
 function nfmt(v){return fmt(Math.round(v*100)/100)}
 function isqrt(n){const r=Math.round(Math.sqrt(n));return r*r===n?r:null}
 /* tokens: {s}, {s,sup}, {frac:[top,bottom]}, {sqrt:'٢٥'}, {s,o:overline} */
@@ -1471,17 +1471,17 @@ function cgxBox(it){const O=it.p[0];return uni([O[0]-8.2,O[1]-1.2,O[0]+8.8,O[1]+
 /* ---- shared helpers ---- */
 function q3(v){for(const d of [1,2,3,4,5,6]){const n=v*d;if(Math.abs(n-Math.round(n))<1e-9)return [Math.round(n),d]}return null}
 function numTok(v){const f=q3(v);if(!f||f[1]===1)return [{s:fmt(v)}];return f[0]<0?[{s:'−',sg:1},{frac:[dg(-f[0]),dg(f[1])]}]:[{frac:[dg(f[0]),dg(f[1])]}]}
-function numStr(v){const f=q3(v);if(!f||f[1]===1)return fmt(v);const s=dg(Math.abs(f[0]))+'‏/‏'+dg(f[1]);return f[0]<0?'−'+s:s}
+function numStr(v){const f=q3(v);if(!f||f[1]===1)return fmt(v);const s=dg(Math.abs(f[0]))+'‏/‏'+dg(f[1]);return f[0]<0?'\u200F−'+s:s}
 /* terms: [[coef,var],...] -> tokens like ٢س − ٣ */
 function termsTok(L){const out=[];let first=true;L.forEach(([c,v])=>{if(Math.abs(c)<1e-12)return;const a=Math.abs(c),neg=c<0;
-  if(!first)out.push({s:neg?'−':'+'});const f=q3(a);const pre=first&&neg?'−':'';
+  if(!first)out.push({s:neg?'−':'+'});const f=q3(a);const pre=first&&neg?'\u200F−':'';
   if(!v)out.push(...(f&&f[1]>1?[...(pre?[{s:pre,sg:1}]:[]),{frac:[dg(f[0]),dg(f[1])]}]:[{s:pre+dg(String(Math.round(a*100)/100))}]));
   else if(Math.abs(a-1)<1e-12)out.push({s:pre+v});
   else if(f&&f[1]>1){if(pre)out.push({s:pre,sg:1});out.push({frac:[dg(f[0]),dg(f[1])]},{s:v})}
   else out.push({s:pre+dg(String(Math.round(a*100)/100))+v});first=false});
  if(first)out.push({s:dg(0)});return out}
 function termsStr(L){let s='',first=true;L.forEach(([c,v])=>{if(Math.abs(c)<1e-12)return;const a=Math.abs(c),neg=c<0;
-  s+=first?(neg?'−':''):(neg?' − ':' + ');const n=numStr(a);s+=v?(Math.abs(a-1)<1e-12?v:n+v):n;first=false});return first?dg(0):s}
+  s+=first?(neg?'\u200F−':''):(neg?' − ':' + ');const n=numStr(a);s+=v?(Math.abs(a-1)<1e-12?v:n+v):n;first=false});return first?dg(0):s}
 function lineTok(m,b,fn){return [{s:fn||'ص'},{s:'='},...termsTok([[m,'س'],[b,'']])]}
 function lineStr(m,b,fn){return (fn||'ص')+' = '+termsStr([[m,'س'],[b,'']])}
 const V2W=v=>v/SC(),W2V=w=>w*SC();
@@ -1713,14 +1713,14 @@ function drawPp(g,it,ghost){const sc=SC(),k=K(),m=it.m==null?2:it.m,b=it.b==null
  if(it.q)lines.push({s:per?'كيف تعرفين أن المستقيمين متعامدان من ميليهما؟':'كيف تعرفين أن المستقيمين متوازيان من ميليهما؟',b:1});
  else if(!per){lines.push({tok:[{s:'م١ ='},...numTok(m),{s:'،  م٢ ='},...numTok(m)],px:16});lines.push({s:'الميلان متساويان والمقطعان مختلفان ← المستقيمان متوازيان',c:C3.g,b:1,px:15})}
  else if(m===0){lines.push({s:'المستقيم الأفقي (ميله صفر) يعامد المستقيمَ الرأسي (ميله غير معرّف)',c:C3.g,b:1,px:15})}
- else{lines.push({tok:[{s:'م١ × م٢ ='},...numTok(m),{s:'×'},...(m2<0?[{s:'('},...numTok(m2),{s:')'}]:numTok(m2)),{s:'='},{s:fmt(-1)}],px:16,hh:2});lines.push({s:'حاصل ضرب الميلين = −١ ← المستقيمان متعامدان',c:C3.g,b:1,px:15});lines.push({s:'ميل العمودي = مقلوب الميل مع تغيير الإشارة',c:C3.m,px:13})}
+ else{lines.push({tok:[{s:'م١ × م٢ ='},...numTok(m),{s:'×'},...(m2<0?[{s:'('},...numTok(m2),{s:')'}]:numTok(m2)),{s:'='},{s:fmt(-1)}],px:16,hh:2});lines.push({s:'حاصل ضرب الميلين = \u200F−١ ← المستقيمان متعامدان',c:C3.g,b:1,px:15});lines.push({s:'ميل العمودي = مقلوب الميل مع تغيير الإشارة',c:C3.m,px:13})}
  const A=cAof(it);labCard(g,it,lines,A[0],A[1],c3W())}
 function ppBox(it){const A=cAof(it);return uni(boxOf([it.p[0]],1),cardBox(it,A[0],A[1],c3W()))}
 
 /* ===== 11) solving inequalities ===== */
 var INQ_P=[[1,4,'<',7],[1,-3,'≥',2],[3,0,'≤',12],[-2,0,'<',6],[2,-3,'>',5],[-3,1,'≥',-8],[-1,2,'≤',5]];
 function inqSteps(a,b,op,c){const S0=[{e:[a,b,op,c]}];if(b){c-=b;S0.push({e:[a,0,op,c],t:b>0?'اطرحي '+dg(b)+' من الطرفين':'أضيفي '+dg(-b)+' إلى الطرفين'});b=0}
- if(a!==1){if(a===-1){S0.push({e:[1,0,FLIP[op],-c],t:'اضربي الطرفين في −١ واقلبي إشارة المتباينة',fl:1})}else S0.push({e:[1,0,a<0?FLIP[op]:op,c/a],t:'اقسمي الطرفين على '+(a<0?'('+fmt(a)+')':dg(a))+(a<0?' واقلبي إشارة المتباينة':''),fl:a<0});}return S0}
+ if(a!==1){if(a===-1){S0.push({e:[1,0,FLIP[op],-c],t:'اضربي الطرفين في \u200F−١ واقلبي إشارة المتباينة',fl:1})}else S0.push({e:[1,0,a<0?FLIP[op]:op,c/a],t:'اقسمي الطرفين على '+(a<0?'('+fmt(a)+')':dg(a))+(a<0?' واقلبي إشارة المتباينة':''),fl:a<0});}return S0}
 function drawInq(g,it,ghost){const O=it.p[0],e0=INQ_P[(it.pi||0)%INQ_P.length],ST=inqSteps(...e0),s=Math.min(it.s||0,ST.length-1),fin=ST[ST.length-1].e,k0=fin[3],op=fin[2];
  const lo=Math.round(k0)-6,hi=Math.round(k0)+6,X=nlDraw(g,O,lo,hi);
  const lines=[{s:'حل المتباينات',b:1,al:'c',px:18}];
@@ -1754,21 +1754,21 @@ function cmpBox(it){const O=it.p[0];return uni([O[0]-9,O[1]-6,O[0]+11,O[1]+1],ca
 var SYS_P=[
  {E:[[-2,1,1,'ص = ٢س + ١'],[3,1,11,'٣س + ص = ١١']],sol:[2,5],
   s:['المعادلة الأولى محلولة بالنسبة لـ ص','عوّضي ٢س + ١ بدلاً من ص في المعادلة الثانية:','٣س + (٢س + ١) = ١١','٥س + ١ = ١١  ←  ٥س = ١٠  ←  س = ٢','عوّضي س = ٢ في المعادلة الأولى: ص = ٢(٢) + ١ = ٥'],
-  e:['اكتبي المعادلة الأولى بالصيغة القياسية: −٢س + ص = ١','اطرحي المعادلتين (معاملا ص متساويان):','(٣س + ص) − (−٢س + ص) = ١١ − ١','٥س = ١٠  ←  س = ٢','عوّضي س = ٢: ٣(٢) + ص = ١١  ←  ص = ٥']},
+  e:['اكتبي المعادلة الأولى بالصيغة القياسية: \u200F−٢س + ص = ١','اطرحي المعادلتين (معاملا ص متساويان):','(٣س + ص) − (\u200F−٢س + ص) = ١١ − ١','٥س = ١٠  ←  س = ٢','عوّضي س = ٢: ٣(٢) + ص = ١١  ←  ص = ٥']},
  {E:[[1,1,5,'س + ص = ٥'],[1,-1,1,'س − ص = ١']],sol:[3,2],
   s:['من المعادلة الأولى: ص = ٥ − س','عوّضي في المعادلة الثانية:','س − (٥ − س) = ١','٢س − ٥ = ١  ←  ٢س = ٦  ←  س = ٣','ص = ٥ − ٣ = ٢'],
-  e:['معاملا ص معكوسان جمعيّان (١ و −١)','اجمعي المعادلتين:','(س + ص) + (س − ص) = ٥ + ١','٢س = ٦  ←  س = ٣','عوّضي س = ٣: ٣ + ص = ٥  ←  ص = ٢']},
- {E:[[2,1,4,'٢س + ص = ٤'],[2,-3,-4,'٢س − ٣ص = −٤']],sol:[1,2],
-  s:['من المعادلة الأولى: ص = ٤ − ٢س','عوّضي في المعادلة الثانية:','٢س − ٣(٤ − ٢س) = −٤','٨س − ١٢ = −٤  ←  ٨س = ٨  ←  س = ١','ص = ٤ − ٢(١) = ٢'],
-  e:['معاملا س متساويان (٢ و ٢)','اطرحي المعادلتين:','(٢س + ص) − (٢س − ٣ص) = ٤ − (−٤)','٤ص = ٨  ←  ص = ٢','عوّضي ص = ٢: ٢س + ٢ = ٤  ←  س = ١']},
+  e:['معاملا ص معكوسان جمعيّان (١ و \u200F−١)','اجمعي المعادلتين:','(س + ص) + (س − ص) = ٥ + ١','٢س = ٦  ←  س = ٣','عوّضي س = ٣: ٣ + ص = ٥  ←  ص = ٢']},
+ {E:[[2,1,4,'٢س + ص = ٤'],[2,-3,-4,'٢س − ٣ص = \u200F−٤']],sol:[1,2],
+  s:['من المعادلة الأولى: ص = ٤ − ٢س','عوّضي في المعادلة الثانية:','٢س − ٣(٤ − ٢س) = \u200F−٤','٨س − ١٢ = \u200F−٤  ←  ٨س = ٨  ←  س = ١','ص = ٤ − ٢(١) = ٢'],
+  e:['معاملا س متساويان (٢ و ٢)','اطرحي المعادلتين:','(٢س + ص) − (٢س − ٣ص) = ٤ − (\u200F−٤)','٤ص = ٨  ←  ص = ٢','عوّضي ص = ٢: ٢س + ٢ = ٤  ←  س = ١']},
  {E:[[1,2,5,'س + ٢ص = ٥'],[3,-1,1,'٣س − ص = ١']],sol:[1,2],
   s:['من المعادلة الثانية: ص = ٣س − ١','عوّضي في المعادلة الأولى:','س + ٢(٣س − ١) = ٥','٧س − ٢ = ٥  ←  ٧س = ٧  ←  س = ١','ص = ٣(١) − ١ = ٢'],
-  e:['اضربي المعادلة الثانية في ٢: ٦س − ٢ص = ٢','الآن معاملا ص معكوسان (٢ و −٢)، اجمعي:','(س + ٢ص) + (٦س − ٢ص) = ٥ + ٢','٧س = ٧  ←  س = ١','عوّضي س = ١: ١ + ٢ص = ٥  ←  ص = ٢']},
+  e:['اضربي المعادلة الثانية في ٢: ٦س − ٢ص = ٢','الآن معاملا ص معكوسان (٢ و \u200F−٢)، اجمعي:','(س + ٢ص) + (٦س − ٢ص) = ٥ + ٢','٧س = ٧  ←  س = ١','عوّضي س = ١: ١ + ٢ص = ٥  ←  ص = ٢']},
  {E:[[-2,1,3,'ص = ٢س + ٣'],[-2,1,-1,'ص = ٢س − ١']],sol:null,ty:0,
-  s:['عوّضي ٢س + ٣ بدلاً من ص في المعادلة الثانية:','٢س + ٣ = ٢س − ١','٣ = −١  عبارة خاطئة ✗'],
+  s:['عوّضي ٢س + ٣ بدلاً من ص في المعادلة الثانية:','٢س + ٣ = ٢س − ١','٣ = \u200F−١  عبارة خاطئة ✗'],
   e:['اطرحي المعادلتين:','(ص) − (ص) = (٢س + ٣) − (٢س − ١)','٠ = ٤  عبارة خاطئة ✗']},
- {E:[[1,1,2,'ص = −س + ٢'],[2,2,4,'٢س + ٢ص = ٤']],sol:null,ty:2,
-  s:['عوّضي −س + ٢ بدلاً من ص في المعادلة الثانية:','٢س + ٢(−س + ٢) = ٤','٤ = ٤  عبارة صحيحة دائماً ✓'],
+ {E:[[1,1,2,'ص = \u200F−س + ٢'],[2,2,4,'٢س + ٢ص = ٤']],sol:null,ty:2,
+  s:['عوّضي \u200F−س + ٢ بدلاً من ص في المعادلة الثانية:','٢س + ٢(\u200F−س + ٢) = ٤','٤ = ٤  عبارة صحيحة دائماً ✓'],
   e:['اضربي المعادلة الأولى (س + ص = ٢) في ٢:','٢س + ٢ص = ٤','وهي نفس المعادلة الثانية ← المستقيمان متطابقان']}];
 function drawSys(g,it,ghost){const P=SYS_P[(it.pi||0)%SYS_P.length],sc=SC(),k=K(),mt=it.mt||'g',n=it.n||0;
  const ln=(E,col,side,dash)=>{if(Math.abs(E[1])<1e-9){fullLine(g,null,E[2]/E[0],col,Math.max(2,3*k),dash);return}const m=-E[0]/E[1],b=E[2]/E[1];fullLine(g,m,b,col,Math.max(2,3*k),dash);lineLabel(g,m,b,E[3],col,side)};
@@ -2401,12 +2401,14 @@ function renderTo(cvs,items,bg,cw,ch,sc){const dpr=window.devicePixelRatio||1;cv
 /* ================= TEACHER ================= */
 const T={g:null,pin:null,s:'idle',task:'',base:[],baseEnc:[],bg:'coord',tf:false,players:new Map(),sent:[],demo:false,demoTimer:0,qrFor:null,open:false,started:0};
 function hostPayload(){return {tn:cleanS(S.tName,40),sn:cleanS(S.sName,40),r:'h',g:T.g,pin:T.pin,s:T.s,ti:cleanS(T.task,200),b:T.baseEnc,bg:T.bg,sc:T.sc||1,tf:T.tf?1:0,qa:T.qa?1:0,sol:T.sol?1:0,mc:T.qa&&T.mc?T.mcOpts.map(o=>cleanS(o,30)):0,hn:xHints(),bon:xBonusText(),okL:T.bon?[...T.players.values()].filter(p=>p.ok===true&&!p.demo).map(p=>p.key).slice(0,60):0,te:T.tmr&&T.tEnd?T.tEnd:0,o:T.sent.slice(0,40)}}
-function pushHost(){if(T.g)setPresence(hostPayload());store.set('mb_host',{kind:T.kind,mc:T.mc,mcOpts:T.mcOpts,mcOk:T.mcOk,hint:T.hint,bon:T.bon,tmr:T.tmr,tmrMin:T.tmrMin,tEnd:T.tEnd,sol:T.sol,qa:T.qa,ansKey:T.ansKey,keyKk:$('#keyKk').value,keySpec:T.keySpec,sc:T.sc,g:T.g,pin:T.pin,s:T.s,task:T.task,baseEnc:T.baseEnc,bg:T.bg,tf:T.tf,sent:T.sent,started:T.started})}
+function pushHost(){if(T.g)setPresence(hostPayload());store.set('mb_host',{baseSig:T.baseSig,kind:T.kind,mc:T.mc,mcOpts:T.mcOpts,mcOk:T.mcOk,hint:T.hint,bon:T.bon,tmr:T.tmr,tmrMin:T.tmrMin,tEnd:T.tEnd,sol:T.sol,qa:T.qa,ansKey:T.ansKey,keyKk:$('#keyKk').value,keySpec:T.keySpec,sc:T.sc,g:T.g,pin:T.pin,s:T.s,task:T.task,baseEnc:T.baseEnc,bg:T.bg,tf:T.tf,sent:T.sent,started:T.started})}
 function captureBase(){const items=$('#sendBase').checked?page().items.filter(i=>i.t!=='prot'):[];
  const r=pack(items,2600,arr=>({r:'h',g:'xxxxxx',pin:'0000',s:'lobby',ti:cleanS(T.task,200),b:arr,bg:'coord',tf:1,o:[]}));
  T.baseEnc=r.arr;T.base=decode(r.arr);T.bg=$('#sendBase').checked?page().bg:'coord';T.sc=$('#sendBase').checked?SC():1;return r.ov}
 function updBaseInfo(){const n=page().items.filter(i=>i.t!=='prot').length;$('#baseSize').textContent=$('#sendBase').checked?(n?`سيصل للطالبات ${dg(n)} شكل من صفحتك الحالية (الصفحة ${dg(S.cur+1)}).`:'صفحتك الحالية فارغة — ستصل الخلفية فقط.'):'ستبدأ الطالبات بصفحة فارغة.'}
+function pageSig(){if(!$('#sendBase').checked)return 'none';return S.cur+'|'+page().bg+'|'+JSON.stringify(page().items.filter(i=>i.t!=='prot').map(i=>i.t==='lab'?labPack(i):[i.t,i.p,i.r,i.s]))}
 function openDash(){commitText();T.open=true;$('#dash').classList.remove('hidden');if(!T.pin){T.pin=randPin()}if(!T.g){T.g=newG();T.s='lobby';T.started=0;pushHost()}
+ if(T.s==='end'&&T.baseSig!==pageSig()){$('#againCh').onclick();toast('جهّزتُ تحدياً جديداً بما في صفحتك الحالية ✓')}
  $('#taskIn').value=T.task;$('#allowTf').checked=T.tf;updBaseInfo();renderKind();if(typeof computeKey==='function')computeKey();renderDash()}
 function closeDash(){T.open=false;$('#dash').classList.add('hidden')}
 function setConn(state){const c=$('#connChip');c.classList.toggle('live',state==='on');c.lastElementChild.textContent=state==='on'?'متصل مباشر':state==='off'?'غير متصل':'جارٍ الاتصال…'}
@@ -2417,7 +2419,7 @@ function renderDash(){if(!T.open)return;
  const st=$('#stChip');st.className='chip'+(T.s==='run'?' run':T.s==='end'?' end':'');st.lastElementChild.textContent=T.s==='lobby'?'في الانتظار':T.s==='run'?'التحدي جارٍ':'انتهى التحدي';
  $('#startCh').classList.toggle('hidden',T.s!=='lobby');$('#endCh').classList.toggle('hidden',T.s!=='run');$('#againCh').classList.toggle('hidden',T.s!=='end');
  $('#demoBtn').textContent=T.demo?'إزالة الطالبات التجريبيات':'إضافة طالبات تجريبيات للتجربة';
- const b=$('#dashBanner');if(roomReady&&!ROOM){b.textContent=FBMODE?'تعذّر الاتصال بالخادم — تحققي من الإنترنت ثم حدّثي الصفحة.':'الاتصال المباشر غير متاح في هذا العرض. افتحي السبورة من رابطها على claude.ai وأنتِ مسجّلة الدخول. يمكنك التجربة بالطالبات التجريبيات.';b.classList.remove('hidden')}else b.classList.add('hidden');
+ const b=$('#dashBanner');b.onclick=null;b.style.cursor='';if(T.s==='run'&&T.baseSig!==pageSig()){b.innerHTML='⚠️ الطالبات يرين الرسمة التي أرسلتِها عند بدء هذا التحدي، وليس صفحتك الحالية. <u>اضغطي هنا لإنهائه وبدء تحدٍّ جديد بصفحتك الحالية</u>';b.style.cursor='pointer';b.onclick=()=>{$('#endCh').onclick();$('#againCh').onclick();toast('ابدئي التحدي الجديد ▶')};b.classList.remove('hidden')}else if(roomReady&&!ROOM){b.textContent=FBMODE?'تعذّر الاتصال بالخادم — تحققي من الإنترنت ثم حدّثي الصفحة.':'الاتصال المباشر غير متاح في هذا العرض. افتحي السبورة من رابطها على claude.ai وأنتِ مسجّلة الدخول. يمكنك التجربة بالطالبات التجريبيات.';b.classList.remove('hidden')}else b.classList.add('hidden');
  renderCards()}
 
 function teacherPeers(){if(!T.g)return;const seen=new Set(),now=Date.now();let sentChanged=false;
@@ -2483,7 +2485,7 @@ function noKey(){return T.qa?(!T.mc&&!cleanS(T.ansKey||'',200)):!(T.keySpec&&key
 let nkThen=null;function needKey(go){if(!noKey())return true;nkThen=go;$('#nkOv').classList.remove('hidden');return false}
 $('#nkGo').onclick=()=>{$('#nkOv').classList.add('hidden');const f=nkThen;nkThen=null;if(f)f(true)};
 $('#nkSet').onclick=()=>{$('#nkOv').classList.add('hidden');nkThen=null;const c=$('#keyCard');c.scrollIntoView({block:'center',behavior:'smooth'});c.classList.remove('flash');void c.offsetWidth;c.classList.add('flash');const k=$('#keySel');if(!T.qa&&k&&!k.classList.contains('hidden'))setTimeout(()=>k.focus(),400)};
-$('#startCh').onclick=(ev,ok)=>{if(!needKind())return;if(ok!==true&&!needKey(()=>$('#startCh').onclick(null,true)))return;T.task=$('#taskIn').value;T.tEnd=T.tmr?Date.now()+(T.tmrMin||2)*60000:0;T.tWarned=false;const ov=captureBase();T.s='run';T.started=Date.now();T.sent=[];for(const pl of T.players.values()){pl.changed=0;pl.ok=null;pl.manual=false}computeKey();pushHost();renderDash();recordLive(200);if(ov)toast('الأشكال كثيرة، فأُرسلت مختصرة')};
+$('#startCh').onclick=(ev,ok)=>{if(!needKind())return;if(ok!==true&&!needKey(()=>$('#startCh').onclick(null,true)))return;T.task=$('#taskIn').value;T.tEnd=T.tmr?Date.now()+(T.tmrMin||2)*60000:0;T.tWarned=false;const ov=captureBase();T.baseSig=pageSig();T.s='run';T.started=Date.now();T.sent=[];for(const pl of T.players.values()){pl.changed=0;pl.ok=null;pl.manual=false}computeKey();pushHost();renderDash();recordLive(200);if(ov)toast('الأشكال كثيرة، فأُرسلت مختصرة')};
 $('#endCh').onclick=()=>{T.s='end';pushHost();renderDash();recordLive(100)};
 function resetKeyForm(){T.keySpec='';T.kind=null;['keyMH','keyMV'].forEach(i=>$('#'+i).value='');['keyMHD','keyMVD'].forEach(i=>$('#'+i).value='');$('#keyA').value=0;$('#keyB').value=0;renderKind();computeKey()}
 $('#againCh').onclick=()=>{resetKeyForm();T.tEnd=0;T.g=newG();T.s='lobby';T.sent=[];T.started=0;for(const [k,pl] of [...T.players]){if(pl.demo){pl.items=[];pl.dstr='';pl.st='draw';pl.dirty=true;pl.sentAt=0;pl.step=0;pl.wrong=null}else T.players.delete(k)}pushHost();renderDash();teacherPeers()};
@@ -2527,9 +2529,10 @@ function studentRender0(){
  if(!sJoined){jShow('jStep1');return}
  sHost=findHost(SP.pin)||sHost;
  if(!sHost){jShow('jWait');$('#jMe').textContent=SP.a||'⏳';$('#jHi').textContent='جارٍ الوصول للمعلمة…';return}
- if(sHost.g!==SP.g){SP.g=sHost.g;sStatus='draw';saveSP();sLoadedG=null;sAns='';$('#ansIn').value=''}
+ let gNew=false;if(sHost.g!==SP.g){SP.g=sHost.g;sStatus='draw';saveSP();sLoadedG=null;sAns='';$('#ansIn').value='';gNew=true}
  sStatus=SP.sentG===SP.g?'sent':'draw';
  if(!SP.a){renderAv();jShow('jStep2');return}
+ if(gNew)setTimeout(pushPlayer,50);
  document.body.classList.toggle('notf',!sHost.tf);
  $('#hdrWho').textContent=sHost.tn?'المعلمة: '+cleanS(sHost.tn,40):'';$('#hdrSch').textContent=cleanS(sHost.sn,40);$('#hdrSch').style.display=sHost.sn?'':'none';
  $('#taskTxt').textContent=cleanS(sHost.ti,200)||'ارسمي على السبورة ثم اضغطي «إرسال للمعلمة»';$('#meTag').textContent=SP.a+' '+SP.n;
@@ -2836,7 +2839,7 @@ let sSol={g:null,x:[],y:[],rule:'',min:false,built:''};
 function blurSol(){const a=document.activeElement;if(a&&a.closest&&a.closest('#solBox,#ansBox'))a.blur()}
 function solBase(){return page().items.find(i=>i.b&&i.t==='poly')}
 function solLabs(pl){return pl.p.map((_,i)=>String((pl.labels&&pl.labels[i])||LAB_L[i]||dg(i+1)).replace(/[′']/g,''))}
-function parseNumAr(v){v=String(v||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٫,]/g,'.').replace(/\s|⁦|⁩/g,'');
+function parseNumAr(v){v=String(v||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٫,]/g,'.').replace(/\s|⁦|⁩|\u200F|\u200E/g,'');
  const neg=/[-−–]/.test(v);v=v.replace(/[-−–+]/g,'');let n;const m=v.match(/^(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);if(m)n=+m[1]/+m[2];else if(/^\d+(\.\d+)?$/.test(v))n=+v;else return null;return neg?-n:n}
 function solStr(){if(!sHost||!sHost.sol)return '';const pl=solBase();if(!pl)return '';const L=solLabs(pl);const parts=L.map((l,i)=>{const x=cleanS(sSol.x[i]||'',8),y=cleanS(sSol.y[i]||'',8);return x||y?`${l}′(${x||'…'}، ${y||'…'})`:''}).filter(Boolean);
  const r=cleanS(sSol.rule||'',120);return parts.join('  ')+(r?(parts.length?' — ':'')+r:'')}
@@ -2983,7 +2986,7 @@ async function fbBoot(wantStudent){FBMODE=true;SHARE_URL=location.origin+locatio
   ROOM=makeStudentRoom();attachRoom();roomReady=true;if(SP.pin)ROOM.watch(SP.pin);studentRender();return}
  roomReady=true;F.onAuthStateChanged(FA,u=>{if(u&&!u.isAnonymous)onTeacherSignedIn(u)});
  if(location.hash==='#report'){openRS();if(!teacherReady())requireTeacher(null,'للاطلاع على لوحة البحث الإجرائي سجّلي الدخول بحساب Google الذي أضافته المعلمة.')}}
-function restoreHost(){if(T.g)return;const h=store.get('mb_host',null);if(h&&h.g&&h.s&&h.s!=='idle'){Object.assign(T,{mc:!!h.mc,mcOpts:Array.isArray(h.mcOpts)&&h.mcOpts.length?h.mcOpts:T.mcOpts,mcOk:h.mcOk||0,hint:h.hint!==false,bon:!!h.bon,tmr:!!h.tmr,tmrMin:h.tmrMin||2,tEnd:h.tEnd||0,sol:!!h.sol,qa:!!h.qa,ansKey:h.ansKey||'',keySpec:h.keySpec||'',sc:h.sc||1,g:h.g,pin:h.pin,s:h.s,task:h.task||'',baseEnc:h.baseEnc||[],bg:h.bg||'coord',tf:!!h.tf,sent:h.sent||[],started:h.started||0});if(T.s==='lobby'){T.keySpec='';T.kind=null}else T.kind=h.kind||null;T.base=decode(T.baseEnc);pushHost()}}
+function restoreHost(){if(T.g)return;const h=store.get('mb_host',null);if(h&&h.started&&Date.now()-h.started>3*3600e3){h.s='idle'}if(h&&h.g&&h.s&&h.s!=='idle'){Object.assign(T,{mc:!!h.mc,mcOpts:Array.isArray(h.mcOpts)&&h.mcOpts.length?h.mcOpts:T.mcOpts,mcOk:h.mcOk||0,hint:h.hint!==false,bon:!!h.bon,tmr:!!h.tmr,tmrMin:h.tmrMin||2,tEnd:h.tEnd||0,sol:!!h.sol,qa:!!h.qa,ansKey:h.ansKey||'',keySpec:h.keySpec||'',sc:h.sc||1,g:h.g,pin:h.pin,s:h.s,task:h.task||'',baseEnc:h.baseEnc||[],bg:h.bg||'coord',tf:!!h.tf,sent:h.sent||[],started:h.started||0});T.baseSig=h.baseSig||'';if(T.s==='lobby'){T.keySpec='';T.kind=null}else T.kind=h.kind||null;T.base=decode(T.baseEnc);pushHost()}}
 
 /* --- backup downloads --- */
 function dlFile(name,text,mime){try{const blob=new Blob([text],{type:mime});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);toast('جارٍ التنزيل ✓')}catch(e){toast('التنزيل غير متاح هنا — استخدمي رابط GitHub')}}
@@ -3005,7 +3008,7 @@ $('#classBtn').onclick=()=>requireTeacher(openDash);$('#rsBtn').onclick=()=>requ
  if(ROOM){ROOM.onPeers(()=>{if(S.student)studentRender();else teacherPeers()},()=>setConn('off'));if(ROOM.onConnection)ROOM.onConnection(on=>setConn(on?'on':'wait'));}else setConn('off');
  let owner=false;try{owner=user?!!(await Promise.resolve(user.isOwner())):false}catch(e){}
  if(S.student){studentRender();return}
- const h=store.get('mb_host',null);if(h&&h.g&&h.s&&h.s!=='idle'){Object.assign(T,{mc:!!h.mc,mcOpts:Array.isArray(h.mcOpts)&&h.mcOpts.length?h.mcOpts:T.mcOpts,mcOk:h.mcOk||0,hint:h.hint!==false,bon:!!h.bon,tmr:!!h.tmr,tmrMin:h.tmrMin||2,tEnd:h.tEnd||0,sol:!!h.sol,qa:!!h.qa,ansKey:h.ansKey||'',keySpec:h.keySpec||'',sc:h.sc||1,g:h.g,pin:h.pin,s:h.s,task:h.task||'',baseEnc:h.baseEnc||[],bg:h.bg||'coord',tf:!!h.tf,sent:h.sent||[],started:h.started||0});if(T.s==='lobby'){T.keySpec='';T.kind=null}else T.kind=h.kind||null;T.base=decode(T.baseEnc);pushHost()}
+ const h=store.get('mb_host',null);if(h&&h.started&&Date.now()-h.started>3*3600e3){h.s='idle'}if(h&&h.g&&h.s&&h.s!=='idle'){Object.assign(T,{mc:!!h.mc,mcOpts:Array.isArray(h.mcOpts)&&h.mcOpts.length?h.mcOpts:T.mcOpts,mcOk:h.mcOk||0,hint:h.hint!==false,bon:!!h.bon,tmr:!!h.tmr,tmrMin:h.tmrMin||2,tEnd:h.tEnd||0,sol:!!h.sol,qa:!!h.qa,ansKey:h.ansKey||'',keySpec:h.keySpec||'',sc:h.sc||1,g:h.g,pin:h.pin,s:h.s,task:h.task||'',baseEnc:h.baseEnc||[],bg:h.bg||'coord',tf:!!h.tf,sent:h.sent||[],started:h.started||0});T.baseSig=h.baseSig||'';if(T.s==='lobby'){T.keySpec='';T.kind=null}else T.kind=h.kind||null;T.base=decode(T.baseEnc);pushHost()}
  renderDash()})();
 
 })();
