@@ -697,7 +697,7 @@ details.lab .seg button{font-size:12.5px;padding:6px 8px}
         <div class="row hidden" id="keyRk"><label>قيمة ك</label><input type="number" id="keyKk" value="2" step="1"></div>
         <div class="hidden" id="qaKeyRow"><input id="keyText" class="txin" style="width:100%;font-size:17px;padding:9px" placeholder="الإجابة الصحيحة (مثال: ١٠٨)" dir="rtl"><div class="muted small" style="margin-top:4px">لقبول أكثر من إجابة افصلي بينها بـ | — اتركيها فارغة للتصحيح اليدوي بـ ✓ و ✗.</div></div>
         <div class="hidden mced" id="mcRow"><div class="muted small">الخيارات التي تظهر للطالبات (حدّدي الصحيحة ✔):</div><div id="mcList"></div>
-          <div class="seg"><button id="mcAdd">＋ خيار</button><button data-p="tf">التحويلات الأربعة</button><button data-p="yn">نعم / لا</button><button data-p="ab">أ / ب / جـ / د</button></div></div>
+          <div class="seg"><button id="mcAdd">＋ خيار</button><button data-p="tf">التحويلات الأربعة</button><button data-p="ok">صح / خطأ</button><button data-p="yn">نعم / لا</button><button data-p="ab">أ / ب / جـ / د</button></div></div>
         <div class="row hidden" id="keyDil"><label>معامل التمدد</label><input type="number" id="keyK" value="2" step="0.5"></div>
         <div id="keyInfo" class="muted small"></div>
         <button class="btn2 hidden" id="keyShow">👁 عرض الحل الصحيح على سبورتي</button>
@@ -2466,6 +2466,7 @@ function renderCards(){if(!T.open)return;const box=$('#cards'),now=Date.now();co
  T.sent.forEach((k,i)=>{const pl=T.players.get(k);if(!pl)return;const r=document.createElement('div');r.className='orow';r.innerHTML='<span class="n"></span><span class="a"></span><b></b><span class="t"></span>';
   r.querySelector('.n').textContent=i<3?MEDAL[i]:dg(i+1);r.querySelector('.a').textContent=pl.a;r.querySelector('b').textContent=pl.n;r.querySelector('.t').textContent=(pl.ok===true?'✔️ ':pl.ok===false?'✖️ ':'')+(pl.sentAt&&T.started?fmtDur(pl.sentAt-T.started):'');r.style.cursor='pointer';r.onclick=()=>openZoom(k);ord.appendChild(r)})}
 setInterval(()=>{if(T.open&&T.s==='run')renderCards()},1500);
+setInterval(()=>{if(!S.student&&isFB()&&ROOM&&T.g&&T.s&&T.s!=='idle')pushHost()},60000);
 
 let zKey=null;
 function openZoom(k){const pl=T.players.get(k);if(!pl)return;zKey=k;$('#zAv').textContent=pl.a;$('#zName').textContent=pl.n;const rank=T.sent.indexOf(k);
@@ -2524,10 +2525,13 @@ function setSendBtn(){const b=$('#imgBtn');if(S.student&&SP.bonOn&&SP.bonG===SP.
 function studentRender(){studentRender0();updAnsBox();updSolBox();updXtra()}
 function updAnsBox(){const on=!!(S.student&&sJoined&&sHost&&sHost.qa&&sHost.s==='run'&&$('#join').classList.contains('hidden'));$('#ansBox').classList.toggle('hidden',!on);const mc=on&&Array.isArray(sHost.mc)&&sHost.mc.length?sHost.mc:null;$('#ansBox').classList.toggle('mc',!!mc);$('#ansQ').textContent=mc?'👆 اختاري بطاقة إجابتك:':'✍️ إجابتك:';renderMcOpts(mc);
  if(on){$('#ansSend').textContent=sStatus==='sent'?'تم الإرسال ✓':'إرسال ✓';$('#ansSend').classList.toggle('green',sStatus!=='sent')}}
+let sLive='';function isFB(){try{return FBMODE}catch(e){return false}}
 function studentRender0(){
  if(roomReady&&!ROOM){jShow('jOff');return}
  if(!sJoined){jShow('jStep1');return}
  sHost=findHost(SP.pin)||sHost;
+ if(isFB()&&sHost&&sHost.t){if(Date.now()-sHost.t<20*60e3)sLive=SP.pin+'|'+sHost.g}
+ if(isFB()&&sHost&&sHost.t&&Date.now()-sHost.t>20*60e3&&sLive!==SP.pin+'|'+sHost.g){const old=SP.pin;SP.pin=null;SP.g=null;saveSP();sJoined=false;sHost=null;$('#taskBar').classList.add('hidden');$('#jPin').value='';jShow('jStep1');const e=$('#jErr');e.textContent='انتهى التحدي السابق ('+dg(old||'')+'). اكتبي رمز التحدي الجديد الظاهر على شاشة المعلمة.';e.classList.remove('hidden');return}
  if(!sHost){jShow('jWait');$('#jMe').textContent=SP.a||'⏳';$('#jHi').textContent='جارٍ الوصول للمعلمة…';return}
  let gNew=false;if(sHost.g!==SP.g){SP.g=sHost.g;sStatus='draw';saveSP();sLoadedG=null;sAns='';$('#ansIn').value='';gNew=true}
  sStatus=SP.sentG===SP.g?'sent':'draw';
@@ -2864,7 +2868,7 @@ $('#solHead').onclick=()=>solMinSet(!sSol.min);
 /* ================= CHALLENGE EXTRAS: multiple choice, hints, bonus, timer, wheel ================= */
 T.mc=!!T.mc;T.mcOpts=T.mcOpts&&T.mcOpts.length?T.mcOpts:['انسحاب','انعكاس','دوران','تمدد'];T.mcOk=T.mcOk||0;T.hint=T.hint!==false;T.bon=!!T.bon;T.tmr=!!T.tmr;T.tmrMin=T.tmrMin||2;T.tEnd=T.tEnd||0;
 const MC_COL=['#ffe08a','#bfe3ff','#c9f2d0','#ffd0e1','#e3d4ff','#ffd8b5'];
-const MC_PRE={tf:['انسحاب','انعكاس','دوران','تمدد'],yn:['نعم','لا'],ab:['أ','ب','جـ','د']};
+const MC_PRE={tf:['انسحاب','انعكاس','دوران','تمدد'],ok:['صح ✓','خطأ ✗'],yn:['نعم','لا'],ab:['أ','ب','جـ','د']};
 function renderMcEd(){const L=$('#mcList');L.innerHTML='';T.mcOpts.forEach((o,i)=>{const r=document.createElement('div');r.className='mrow';
   r.innerHTML=`<label><input type="radio" name="mcok" ${i===T.mcOk?'checked':''}> صحيحة</label><input type="text" maxlength="30"><button title="حذف">✕</button>`;
   const t=r.querySelector('input[type=text]');t.value=o;t.style.background=MC_COL[i%MC_COL.length];t.addEventListener('keydown',e=>e.stopPropagation());
